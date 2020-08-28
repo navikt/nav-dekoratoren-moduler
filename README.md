@@ -20,21 +20,21 @@ Ulempen er at applikasjonen din kan laste før fronend-kallet mot innloggingslin
 EnforceLoginLoader er en wrapper for applikasjonen som viser en spinner mens sjekken pågår. Funksjonen authCallback tigges etter velykket innlogging og benyttes for å hente ut brukerens navn ved behov.
 ```tsx
 import React, { Component } from 'react'
-import EnforceLoginLoader from '@navikt/nav-dekoratoren-moduler'
+import { EnforceLoginLoader } from '@navikt/nav-dekoratoren-moduler'
 
-const Example = () => {
+const Wrapper = () => {
     const authCallback = (auth: Auth) => {
       console.log(auth)
     }
 
     return (
         <EnforceLoginLoader authCallback={authCallback}>
-            <div className={"testapp__container"}>
-              Test app
-            </div>
+            <App />
         </EnforceLoginLoader>
     )
 }
+
+ReactDOM.render(<Wrapper />, document.getElementById('app'))
 ```
 
 ## License
