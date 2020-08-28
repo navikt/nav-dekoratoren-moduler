@@ -1,7 +1,7 @@
-import { ExampleComponent } from '.'
+import { EnforceLoginLoader } from '.'
 
-describe('ExampleComponent', () => {
+describe('EnforceLoginLoader', () => {
   it('is truthy', () => {
-    expect(ExampleComponent).toBeTruthy()
+    expect(EnforceLoginLoader).toBeTruthy()
   })
 })

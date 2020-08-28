@@ -12,3 +12,19 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.decorator-header{
+  min-height:150px
+}
+
+.decorator-footer{
+  min-height: 783px
+}
+
+.testapp__container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height:35rem;
+  width:100%
+}
