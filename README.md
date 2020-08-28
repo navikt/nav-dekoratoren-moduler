@@ -17,7 +17,7 @@ npm install --save @navikt/av-dekoratoren-moduler
 Parameteret **enforceLogin** i dekoratøren sender brukeren til loginservice ved for lavt innloggingsnivå.
 Ulempen er at applikasjonen din kan laste før fronend-kallet mot innloggingslinje-api er ferdig og dekoratøren sender brukeren til loginservice.
 
-EnforceLoginLoader er en wrapper for applikasjonen som viser en spinner mens kallet pågår. Funksjonen authCallback tigges etter velykket innlogging og benyttes for å hente ut brukerens navn ved behov.
+EnforceLoginLoader er en wrapper for applikasjonen som viser en spinner mens sjekken pågår. Funksjonen authCallback tigges etter velykket innlogging og benyttes for å hente ut brukerens navn ved behov.
 ```tsx
 import React, { Component } from 'react'
 import EnforceLoginLoader from '@navikt/nav-dekoratoren-moduler'
