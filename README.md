@@ -1,4 +1,4 @@
-# @navikt/nav-dekoratoren-moduler
+# Moduler til nav-dekoratoren
 
 > Moduler til [nav-dekoratoren](https://github.com/navikt/nav-dekoratoren)
 
