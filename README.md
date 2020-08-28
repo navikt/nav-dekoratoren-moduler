@@ -7,7 +7,7 @@
 ## Install
 
 ```bash
-npm install --save @navikt/av-dekoratoren-moduler
+npm install --save @navikt/nav-dekoratoren-moduler
 ```
 
 ## Usage
