@@ -6,7 +6,7 @@ import App from './App'
 
 document.body.innerHTML = document.body.innerHTML.replace(
   "{{{STYLES}}}",
-  `<link href=http://localhost:8100/dekoratoren/css/client.css rel="stylesheet" />`
+  `<link href=http://localhost:8088/dekoratoren/css/client.css rel="stylesheet" />`
 );
 document.body.innerHTML = document.body.innerHTML.replace(
   "{{{HEADER}}}",

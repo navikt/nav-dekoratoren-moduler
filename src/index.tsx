@@ -1,6 +1,5 @@
 import React, { useEffect, useState, Fragment } from 'react'
 import NavFrontendSpinner from 'nav-frontend-spinner'
-import styles from './styles.module.css'
 
 interface Props {
   authCallback?: (data: Auth) => void
@@ -41,8 +40,18 @@ export const EnforceLoginLoader = ({ children, authCallback }: Props) => {
   switch (authResult.status) {
     default:
     case 'LOADING':
-      return <div className={styles.loader}><NavFrontendSpinner type='XL' /></div>
+      return <div style={styles.spinner}><NavFrontendSpinner type='XL' /></div>
     case 'RESULT':
       return <Fragment>{children}</Fragment>
+  }
+}
+
+const styles = {
+  spinner: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '35rem',
+    width: '100%'
   }
 }

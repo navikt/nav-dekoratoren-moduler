@@ -1,6 +1,6 @@
 {
-  "short_name": "nav-dekoratoren-moduler",
-  "name": "nav-dekoratoren-moduler",
+  "short_name": "@navikt/nav-dekoratoren-moduler",
+  "name": "@navikt/nav-dekoratoren-moduler",
   "icons": [
     {
       "src": "favicon.ico",

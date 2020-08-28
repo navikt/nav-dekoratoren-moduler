@@ -1,8 +1,8 @@
 {
-  "name": "nav-dekoratoren-moduler",
+  "name": "@navikt/nav-dekoratoren-moduler",
   "version": "1.0.0",
   "description": "Moduler til nav-dekoratoren",
-  "author": "mjansrud",
+  "author": "NAVIKT",
   "license": "MIT",
   "repository": "navikt/nav-dekoratoren-moduler",
   "main": "dist/index.js",

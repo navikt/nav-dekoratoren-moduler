@@ -1,8 +1,7 @@
 import React from 'react'
 
-import { EnforceLoginLoader } from 'nav-dekoratoren-moduler'
+import { EnforceLoginLoader } from '@navikt/nav-dekoratoren-moduler'
 import { Auth } from '../../src'
-import 'nav-dekoratoren-moduler/dist/index.css'
 
 const App = () => {
 
