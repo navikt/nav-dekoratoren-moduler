@@ -35,7 +35,7 @@ export const EnforceLoginLoader = ({ children, authCallback }: Props) => {
     return () => {
       window.removeEventListener('message', receiveMessage, false)
     }
-  })
+  }, [])
 
   switch (authResult.status) {
     default:
