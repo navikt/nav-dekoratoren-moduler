@@ -37,11 +37,12 @@ const Wrapper = () => {
 ReactDOM.render(<Wrapper />, document.getElementById('app'))
 ```
 
-** setBreadcrumbs
-```tsx
-import React, { Component } from 'react'
-import { setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler'
+**setBreadcrumbs**
 
+Parameteret **breadcrumbs** (brødsmulestien) kan endres / settes i frondend-apper ved behov.
+
+```tsx
+import { setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler'
 setBreadcrumbs([
   {"name":"Kontakt oss", "url":"https://www.nav.no/person/kontakt-oss/nb/" }
 ])
