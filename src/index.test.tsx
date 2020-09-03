@@ -1,4 +1,4 @@
-import { EnforceLoginLoader } from '.'
+import { EnforceLoginLoader } from './modules/EnforceLoginLoader'
 
 describe('EnforceLoginLoader', () => {
   it('is truthy', () => {
