@@ -1,9 +1,9 @@
-export interface Breadcrumb {
+export interface Language {
+  locale: string
   url: string
-  name: string
 }
 
-export const setAvailableLanguages = (languages: Breadcrumb[]) => {
+export const setAvailableLanguages = (languages: Language[]) => {
   if (window) {
     window.postMessage(
       { source: 'decorator', event: 'availableLanguages', payload: languages },
