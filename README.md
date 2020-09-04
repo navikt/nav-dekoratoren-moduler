@@ -37,7 +37,7 @@ const Wrapper = () => {
 ReactDOM.render(<Wrapper />, document.getElementById('app'))
 ```
 
-**setBreadcrumbs**
+**setBreadcrumbs** (beta)
 
 Parameteret **breadcrumbs** (brødsmulestien) kan endres / settes i frondend-apper ved behov.
 
@@ -45,6 +45,19 @@ Parameteret **breadcrumbs** (brødsmulestien) kan endres / settes i frondend-app
 import { setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler'
 setBreadcrumbs([
   {"name":"Kontakt oss", "url":"https://www.nav.no/person/kontakt-oss/nb/" }
+])
+```
+
+**setLanguages** (beta)
+
+Parameteret **languages** (liste av tilgjengelige språk i språkvelgeren) kan endres / settes i frondend-apper ved behov. <br>
+Hent aktivt språk ved hjelp av url eller cookien **decorator-language**.
+
+```tsx
+import { setLanguages } from '@navikt/nav-dekoratoren-moduler'
+setLanguages([
+  {"locale":"nb", "url":"https://www.nav.no/person/kontakt-oss/nb/" },
+  {"locale":"en", "url":"https://www.nav.no/person/kontakt-oss/en/" }
 ])
 ```
 
