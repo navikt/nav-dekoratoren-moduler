@@ -48,14 +48,14 @@ setBreadcrumbs([
 ])
 ```
 
-**setLanguages** (beta)
+**setAvailableLanguages** (beta)
 
 Parameteret **languages** (liste av tilgjengelige språk i språkvelgeren) kan endres / settes i frondend-apper ved behov. <br>
 Hent aktivt språk ved hjelp av url eller cookien **decorator-language**.
 
 ```tsx
-import { setLanguages } from '@navikt/nav-dekoratoren-moduler'
-setLanguages([
+import { setAvailableLanguages } from '@navikt/nav-dekoratoren-moduler'
+setAvailableLanguages([
   {"locale":"nb", "url":"https://www.nav.no/person/kontakt-oss/nb/" },
   {"locale":"en", "url":"https://www.nav.no/person/kontakt-oss/en/" }
 ])
