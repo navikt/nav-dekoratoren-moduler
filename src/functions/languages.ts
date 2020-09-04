@@ -3,10 +3,10 @@ export interface Breadcrumb {
   name: string
 }
 
-export const setLanguages = (languages: Breadcrumb[]) => {
+export const setAvailableLanguages = (languages: Breadcrumb[]) => {
   if (window) {
     window.postMessage(
-      { source: 'decorator', event: 'languages', payload: languages },
+      { source: 'decorator', event: 'availableLanguages', payload: languages },
       window.location.origin
     )
   }
