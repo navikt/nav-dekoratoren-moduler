@@ -24,14 +24,27 @@ export const isReady = () => {
       }
     })()
 
-    const receiveMessage = ({ data }: MessageEvent) => {
+    const receiveMessage = (msg: MessageEvent) => {
+      const { data } = msg
+      const isSafe = msgSafetyCheck(msg)
       const { source, event } = data
-      if (source === 'decorator' && event === 'ready') {
-        ready = true
-        window.removeEventListener('message', receiveMessage, false)
-        resolve(true)
+      if (isSafe) {
+        if (source === 'decorator' && event === 'ready') {
+          ready = true
+          window.removeEventListener('message', receiveMessage, false)
+          resolve(true)
+        }
       }
     }
     window.addEventListener('message', receiveMessage, false)
   })
 }
+
+export const msgSafetyCheck = (message: MessageEvent) => {
+  const { origin, source } = message
+  // Only allow messages from own window
+  if (window.location.href.indexOf(origin) === 0 && source === window) {
+    return true
+  }
+  return false
+};
