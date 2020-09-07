@@ -1,3 +1,11 @@
-import EnforceLoginLoader, { Auth } from './modules/EnforceLoginLoader'
-import { setBreadcrumbs } from './modules/Breadcrumbs'
-export { EnforceLoginLoader, Auth, setBreadcrumbs }
+import EnforceLoginLoader, { Auth } from './components/EnforceLoginLoader'
+import { setBreadcrumbs, onBreadcrumbClick } from './functions/breadcrumbs'
+import { setAvailableLanguages, onLanguageSelect } from './functions/languages'
+export {
+  Auth,
+  EnforceLoginLoader,
+  setAvailableLanguages,
+  onLanguageSelect,
+  setBreadcrumbs,
+  onBreadcrumbClick
+}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, Fragment } from 'react'
 import NavFrontendSpinner from 'nav-frontend-spinner'
+import { msgSafetyCheck } from '../functions/utils'
 
 interface Props {
   authCallback?: (data: Auth) => void
@@ -22,25 +23,33 @@ const EnforceLoginLoader = ({ children, authCallback }: Props) => {
   })
 
   useEffect(() => {
-    const receiveMessage = ({ data }: MessageEvent) => {
+    const receiveMessage = (msg: MessageEvent) => {
+      const { data } = msg
+      const isSafe = msgSafetyCheck(msg)
       const { source, event, payload } = data
-      if (source === 'decorator' && event === 'auth') {
-        if (authCallback) {
-          authCallback(payload)
+      if (isSafe) {
+        if (source === 'decorator' && event === 'auth') {
+          if (authCallback) {
+            authCallback(payload)
+          }
+          setAuthResult({ status: 'RESULT', payload })
         }
-        setAuthResult({ status: 'RESULT', payload })
       }
     }
-    window.addEventListener('message', receiveMessage, false)
+    window.addEventListener('message', receiveMessage)
     return () => {
-      window.removeEventListener('message', receiveMessage, false)
+      window.removeEventListener('message', receiveMessage)
     }
   }, [])
 
   switch (authResult.status) {
     default:
     case 'LOADING':
-      return <div style={styles.spinner}><NavFrontendSpinner type='XL' /></div>
+      return (
+        <div style={styles.spinner}>
+          <NavFrontendSpinner type='XL' />
+        </div>
+      )
     case 'RESULT':
       return <Fragment>{children}</Fragment>
   }
