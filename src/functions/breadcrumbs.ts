@@ -2,7 +2,7 @@ import { isReady, msgSafetyCheck } from './utils'
 
 export interface Breadcrumb {
   url: string
-  t: string
+  title: string
   handleInApp?: boolean
 }
 
