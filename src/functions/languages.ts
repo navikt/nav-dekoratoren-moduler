@@ -10,7 +10,7 @@ export const setAvailableLanguages = (languages: Language[]) =>
     .then(() =>
       window.postMessage(
         {
-          source: 'decorator',
+          source: 'decoratorClient',
           event: 'availableLanguages',
           payload: languages
         },

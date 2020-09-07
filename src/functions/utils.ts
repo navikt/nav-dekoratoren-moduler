@@ -11,7 +11,7 @@ export const isReady = () => {
 
     const sendAppReadyMessage = () => {
       window.postMessage(
-        { source: 'app', event: 'ready' },
+        { source: 'decoratorClient', event: 'ready' },
         window.location.origin
       )
     }

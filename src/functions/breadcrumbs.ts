@@ -9,7 +9,11 @@ export const setBreadcrumbs = (breadcrumbs: Breadcrumb[]) =>
   isReady()
     .then(() =>
       window.postMessage(
-        { source: 'decorator', event: 'breadcrumbs', payload: breadcrumbs },
+        {
+          source: 'decoratorClient',
+          event: 'breadcrumbs',
+          payload: breadcrumbs
+        },
         window.location.origin
       )
     )
