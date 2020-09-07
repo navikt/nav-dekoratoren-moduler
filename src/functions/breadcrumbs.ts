@@ -19,7 +19,7 @@ export const onBreadcrumbClick = (
       }
     }
   }
-  window.addEventListener('message', receiveMessage, false)
+  window.addEventListener('message', receiveMessage, { once: true })
 }
 
 export const setBreadcrumbs = (breadcrumbs: Breadcrumb[]) =>
