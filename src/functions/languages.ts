@@ -1,4 +1,5 @@
 import { isReady, msgSafetyCheck } from './utils'
+import { useEffect } from 'react'
 
 export interface Language {
   url: string
@@ -7,17 +8,22 @@ export interface Language {
 }
 
 export const onLanguageSelect = (callback: (language: Language) => void) => {
-  const receiveMessage = (msg: MessageEvent) => {
-    const { data } = msg
-    const isSafe = msgSafetyCheck(msg)
-    const { source, event, payload } = data
-    if (isSafe) {
-      if (source === 'decorator' && event === 'languageSelect') {
-        callback(payload)
+  useEffect(() => {
+    const receiveMessage = (msg: MessageEvent) => {
+      const { data } = msg
+      const isSafe = msgSafetyCheck(msg)
+      const { source, event, payload } = data
+      if (isSafe) {
+        if (source === 'decorator' && event === 'languageSelect') {
+          callback(payload)
+        }
       }
     }
-  }
-  window.addEventListener('message', receiveMessage)
+    window.addEventListener('message', receiveMessage)
+    return () => {
+      window.removeEventListener('message', receiveMessage)
+    }
+  })
 }
 
 export const setAvailableLanguages = (languages: Language[]) =>
