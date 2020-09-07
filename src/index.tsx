@@ -1,4 +1,11 @@
 import EnforceLoginLoader, { Auth } from './components/EnforceLoginLoader'
-import { setBreadcrumbs } from './functions/breadcrumbs'
-import { setAvailableLanguages } from './functions/languages'
-export { EnforceLoginLoader, Auth, setBreadcrumbs, setAvailableLanguages }
+import { setBreadcrumbs, onBreadcrumbClick } from './functions/breadcrumbs'
+import { setAvailableLanguages, onLanguageSelect } from './functions/languages'
+export {
+  Auth,
+  EnforceLoginLoader,
+  setAvailableLanguages,
+  onLanguageSelect,
+  setBreadcrumbs,
+  onBreadcrumbClick
+}

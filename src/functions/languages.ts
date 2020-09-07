@@ -1,8 +1,23 @@
-import { isReady } from './utils'
+import { isReady, msgSafetyCheck } from './utils'
 
 export interface Language {
-  locale: string
   url: string
+  locale: string
+  handleInApp?: boolean
+}
+
+export const onLanguageSelect = (callback: (language: Language) => void) => {
+  const receiveMessage = (msg: MessageEvent) => {
+    const { data } = msg
+    const isSafe = msgSafetyCheck(msg)
+    const { source, event, payload } = data
+    if (isSafe) {
+      if (source === 'decorator' && event === 'languageSelect') {
+        callback(payload)
+      }
+    }
+  }
+  window.addEventListener('message', receiveMessage, false)
 }
 
 export const setAvailableLanguages = (languages: Language[]) =>

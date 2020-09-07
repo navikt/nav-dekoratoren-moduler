@@ -42,10 +42,30 @@ ReactDOM.render(<Wrapper />, document.getElementById('app'))
 Parameteret **breadcrumbs** (brødsmulestien) kan endres / settes i frondend-apper ved behov.
 
 ```tsx
+// Type
+export interface Breadcrumb {
+  url: string
+  title: string
+  handleInApp?: boolean
+}
+
+// Use
 import { setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler'
 setBreadcrumbs([
-  {"name":"Kontakt oss", "url":"https://www.nav.no/person/kontakt-oss/nb/" }
+  {"name":"Ditt NAV", "url":"https://www.nav.no/person/dittnav" }, // Sender brukeren til definert url
+  {"name":"Kontakt oss", "url":"https://www.nav.no/person/kontakt-oss/nb/", handleInApp: true } // Håndteres av onBreadcrumbClick
 ])
+```
+
+**onBreadcrumbClick** (beta)
+
+Kalles dersom handleInApp settes til **true**
+
+```tsx
+import { onBreadcrumbClick } from '@navikt/nav-dekoratoren-moduler'
+onBreadcrumbClick((breadcrumb) => {
+  ...
+})
 ```
 
 **setAvailableLanguages** (beta)
@@ -56,9 +76,20 @@ Hent aktivt språk ved hjelp av url eller cookien **decorator-language**.
 ```tsx
 import { setAvailableLanguages } from '@navikt/nav-dekoratoren-moduler'
 setAvailableLanguages([
-  {"locale":"nb", "url":"https://www.nav.no/person/kontakt-oss/nb/" },
-  {"locale":"en", "url":"https://www.nav.no/person/kontakt-oss/en/" }
+  {"locale":"nb", "url":"https://www.nav.no/person/kontakt-oss/nb/" }, // Sender brukeren til definert url
+  {"locale":"en", "url":"https://www.nav.no/person/kontakt-oss/en/", handleInApp: true },  // Håndteres av onLanguageSelect
 ])
+```
+
+**onLanguageSelect** (beta)
+
+Kalles dersom handleInApp settes til **true**
+
+```tsx
+import { onLanguageSelect } from '@navikt/nav-dekoratoren-moduler'
+onLanguageSelect((language) => {
+  ...
+})
 ```
 
 ## License
