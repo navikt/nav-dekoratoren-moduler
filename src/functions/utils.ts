@@ -19,7 +19,7 @@ export const isReady = () => {
     // Send ready message until decorator responds
     ;(function wait() {
       if (!ready) {
-        setTimeout(wait, 500)
+        setTimeout(wait, 50)
         sendAppReadyMessage()
       }
     })()
