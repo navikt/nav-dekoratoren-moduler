@@ -31,12 +31,12 @@ export const isReady = () => {
       if (isSafe) {
         if (source === 'decorator' && event === 'ready') {
           ready = true
-          window.removeEventListener('message', receiveMessage, false)
+          window.removeEventListener('message', receiveMessage)
           resolve(true)
         }
       }
     }
-    window.addEventListener('message', receiveMessage, false)
+    window.addEventListener('message', receiveMessage)
   })
 }
 

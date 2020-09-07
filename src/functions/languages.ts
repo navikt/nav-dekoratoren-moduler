@@ -17,7 +17,7 @@ export const onLanguageSelect = (callback: (language: Language) => void) => {
       }
     }
   }
-  window.addEventListener('message', receiveMessage, false)
+  window.addEventListener('message', receiveMessage)
 }
 
 export const setAvailableLanguages = (languages: Language[]) =>

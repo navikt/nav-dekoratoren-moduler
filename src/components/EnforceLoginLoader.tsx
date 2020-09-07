@@ -36,9 +36,9 @@ const EnforceLoginLoader = ({ children, authCallback }: Props) => {
         }
       }
     }
-    window.addEventListener('message', receiveMessage, false)
+    window.addEventListener('message', receiveMessage)
     return () => {
-      window.removeEventListener('message', receiveMessage, false)
+      window.removeEventListener('message', receiveMessage)
     }
   }, [])
 

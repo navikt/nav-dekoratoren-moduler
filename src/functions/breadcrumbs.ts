@@ -2,7 +2,7 @@ import { isReady, msgSafetyCheck } from './utils'
 
 export interface Breadcrumb {
   url: string
-  title: string
+  t: string
   handleInApp?: boolean
 }
 
@@ -19,7 +19,7 @@ export const onBreadcrumbClick = (
       }
     }
   }
-  window.addEventListener('message', receiveMessage, { once: true })
+  window.addEventListener('message', receiveMessage)
 }
 
 export const setBreadcrumbs = (breadcrumbs: Breadcrumb[]) =>
