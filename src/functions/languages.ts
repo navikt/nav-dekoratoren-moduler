@@ -23,7 +23,7 @@ export const onLanguageSelect = (callback: (language: Language) => void) => {
     return () => {
       window.removeEventListener('message', receiveMessage)
     }
-  })
+  }, [])
 }
 
 export const setAvailableLanguages = (languages: Language[]) =>
