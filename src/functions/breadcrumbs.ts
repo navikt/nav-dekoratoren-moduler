@@ -15,13 +15,11 @@ export const onBreadcrumbClick = (() => {
     const { source, event, payload } = data
     if (isSafe) {
       if (callback && source === 'decorator' && event === 'breadcrumbClick') {
-        console.log('executing callback for breadcrumbClick')
         callback(payload)
       }
     }
   }
 
-  console.log('adding event listener for breadcrumbClick')
   window.addEventListener('message', receiveMessage)
 
   return (_callback: (breadcrumb: Breadcrumb) => void) => {

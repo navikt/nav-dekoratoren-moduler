@@ -15,13 +15,11 @@ export const onLanguageSelect = (() => {
     const { source, event, payload } = data
     if (isSafe) {
       if (source === 'decorator' && event === 'languageSelect' && callback) {
-        console.log('executing callback for languageSelect')
         callback(payload)
       }
     }
   }
 
-  console.log('adding event listener for languageSelect')
   window.addEventListener('message', receiveMessage)
 
   return (_callback: (language: Language) => void) => {
