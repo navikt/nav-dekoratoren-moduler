@@ -49,7 +49,7 @@ export interface Breadcrumb {
   handleInApp?: boolean
 }
 
-// Use
+// Bruk
 import { setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler'
 setBreadcrumbs([
   {"name":"Ditt NAV", "url":"https://www.nav.no/person/dittnav" }, // Sender brukeren til definert url
@@ -74,6 +74,14 @@ Parameteret **languages** (liste av tilgjengelige språk i språkvelgeren) kan e
 Hent aktivt språk ved hjelp av url eller cookien **decorator-language**.
 
 ```tsx
+// Type
+export interface Language {
+  url: string
+  locale: string
+  handleInApp?: boolean
+}
+
+// Bruk
 import { setAvailableLanguages } from '@navikt/nav-dekoratoren-moduler'
 setAvailableLanguages([
   {"locale":"nb", "url":"https://www.nav.no/person/kontakt-oss/nb/" }, // Sender brukeren til definert url
