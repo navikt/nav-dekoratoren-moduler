@@ -25,7 +25,6 @@ export const onBreadcrumbClick = (() => {
   window.addEventListener('message', receiveMessage)
 
   return (_callback: (breadcrumb: Breadcrumb) => void) => {
-    console.log('updating callback for breadcrumbClick')
     callback = _callback
   }
 })()
