@@ -1,5 +1,4 @@
 import { isReady, msgSafetyCheck } from './utils'
-import { useEffect } from 'react'
 
 export interface Breadcrumb {
   url: string
@@ -7,26 +6,26 @@ export interface Breadcrumb {
   handleInApp?: boolean
 }
 
-export const onBreadcrumbClick = (
-  callback: (breadcrumb: Breadcrumb) => void
-) => {
-  useEffect(() => {
-    const receiveMessage = (msg: MessageEvent) => {
-      const { data } = msg
-      const isSafe = msgSafetyCheck(msg)
-      const { source, event, payload } = data
-      if (isSafe) {
-        if (source === 'decorator' && event === 'breadcrumbClick') {
-          callback(payload)
-        }
+export const onBreadcrumbClick = (() => {
+  let callback: (breadcrumb: Breadcrumb) => void
+
+  const receiveMessage = (msg: MessageEvent) => {
+    const { data } = msg
+    const isSafe = msgSafetyCheck(msg)
+    const { source, event, payload } = data
+    if (isSafe) {
+      if (callback && source === 'decorator' && event === 'breadcrumbClick') {
+        callback(payload)
       }
     }
-    window.addEventListener('message', receiveMessage)
-    return () => {
-      window.removeEventListener('message', receiveMessage)
-    }
-  }, [])
-}
+  }
+
+  window.addEventListener('message', receiveMessage)
+
+  return (_callback: (breadcrumb: Breadcrumb) => void) => {
+    callback = _callback
+  }
+})()
 
 export const setBreadcrumbs = (breadcrumbs: Breadcrumb[]) =>
   isReady()
