@@ -13,15 +13,20 @@ export const onLanguageSelect = (() => {
     const { data } = msg
     const isSafe = msgSafetyCheck(msg)
     const { source, event, payload } = data
+
+    console.log('derp')
     if (isSafe) {
       if (source === 'decorator' && event === 'languageSelect' && callback) {
+        console.log('executing callback for languageSelect')
         callback(payload)
       }
     }
   }
+  console.log('adding event listener for languageSelect')
   window.addEventListener('message', receiveMessage)
 
   return (_callback: (language: Language) => void) => {
+    console.log('updating callback for languageSelect')
     callback = _callback
   }
 })()
