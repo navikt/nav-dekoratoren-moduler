@@ -100,7 +100,7 @@ onLanguageSelect((language) => {
 })
 ```
 
-**setParams** (beta
+**setParams** (beta)
 
 Samtlige parameter settes via **setParams** dersom **setAvailableLanguages** og **setBreadcrumbs** ikke er tilstrekkelig
 
