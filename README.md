@@ -122,8 +122,8 @@ export interface Params {
 // Bruk
 import { setParams } from '@navikt/nav-dekoratoren-moduler'
 setParams({
- simple: true,
- chatbot: true
+  simple: true,
+  chatbot: true
 })
 
 ```
