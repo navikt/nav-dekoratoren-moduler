@@ -1,4 +1,5 @@
-import { isReady, msgSafetyCheck } from './utils'
+import { msgSafetyCheck } from './utils'
+import { setParams } from './params'
 
 export interface Breadcrumb {
   url: string
@@ -28,15 +29,6 @@ export const onBreadcrumbClick = (() => {
 })()
 
 export const setBreadcrumbs = (breadcrumbs: Breadcrumb[]) =>
-  isReady()
-    .then(() =>
-      window.postMessage(
-        {
-          source: 'decoratorClient',
-          event: 'breadcrumbs',
-          payload: breadcrumbs
-        },
-        window.location.origin
-      )
-    )
-    .catch((error) => console.warn(error))
+  setParams({
+    breadcrumbs: breadcrumbs
+  })

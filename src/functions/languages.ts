@@ -1,4 +1,5 @@
-import { isReady, msgSafetyCheck } from './utils'
+import { msgSafetyCheck } from './utils'
+import { setParams } from './params'
 
 export interface Language {
   url: string
@@ -28,15 +29,6 @@ export const onLanguageSelect = (() => {
 })()
 
 export const setAvailableLanguages = (languages: Language[]) =>
-  isReady()
-    .then(() =>
-      window.postMessage(
-        {
-          source: 'decoratorClient',
-          event: 'availableLanguages',
-          payload: languages
-        },
-        window.location.origin
-      )
-    )
-    .catch((error) => console.warn(error))
+  setParams({
+    availableLanguages: languages
+  })
