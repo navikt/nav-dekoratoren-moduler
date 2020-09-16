@@ -100,6 +100,34 @@ onLanguageSelect((language) => {
 })
 ```
 
+**setParams** (beta)
+
+Samtlige parameter settes via **setParams** dersom **setAvailableLanguages** og **setBreadcrumbs** ikke er tilstrekkelig
+
+```tsx
+// Type
+export interface Params {
+  context?: 'privatperson' | 'arbeidsgiver' | 'samarbeidspartner'
+  simple?: boolean
+  enforceLogin?: boolean
+  redirectToApp?: boolean
+  level?: string
+  language?: 'nb' | 'nn' | 'en' | 'se'
+  availableLanguages?: Language[]
+  breadcrumbs?: Breadcrumb[]
+  feedback?: boolean
+  chatbot?: boolean
+}
+
+// Bruk
+import { setParams } from '@navikt/nav-dekoratoren-moduler'
+setParams({
+ simple: true,
+ chatbot: true
+})
+
+```
+
 ## License
 
 MIT © [mjansrud](https://github.com/mjansrud)
