@@ -29,6 +29,4 @@ export const onBreadcrumbClick = (() => {
 })()
 
 export const setBreadcrumbs = (breadcrumbs: Breadcrumb[]) =>
-  setParams({
-    breadcrumbs: breadcrumbs
-  })
+  setParams({ breadcrumbs })

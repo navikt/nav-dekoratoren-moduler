@@ -28,7 +28,5 @@ export const onLanguageSelect = (() => {
   }
 })()
 
-export const setAvailableLanguages = (languages: Language[]) =>
-  setParams({
-    availableLanguages: languages
-  })
+export const setAvailableLanguages = (availableLanguages: Language[]) =>
+  setParams({ availableLanguages })
