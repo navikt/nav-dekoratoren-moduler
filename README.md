@@ -102,7 +102,7 @@ onLanguageSelect((language) => {
 
 **setParams** (beta)
 
-Samtlige parameter settes via **setParams** dersom **setAvailableLanguages** og **setBreadcrumbs** ikke er tilstrekkelig
+Samtlige parameter kan settes via **setParams** dersom **setAvailableLanguages** og **setBreadcrumbs** ikke er tilstrekkelig
 
 ```tsx
 // Type
