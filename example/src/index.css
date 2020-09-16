@@ -21,10 +21,21 @@ code {
   min-height: 783px
 }
 
+
+.testapp__textarea{
+  height: 250px;
+  width:500px;
+}
+
 .testapp__container{
   display: flex;
   justify-content: center;
+  flex-direction: column;
   align-items: center;
   height:35rem;
   width:100%
+}
+
+.testapp__container > *{
+  margin: 0.5rem
 }
