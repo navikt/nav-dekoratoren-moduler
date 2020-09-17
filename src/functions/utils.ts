@@ -2,7 +2,7 @@ let ready = false
 
 export const isReady = () => {
   return new Promise((resolve, reject) => {
-    if (typeof window !== `undefined`) {
+    if (typeof window === 'undefined') {
       reject(Error('Missing window, can only be used client-side'))
     }
     if (ready) {
