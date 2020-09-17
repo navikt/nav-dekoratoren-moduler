@@ -21,7 +21,9 @@ export const onLanguageSelect = (() => {
     }
   }
 
-  window.addEventListener('message', receiveMessage)
+  if (window) {
+    window.addEventListener('message', receiveMessage)
+  }
 
   return (_callback: (language: Language) => void) => {
     callback = _callback

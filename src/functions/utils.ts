@@ -3,7 +3,7 @@ let ready = false
 export const isReady = () => {
   return new Promise((resolve, reject) => {
     if (!window) {
-      reject(Error('Missing window'))
+      reject(Error('Missing window, can only be used client-side'))
     }
     if (ready) {
       resolve(true)
