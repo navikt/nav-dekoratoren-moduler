@@ -102,7 +102,7 @@ onLanguageSelect((language) => {
 
 **setParams** (beta)
 
-Samtlige parameter settes via **setParams** dersom **setAvailableLanguages** og **setBreadcrumbs** ikke er tilstrekkelig
+Samtlige parameter kan settes via **setParams** dersom **setAvailableLanguages** og **setBreadcrumbs** ikke er tilstrekkelig
 
 ```tsx
 // Type
@@ -122,8 +122,8 @@ export interface Params {
 // Bruk
 import { setParams } from '@navikt/nav-dekoratoren-moduler'
 setParams({
- simple: true,
- chatbot: true
+  simple: true,
+  chatbot: true
 })
 
 ```
