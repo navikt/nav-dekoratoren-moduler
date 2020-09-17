@@ -21,7 +21,7 @@ export const onBreadcrumbClick = (() => {
     }
   }
 
-  if (window) {
+  if (typeof window !== `undefined`) {
     window.addEventListener('message', receiveMessage)
   }
 
