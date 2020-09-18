@@ -52,8 +52,8 @@ export interface Breadcrumb {
 // Bruk
 import { setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler'
 setBreadcrumbs([
-  {"name":"Ditt NAV", "url":"https://www.nav.no/person/dittnav" }, // Sender brukeren til definert url
-  {"name":"Kontakt oss", "url":"https://www.nav.no/person/kontakt-oss/nb/", handleInApp: true } // Håndteres av onBreadcrumbClick
+  {"title":"Ditt NAV", "url":"https://www.nav.no/person/dittnav" }, // Sender brukeren til definert url
+  {"title":"Kontakt oss", "url":"https://www.nav.no/person/kontakt-oss/nb/", handleInApp: true } // Håndteres av onBreadcrumbClick
 ])
 ```
 
