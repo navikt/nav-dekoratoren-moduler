@@ -8,7 +8,7 @@ export interface Params {
   enforceLogin?: boolean
   redirectToApp?: boolean
   level?: string
-  language?: 'nb' | 'nn' | 'en' | 'se'
+  language?: 'nb' | 'nn' | 'en' | 'se' | 'pl'
   availableLanguages?: Language[]
   breadcrumbs?: Breadcrumb[]
   feedback?: boolean
