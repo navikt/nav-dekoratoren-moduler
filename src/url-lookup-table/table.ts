@@ -1,7 +1,5 @@
 export const urlLookupTable = {
   dev: {
-    'https://nav.no': 'https://www.dev.nav.no',
-    'https://www.nav.no': 'https://www.dev.nav.no',
     'https://aktivitetsplan.nav.no': 'https://aktivitetsplan-q.nav.no',
     'https://arbeidsgiver.nav.no': 'https://arbeidsgiver-q.nav.no',
     'https://arbeidsplassen.nav.no': 'https://arbeidsplassen-q.nav.no',
@@ -10,11 +8,12 @@ export const urlLookupTable = {
     'https://foreldrepenger.nav.no': 'https://foreldrepenger.dev.nav.no',
     'https://mininnboks.nav.no': 'https://mininnboks.dev.nav.no',
     'https://tjenester.nav.no': 'https://tjenester-q1.nav.no',
-    'https://veiledearbeidssoker.nav.no': 'https://www.dev.nav.no/arbeid/no'
+    'https://veiledearbeidssoker.nav.no': 'https://www.dev.nav.no/arbeid/no',
+    'https://www.nav.no/okonomi-og-gjeld': `https://okonomi-gjeldsradgivning-veiviser.dev.nav.no/okonomi-og-gjeld`,
+    'https://www.nav.no': 'https://www.dev.nav.no',
+    'https://nav.no': 'https://www.dev.nav.no'
   },
   q0: {
-    'https://nav.no': 'https://www-q0.nav.no',
-    'https://www.nav.no': 'https://www-q0.nav.no',
     'https://aktivitetsplan.nav.no': 'https://aktivitetsplan-q0.nav.no',
     'https://arbeidsgiver.nav.no': 'https://arbeidsgiver-q0.nav.no',
     'https://arbeidsplassen.nav.no': 'https://arbeidsplassen-q0.nav.no',
@@ -23,11 +22,12 @@ export const urlLookupTable = {
     'https://foreldrepenger.nav.no': 'https://foreldrepenger-q0.nav.no',
     'https://mininnboks.nav.no': 'https://mininnboks-q0.nav.no',
     'https://tjenester.nav.no': 'https://tjenester-q0.nav.no',
-    'https://veiledearbeidssoker.nav.no': `https://veiledearbeidssoker-q0.nav.no`
+    'https://veiledearbeidssoker.nav.no': `https://veiledearbeidssoker-q0.nav.no`,
+    'https://www.nav.no/okonomi-og-gjeld': `https://www-q0.nav.no/okonomi-og-gjeld`,
+    'https://www.nav.no': 'https://www-q0.nav.no',
+    'https://nav.no': 'https://www-q0.nav.no'
   },
   q1: {
-    'https://nav.no': 'https://www-q1.nav.no',
-    'https://www.nav.no': 'https://www-q1.nav.no',
     'https://aktivitetsplan.nav.no': 'https://aktivitetsplan-q1.nav.no',
     'https://arbeidsgiver.nav.no': 'https://arbeidsgiver-q1.nav.no',
     'https://arbeidsplassen.nav.no': 'https://arbeidsplassen-q1.nav.no',
@@ -36,11 +36,12 @@ export const urlLookupTable = {
     'https://foreldrepenger.nav.no': 'https://foreldrepenger-q1.nav.no',
     'https://mininnboks.nav.no': 'https://mininnboks-q1.nav.no',
     'https://tjenester.nav.no': 'https://tjenester-q1.nav.no',
-    'https://veiledearbeidssoker.nav.no': `https://veiledearbeidssoker-q1.nav.no`
+    'https://veiledearbeidssoker.nav.no': `https://veiledearbeidssoker-q1.nav.no`,
+    'https://www.nav.no/okonomi-og-gjeld': `https://www-q1.nav.no/okonomi-og-gjeld`,
+    'https://www.nav.no': 'https://www-q1.nav.no',
+    'https://nav.no': 'https://www-q1.nav.no'
   },
   q2: {
-    'https://nav.no': 'https://www-q2.nav.no',
-    'https://www.nav.no': 'https://www-q2.nav.no',
     'https://aktivitetsplan.nav.no': 'https://aktivitetsplan-q2.nav.no',
     'https://arbeidsgiver.nav.no': 'https://arbeidsgiver-q2.nav.no',
     'https://arbeidsplassen.nav.no': 'https://arbeidsplassen-q2.nav.no',
@@ -49,11 +50,12 @@ export const urlLookupTable = {
     'https://foreldrepenger.nav.no': 'https://foreldrepenger-q2.nav.no',
     'https://mininnboks.nav.no': 'https://mininnboks-q2.nav.no',
     'https://tjenester.nav.no': 'https://tjenester-q2.nav.no',
-    'https://veiledearbeidssoker.nav.no': `https://veiledearbeidssoker-q2.nav.no`
+    'https://veiledearbeidssoker.nav.no': `https://veiledearbeidssoker-q2.nav.no`,
+    'https://www.nav.no/okonomi-og-gjeld': `https://www-q2.nav.no/okonomi-og-gjeld`,
+    'https://www.nav.no': 'https://www-q2.nav.no',
+    'https://nav.no': 'https://www-q2.nav.no'
   },
   q6: {
-    'https://nav.no': 'https://www-q6.nav.no',
-    'https://www.nav.no': 'https://www-q6.nav.no',
     'https://aktivitetsplan.nav.no': 'https://aktivitetsplan-q6.nav.no',
     'https://arbeidsgiver.nav.no': 'https://arbeidsgiver-q6.nav.no',
     'https://arbeidsplassen.nav.no': 'https://arbeidsplassen-q6.nav.no',
@@ -62,6 +64,9 @@ export const urlLookupTable = {
     'https://foreldrepenger.nav.no': 'https://foreldrepenger-q6.nav.no',
     'https://mininnboks.nav.no': 'https://mininnboks-q6.nav.no',
     'https://tjenester.nav.no': 'https://tjenester-q6.nav.no',
-    'https://veiledearbeidssoker.nav.no': `https://veiledearbeidssoker-q6.nav.no`
+    'https://veiledearbeidssoker.nav.no': `https://veiledearbeidssoker-q6.nav.no`,
+    'https://www.nav.no/okonomi-og-gjeld': `https://www-q6.nav.no/okonomi-og-gjeld`,
+    'https://www.nav.no': 'https://www-q6.nav.no',
+    'https://nav.no': 'https://www-q6.nav.no'
   }
 }
