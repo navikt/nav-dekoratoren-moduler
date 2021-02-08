@@ -26,8 +26,8 @@
   "peerDependencies": {
     "classnames": "^2.2.6",
     "nav-frontend-ikoner-assets": "^2.0.3",
-    "nav-frontend-spinner": "^2.0.5",
-    "nav-frontend-spinner-style": "^0.2.5",
+    "nav-frontend-spinner": "^2.0.16",
+    "nav-frontend-spinner-style": "^1.0.2",
     "prop-types": "^15.7.2",
     "react": "^16.0.0"
   },
@@ -57,8 +57,8 @@
     "gh-pages": "^2.2.0",
     "microbundle-crl": "^0.13.10",
     "nav-frontend-ikoner-assets": "^2.0.3",
-    "nav-frontend-spinner": "^2.0.5",
-    "nav-frontend-spinner-style": "^0.2.5",
+    "nav-frontend-spinner": "2.0.16",
+    "nav-frontend-spinner-style": "1.0.2",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.1.1",
     "prop-types": "^15.7.2",
