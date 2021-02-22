@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-import { JSDOM } from 'jsdom';
 import fetch from 'node-fetch';
 import NodeCache from 'node-cache';
 import HtmlParser from 'react-html-parser';
@@ -37,7 +36,7 @@ export const fetchDecoratorHtml = (
       return res.text();
     })
     .then((res) => {
-      const { document } = new JSDOM(res).window;
+      const document = new DOMParser().parseFromString(res, 'text/html');
       const styles = document.getElementById('styles')?.innerHTML;
       const scripts = document.getElementById('scripts')?.innerHTML;
       const header = document.getElementById('header-withmenu')?.innerHTML;
