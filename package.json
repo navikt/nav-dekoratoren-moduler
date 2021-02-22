@@ -5,8 +5,8 @@
   "author": "NAVIKT",
   "license": "MIT",
   "repository": "navikt/nav-dekoratoren-moduler",
-  "main": "dist/index.js",
-  "module": "dist/index.modern.js",
+  "main": "lib/index.js",
+  "module": "lib/index.modern.js",
   "source": "src/index.tsx",
   "type": "module",
   "engines": {
@@ -71,6 +71,6 @@
     "typescript": "^3.7.5"
   },
   "files": [
-    "dist"
+    "lib"
   ]
 }
