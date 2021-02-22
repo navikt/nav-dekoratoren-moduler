@@ -1,34 +1,34 @@
-import { msgSafetyCheck } from './utils'
-import { setParams } from './params'
+import { msgSafetyCheck } from './utils';
+import { setParams } from './params';
 
 export interface Breadcrumb {
-  url: string
-  title: string
-  handleInApp?: boolean
+  url: string;
+  title: string;
+  handleInApp?: boolean;
 }
 
 export const onBreadcrumbClick = (() => {
-  let callback: (breadcrumb: Breadcrumb) => void
+  let callback: (breadcrumb: Breadcrumb) => void;
 
   const receiveMessage = (msg: MessageEvent) => {
-    const { data } = msg
-    const isSafe = msgSafetyCheck(msg)
-    const { source, event, payload } = data
+    const { data } = msg;
+    const isSafe = msgSafetyCheck(msg);
+    const { source, event, payload } = data;
     if (isSafe) {
       if (callback && source === 'decorator' && event === 'breadcrumbClick') {
-        callback(payload)
+        callback(payload);
       }
     }
-  }
+  };
 
   if (typeof window !== 'undefined') {
-    window.addEventListener('message', receiveMessage)
+    window.addEventListener('message', receiveMessage);
   }
 
   return (_callback: (breadcrumb: Breadcrumb) => void) => {
-    callback = _callback
-  }
-})()
+    callback = _callback;
+  };
+})();
 
 export const setBreadcrumbs = (breadcrumbs: Breadcrumb[]) =>
-  setParams({ breadcrumbs })
+  setParams({ breadcrumbs });

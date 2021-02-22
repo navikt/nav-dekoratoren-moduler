@@ -69,4 +69,4 @@ export const urlLookupTable = {
     'https://www.nav.no': 'https://www-q6.nav.no',
     'https://nav.no': 'https://www-q6.nav.no'
   }
-}
+};
