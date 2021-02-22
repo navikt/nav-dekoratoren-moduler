@@ -52,6 +52,7 @@ export async function fetchDecoratorHtml(
   if (!styles || !scripts || !header || !footer) throw new Error(body);
   return { styles, scripts, header, footer };
 }
+
 const createReactElements = (element: Element) =>
   Object.values(element.children).map((element, key) =>
     createReactElement(element, key)
