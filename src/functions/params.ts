@@ -1,18 +1,18 @@
-import { isReady } from './utils'
-import { Language } from './languages'
-import { Breadcrumb } from './breadcrumbs'
+import { isReady } from './utils';
+import { Language } from './languages';
+import { Breadcrumb } from './breadcrumbs';
 
 export interface Params {
-  context?: 'privatperson' | 'arbeidsgiver' | 'samarbeidspartner'
-  simple?: boolean
-  enforceLogin?: boolean
-  redirectToApp?: boolean
-  level?: string
-  language?: 'nb' | 'nn' | 'en' | 'se' | 'pl'
-  availableLanguages?: Language[]
-  breadcrumbs?: Breadcrumb[]
-  feedback?: boolean
-  chatbot?: boolean
+  context?: 'privatperson' | 'arbeidsgiver' | 'samarbeidspartner';
+  simple?: boolean;
+  enforceLogin?: boolean;
+  redirectToApp?: boolean;
+  level?: string;
+  language?: 'nb' | 'nn' | 'en' | 'se' | 'pl';
+  availableLanguages?: Language[];
+  breadcrumbs?: Breadcrumb[];
+  feedback?: boolean;
+  chatbot?: boolean;
 }
 
 export const setParams = (params: Params) =>
@@ -27,4 +27,4 @@ export const setParams = (params: Params) =>
         window.location.origin
       )
     )
-    .catch((error) => console.warn(error))
+    .catch((error) => console.warn(error));

@@ -1,29 +1,29 @@
-import './index.css'
+import './index.css';
 
-import React from 'react'
-import ReactDOM from 'react-dom'
-import App from './App'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
 
 document.body.innerHTML = document.body.innerHTML.replace(
-  "{{{STYLES}}}",
+  '{{{STYLES}}}',
   `<link href=http://localhost:8088/dekoratoren/css/client.css rel="stylesheet" />`
 );
 document.body.innerHTML = document.body.innerHTML.replace(
-  "{{{HEADER}}}",
+  '{{{HEADER}}}',
   `<section id="decorator-header"></section>`
 );
 document.body.innerHTML = document.body.innerHTML.replace(
-  "{{{FOOTER}}}",
+  '{{{FOOTER}}}',
   `<section id="decorator-footer"></section>`
 );
 document.body.innerHTML = document.body.innerHTML.replace(
-  "{{{SCRIPTS}}}",
+  '{{{SCRIPTS}}}',
   `<div id="decorator-env" data-src="http://localhost:8088/dekoratoren/env?enforceLogin=true&level=Level4"></div>`
 );
 
 // Execute client.js
-var script = document.createElement("script");
-script.src = "http://localhost:8088/dekoratoren/client.js";
+var script = document.createElement('script');
+script.src = 'http://localhost:8088/dekoratoren/client.js';
 document.body.appendChild(script);
 
-ReactDOM.render(<App />, document.getElementById('app'))
+ReactDOM.render(<App />, document.getElementById('app'));
