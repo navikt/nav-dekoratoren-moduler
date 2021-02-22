@@ -5,6 +5,8 @@ import { setAvailableLanguages } from '@navikt/nav-dekoratoren-moduler';
 import { onBreadcrumbClick } from '@navikt/nav-dekoratoren-moduler';
 import { setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler';
 import { setParams } from '@navikt/nav-dekoratoren-moduler';
+import NavFrontendSpinner from 'nav-frontend-spinner';
+import 'nav-frontend-spinner-style/dist/main.css';
 
 const App = () => {
   const initalParams = { simple: true };
@@ -57,7 +59,10 @@ const App = () => {
   // console.log(header);
 
   return (
-    <EnforceLoginLoader authCallback={authCallback}>
+    <EnforceLoginLoader
+      spinner={<NavFrontendSpinner type={'XL'} />}
+      authCallback={authCallback}
+    >
       <div className={'testapp__container'}>
         <div>Test app</div>
         <div>
