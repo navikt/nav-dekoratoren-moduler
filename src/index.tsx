@@ -13,7 +13,6 @@ const SSR = {
 
 export {
   SSR,
-  Auth,
   EnforceLoginLoader,
   setAvailableLanguages,
   onLanguageSelect,
@@ -23,3 +22,5 @@ export {
   urlLookupTable,
   getUrlFromLookupTable
 };
+
+export type { Auth };

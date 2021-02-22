@@ -18,10 +18,10 @@ export interface Components {
   Footer: FunctionComponent;
 }
 
-export async function fetchDecoratorReact(
+export const fetchDecoratorReact = async (
   env: ENV,
   params?: Params
-): Promise<Components> {
+): Promise<Components> => {
   const elements = await fetchDecoratorHtml(env, params);
   return {
     Styles: () => <Fragment>{createReactElements(elements.styles)}</Fragment>,
@@ -33,12 +33,12 @@ export async function fetchDecoratorReact(
       <div dangerouslySetInnerHTML={{ __html: elements.footer.innerHTML }} />
     )
   };
-}
+};
 
-export async function fetchDecoratorHtml(
+export const fetchDecoratorHtml = async (
   env: ENV,
   params?: Params
-): Promise<Elements> {
+): Promise<Elements> => {
   const url = getDekoratorUrl(env, params);
   const res = await fetch(url);
   const body = await res.text();
@@ -51,7 +51,7 @@ export async function fetchDecoratorHtml(
 
   if (!styles || !scripts || !header || !footer) throw new Error(body);
   return { styles, scripts, header, footer };
-}
+};
 
 const createReactElements = (element: Element) =>
   Object.values(element.children).map((element, key) =>
