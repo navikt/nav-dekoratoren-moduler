@@ -37,7 +37,7 @@ const Wrapper = () => {
 ReactDOM.render(<Wrapper />, document.getElementById('app'))
 ```
 
-**setBreadcrumbs** (beta)
+**setBreadcrumbs**
 
 Parameteret **breadcrumbs** (brødsmulestien) kan endres / settes i frondend-apper ved behov.
 
@@ -57,7 +57,7 @@ setBreadcrumbs([
 ])
 ```
 
-**onBreadcrumbClick** (beta)
+**onBreadcrumbClick**
 
 Kalles dersom handleInApp settes til **true**
 
@@ -68,7 +68,7 @@ onBreadcrumbClick((breadcrumb) => {
 })
 ```
 
-**setAvailableLanguages** (beta)
+**setAvailableLanguages**
 
 Parameteret **languages** (liste av tilgjengelige språk i språkvelgeren) kan endres / settes i frondend-apper ved behov. <br>
 Hent aktivt språk ved hjelp av url eller cookien **decorator-language**.
@@ -89,7 +89,7 @@ setAvailableLanguages([
 ])
 ```
 
-**onLanguageSelect** (beta)
+**onLanguageSelect**
 
 Kalles dersom handleInApp settes til **true**
 
@@ -100,7 +100,7 @@ onLanguageSelect((language) => {
 })
 ```
 
-**setParams** (beta)
+**setParams**
 
 Samtlige parameter kan settes via **setParams** dersom **setAvailableLanguages** og **setBreadcrumbs** ikke er tilstrekkelig
 
@@ -125,7 +125,39 @@ setParams({
   simple: true,
   chatbot: true
 })
+```
 
+**SSR.fetchDecoratorHtml**
+
+Hent elementene til dekoratøren server-side
+
+```tsx
+// Type
+export type ENV = "prod" | "dev" | "q0" | "q1" | "q2" | "q6"
+
+// Bruk
+import { SSR } from '@navikt/nav-dekoratoren-moduler'
+SSR.fetchDecoratorHtml(env, params)
+    // Cached innerHTML of { header, footer, scripts, styles }
+    .then((fragments) => {
+      res.render("index.html", fragments);
+    })
+    .catch((e) => {
+      ...
+    });
+```
+
+**SSR.fetchDecoratorReact**
+
+Hent React-komponentene til dekoratøren server-side
+
+```tsx
+// Type
+export type ENV = "prod" | "dev" | "q0" | "q1" | "q2" | "q6"
+
+// Bruk
+import { SSR } from '@navikt/nav-dekoratoren-moduler'
+const { Header, Footer, Scripts, Styles } = await SSR.fetchDecoratorReact(env, params);
 ```
 
 ## License
