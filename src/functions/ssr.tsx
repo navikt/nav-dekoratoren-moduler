@@ -14,30 +14,9 @@ export interface Elements {
   footer: string;
 }
 
-export interface Components {
-  Styles: FunctionComponent;
-  Scripts: FunctionComponent;
-  Header: FunctionComponent;
-  Footer: FunctionComponent;
-}
-
-export const fetchDecoratorReact = async (
-  env: ENV,
-  params?: Params
-): Promise<Components> => {
-  const elements = await fetchDecoratorHtml(env, params);
-  return {
-    Styles: () => <Fragment>{HtmlParser(elements.styles)}</Fragment>,
-    Scripts: () => <Fragment>{HtmlParser(elements.scripts)}</Fragment>,
-    Header: () => <Fragment>{HtmlParser(elements.header)}</Fragment>,
-    Footer: () => <Fragment>{HtmlParser(elements.footer)}</Fragment>
-  };
-};
-
+// Refresh cache every hour
 const SECONDS_PER_MINUTE = 60;
 const SECONDS_PER_HOUR = SECONDS_PER_MINUTE * 60;
-
-// Refresh cache every hour
 const cache = new NodeCache({
   stdTTL: SECONDS_PER_HOUR,
   checkperiod: SECONDS_PER_MINUTE
@@ -73,3 +52,21 @@ export const fetchDecoratorHtml = (
       return elements;
     });
 };
+
+export interface Components {
+  Styles: FunctionComponent;
+  Scripts: FunctionComponent;
+  Header: FunctionComponent;
+  Footer: FunctionComponent;
+}
+
+export const fetchDecoratorReact = async (
+  env: ENV,
+  params?: Params
+): Promise<Components> =>
+  fetchDecoratorHtml(env, params).then((elements) => ({
+    Styles: () => <Fragment>{HtmlParser(elements.styles)}</Fragment>,
+    Scripts: () => <Fragment>{HtmlParser(elements.scripts)}</Fragment>,
+    Header: () => <Fragment>{HtmlParser(elements.header)}</Fragment>,
+    Footer: () => <Fragment>{HtmlParser(elements.footer)}</Fragment>
+  }));
