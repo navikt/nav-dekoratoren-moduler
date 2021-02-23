@@ -13,7 +13,6 @@ export function getDekoratorUrl(env: ENV, params?: Params): string {
 
   if (!params) return envUrl[env];
   return `${envUrl[env]}/?${Object.entries(params)
-    // @ts-ignore
     .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
     .join("&")}`;
 }
