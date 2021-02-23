@@ -6,8 +6,8 @@
   "license": "MIT",
   "repository": "navikt/nav-dekoratoren-moduler",
   "main": "csr/index.js",
-  "module": "csr/index.modern.js",
-  "source": "src/index.csr.tsx",
+  "module": "csr/index.js",
+  "source": "src/csr/index.tsx",
   "type": "module",
   "engines": {
     "node": ">=10"
@@ -58,7 +58,12 @@
     "csr",
     "ssr"
   ],
+  "browser":{
+    "child_process": false
+  },
   "dependencies": {
-    "jsdom": "^16.4.0"
+    "jsdom": "^16.4.0",
+    "rollup-plugin-rename": "^1.0.1",
+    "rollup-plugin-typescript2": "^0.30.0"
   }
 }

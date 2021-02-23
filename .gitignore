@@ -7,9 +7,10 @@ node_modules
 
 # builds
 .rpt2_cache
-build
 /csr
 /ssr
+build
+lib
 
 # misc
 .DS_Store
