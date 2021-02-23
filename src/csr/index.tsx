@@ -3,7 +3,7 @@ import { setBreadcrumbs, onBreadcrumbClick } from "./functions/breadcrumbs";
 import { setAvailableLanguages, onLanguageSelect } from "./functions/languages";
 import { getUrlFromLookupTable } from "./url-lookup-table/utils";
 import { urlLookupTable } from "./url-lookup-table/table";
-import { setParams } from "./functions/params";
+import { setParams, Params } from "./functions/params";
 
 export {
   EnforceLoginLoader,
@@ -16,4 +16,4 @@ export {
   getUrlFromLookupTable,
 };
 
-export type { Auth };
+export type { Auth, Params };

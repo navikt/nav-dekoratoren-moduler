@@ -5,6 +5,7 @@ import NodeCache from "node-cache";
 import HtmlParser from "react-html-parser";
 import { FunctionComponent } from "react";
 import { ENV, getDekoratorUrl } from "./utils";
+import { Params } from "@navikt/nav-dekoratoren-moduler";
 
 export interface Elements {
   styles: string;
@@ -61,7 +62,7 @@ export interface Components {
 
 export const fetchDecoratorReact = async (
   env: ENV,
-  params?: any
+  params?: Params
 ): Promise<Components> =>
   fetchDecoratorHtml(env, params).then((elements) => ({
     Styles: () => <Fragment>{HtmlParser(elements.styles)}</Fragment>,

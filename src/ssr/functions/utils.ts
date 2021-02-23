@@ -1,6 +1,8 @@
+import { Params } from "@navikt/nav-dekoratoren-moduler";
+
 export type ENV = "prod" | "dev" | "q1" | "q2" | "q6";
 
-export function getDekoratorUrl(env: ENV, params?: any): string {
+export function getDekoratorUrl(env: ENV, params?: Params): string {
   const envUrl = {
     prod: "https://www.nav.no/dekoratoren",
     dev: "https://dekoratoren.dev.nav.no",
