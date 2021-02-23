@@ -2,10 +2,10 @@ import React, { Fragment } from "react";
 import { JSDOM } from "jsdom";
 import fetch from "node-fetch";
 import NodeCache from "node-cache";
-import HtmlParser from "react-html-parser";
 import { FunctionComponent } from "react";
 import { ENV, getDekoratorUrl } from "./utils";
 import { Params } from "@navikt/nav-dekoratoren-moduler";
+import parse from "html-react-parser";
 
 export interface Elements {
   styles: string;
@@ -65,8 +65,8 @@ export const fetchDecoratorReact = async (
   params?: Params
 ): Promise<Components> =>
   fetchDecoratorHtml(env, params).then((elements) => ({
-    Styles: () => <Fragment>{HtmlParser(elements.styles)}</Fragment>,
-    Scripts: () => <Fragment>{HtmlParser(elements.scripts)}</Fragment>,
-    Header: () => <Fragment>{HtmlParser(elements.header)}</Fragment>,
-    Footer: () => <Fragment>{HtmlParser(elements.footer)}</Fragment>,
+    Styles: () => <Fragment>{parse(elements.styles)}</Fragment>,
+    Scripts: () => <Fragment>{parse(elements.scripts)}</Fragment>,
+    Header: () => <Fragment>{parse(elements.header)}</Fragment>,
+    Footer: () => <Fragment>{parse(elements.footer)}</Fragment>,
   }));
