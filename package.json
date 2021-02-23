@@ -5,17 +5,20 @@
   "author": "NAVIKT",
   "license": "MIT",
   "repository": "navikt/nav-dekoratoren-moduler",
-  "main": "lib/index.js",
-  "module": "lib/index.modern.js",
-  "source": "src/index.tsx",
+  "main": "csr/index.js",
+  "module": "csr/index.modern.js",
+  "source": "src/index.csr.tsx",
   "type": "module",
   "engines": {
     "node": ">=10"
   },
   "scripts": {
-    "start": "rollup -c -w",
-    "build": "rollup -c --environment BUILD:production",
-    "test": "mocha",
+    "start": "npm-run-all --parallel start:*",
+    "build": "npm-run-all --parallel build:*",
+    "start:csr": "rollup -c rollup.config.csr.js -w",
+    "start:ssr": "rollup -c rollup.config.ssr.js -w",
+    "build:csr": "rollup -c rollup.config.csr.js",
+    "build:ssr": "rollup -c rollup.config.ssr.js",
     "predeploy": "cd example && npm install && npm run build"
   },
   "peerDependencies": {
@@ -52,6 +55,10 @@
     "typescript": "^3.7.5"
   },
   "files": [
-    "lib"
-  ]
+    "csr",
+    "ssr"
+  ],
+  "dependencies": {
+    "jsdom": "^16.4.0"
+  }
 }

@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "outDir": "lib",
     "rootDir": "src",
     "module": "esnext",
     "lib": [
@@ -32,10 +31,5 @@
   },
   "include": [
     "src"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "example"
   ]
 }
