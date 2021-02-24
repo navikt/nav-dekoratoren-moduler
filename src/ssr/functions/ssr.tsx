@@ -24,7 +24,7 @@ const cache = new NodeCache({
 
 export const fetchDecoratorHtml = (
   env: ENV,
-  params?: any
+  params?: Params
 ): Promise<Elements> => {
   const url = getDekoratorUrl(env, params);
   const cacheData = cache.get(url);
@@ -64,9 +64,12 @@ export const fetchDecoratorReact = async (
   env: ENV,
   params?: Params
 ): Promise<Components> =>
-  fetchDecoratorHtml(env, params).then((elements) => ({
-    Styles: () => <Fragment>{parse(elements.styles)}</Fragment>,
-    Scripts: () => <Fragment>{parse(elements.scripts)}</Fragment>,
-    Header: () => <Fragment>{parse(elements.header)}</Fragment>,
-    Footer: () => <Fragment>{parse(elements.footer)}</Fragment>,
-  }));
+  fetchDecoratorHtml(env, params).then((elements) => {
+    console.log(elements);
+    return({
+      Styles: () => <Fragment>{parse(elements.styles)}</Fragment>,
+      Scripts: () => <Fragment>{parse(elements.scripts)}</Fragment>,
+      Header: () => <Fragment>{parse(elements.header)}</Fragment>,
+      Footer: () => <Fragment>{parse(elements.footer)}</Fragment>,
+    })
+  });
