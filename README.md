@@ -133,17 +133,10 @@ Hent elementene til dekoratøren server-side
 
 ```tsx
 // Type
-export type Props = Params &
-    (
-        | {
-        env: NAIS_ENV;
-    }
-        | {
-        env: ENV.LOCALHOST;
-        port: number;
-    }
-        );
-
+export type Props = Params & (
+    | { env: "prod" | "dev" | "q0" | "q1" | "q2" | "q6"; }
+    | { env: "localhost"; port: number; }
+);
 
 // Bruk
 import { fetchDecoratorHtml } from '@navikt/nav-dekoratoren-moduler/ssr'
@@ -163,17 +156,10 @@ Hent React-komponentene til dekoratøren server-side
 
 ```tsx
 // Type
-export type Props = Params &
-    (
-        | {
-        env: NAIS_ENV;
-        port: undefined;
-    }
-        | {
-        env: ENV.LOCALHOST;
-        port: number;
-    }
-        );
+export type Props = Params & (
+    | { env: "prod" | "dev" | "q0" | "q1" | "q2" | "q6"; }
+    | { env: "localhost"; port: number; }
+);
 
 // Bruk
 import { fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr'
