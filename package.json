@@ -1,6 +1,6 @@
 {
   "name": "@navikt/nav-dekoratoren-moduler",
-  "version": "1.1.5",
+  "version": "1.1.7-beta.0",
   "description": "Moduler til nav-dekoratoren",
   "author": "NAVIKT",
   "license": "MIT",
@@ -8,7 +8,6 @@
   "main": "csr/index.js",
   "module": "csr/index.js",
   "source": "src/csr/index.tsx",
-  "type": "module",
   "engines": {
     "node": ">=10"
   },

@@ -25,6 +25,11 @@ export const getDekoratorUrl = (props: Props): string => {
 export const buildUrl = (url: string, params: Params) => {
   if (!params) return url;
   return `${url}/?${Object.entries(params)
-    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+    .map(
+      ([key, value]) =>
+        `${key}=${encodeURIComponent(
+          Array.isArray(value) ? JSON.stringify(value) : value
+        )}`
+    )
     .join("&")}`;
 };
