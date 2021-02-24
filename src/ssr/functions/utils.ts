@@ -3,7 +3,7 @@ import { Props } from "./ssr";
 export const getDekoratorUrl = (props: Props): string => {
   const { env, port, ...params } = props;
   const envUrl = {
-    localhost: `http://localhost:${port}`,
+    localhost: `http://localhost:${port}/dekoratoren`,
     prod: `https://www.nav.no/dekoratoren`,
     dev: `https://dekoratoren.dev.nav.no`,
     q0: `https://www-q0.nav.no/dekoratoren`,
