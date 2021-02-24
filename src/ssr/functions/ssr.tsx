@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { JSDOM } from "jsdom";
 import fetch from "node-fetch";
 import NodeCache from "node-cache";
@@ -67,9 +67,9 @@ export const fetchDecoratorReact = async (
   fetchDecoratorHtml(env, params).then((elements) => {
     console.log(elements);
     return({
-      Styles: () => <Fragment>{parse(elements.styles)}</Fragment>,
-      Scripts: () => <Fragment>{parse(elements.scripts)}</Fragment>,
-      Header: () => <Fragment>{parse(elements.header)}</Fragment>,
-      Footer: () => <Fragment>{parse(elements.footer)}</Fragment>,
+      Styles: () => parse(elements.styles),
+      Scripts: () => parse(elements.scripts),
+      Header: () => parse(elements.header),
+      Footer: () => parse(elements.footer),
     })
   });
