@@ -3,11 +3,11 @@ import { Props } from "./ssr";
 
 const naisUrls = {
   prod: `https://www.nav.no/dekoratoren`,
-  dev: `https://dekoratoren.dev.nav.no`,
   q0: `https://www-q0.nav.no/dekoratoren`,
-  Q1: `https://www-q0.nav.no/dekoratoren`,
-  q2: `https://www-q0.nav.no/dekoratoren`,
-  q6: `https://www-q0.nav.no/dekoratoren`,
+  q1: `https://www-q1.nav.no/dekoratoren`,
+  q2: `https://www-q2.nav.no/dekoratoren`,
+  q6: `https://www-q6.nav.no/dekoratoren`,
+  dev: `https://dekoratoren.dev.nav.no`,
 };
 
 export const getDekoratorUrl = (props: Props): string => {
@@ -17,7 +17,7 @@ export const getDekoratorUrl = (props: Props): string => {
     return buildUrl(url, params);
   } else {
     const { env, ...params } = props;
-    const url = naisUrls[env];
+    const url = naisUrls[env] || naisUrls.prod;
     return buildUrl(url, params);
   }
 };
