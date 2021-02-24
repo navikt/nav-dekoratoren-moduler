@@ -133,27 +133,21 @@ Hent elementene til dekoratøren server-side
 
 ```tsx
 // Type
-export type Props =
-    | {
-    env: "prod" | "dev" | "q0" | "q1" | "q2" | "q6";
-    params?: Params;
-}
-    | {
-    env: "localhost";
-    port: number;
-    params?: Params;
-};
+export type Props = Params &
+    (
+        | {
+        env: NAIS_ENV;
+    }
+        | {
+        env: ENV.LOCALHOST;
+        port: number;
+    }
+        );
+
 
 // Bruk
 import { fetchDecoratorHtml } from '@navikt/nav-dekoratoren-moduler/ssr'
-fetchDecoratorHtml({
-    env: "localhost",
-    port: 8100,
-    params: {
-        simple: true,
-        chatbot: true
-    }
-})
+fetchDecoratorHtml({ env: "dev", simple: true, chatbot: true })
     // Cached innerHTML of { header, footer, scripts, styles }
     .then((fragments) => {
         res.render("index.html", fragments);
@@ -169,26 +163,24 @@ Hent React-komponentene til dekoratøren server-side
 
 ```tsx
 // Type
-export type Props =
-    | {
-    env: "prod" | "dev" | "q0" | "q1" | "q2" | "q6";
-    params?: Params;
-}
-    | {
-    env: "localhost";
-    port: number;
-    params?: Params;
-};
+export type Props = Params &
+    (
+        | {
+        env: NAIS_ENV;
+        port: undefined;
+    }
+        | {
+        env: ENV.LOCALHOST;
+        port: number;
+    }
+        );
 
 // Bruk
 import { fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr'
 const { Header, Footer, Scripts, Styles } = await fetchDecoratorReact({
-    env: "localhost",
-    port: 8100,
-    params: {
-        simple: true,
-        chatbot: true
-    }
+    env: "prod",
+    simple: true,
+    chatbot: true
 });
 ```
 
