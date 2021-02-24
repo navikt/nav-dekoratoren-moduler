@@ -1,18 +1,24 @@
-import React from "react";
 import { JSDOM } from "jsdom";
 import fetch from "node-fetch";
 import NodeCache from "node-cache";
-import { FunctionComponent } from "react";
-import { ENV, getDekoratorUrl } from "./utils";
+import { FunctionComponent, ReactElement } from "react";
+import { getDekoratorUrl } from "./utils";
 import { Params } from "@navikt/nav-dekoratoren-moduler";
 import parse from "html-react-parser";
+import { ENV, NAIS_ENV } from "../types/env";
+import { Elements } from "../types/elements";
 
-export interface Elements {
-  styles: string;
-  scripts: string;
-  header: string;
-  footer: string;
-}
+export type Props =
+  | {
+      env: NAIS_ENV;
+      port: undefined;
+      params?: Params;
+    }
+  | {
+      env: ENV.LOCALHOST;
+      port: number;
+      params?: Params;
+    };
 
 // Refresh cache every hour
 const SECONDS_PER_MINUTE = 60;
@@ -22,11 +28,8 @@ const cache = new NodeCache({
   checkperiod: SECONDS_PER_MINUTE,
 });
 
-export const fetchDecoratorHtml = (
-  env: ENV,
-  params?: Params
-): Promise<Elements> => {
-  const url = getDekoratorUrl(env, params);
+export const fetchDecoratorHtml = async (props: Props): Promise<Elements> => {
+  const url = getDekoratorUrl(props);
   const cacheData = cache.get(url);
   if (cacheData) {
     return new Promise((resolve) => resolve(cacheData as Elements));
@@ -60,16 +63,10 @@ export interface Components {
   Footer: FunctionComponent;
 }
 
-export const fetchDecoratorReact = async (
-  env: ENV,
-  params?: Params
-): Promise<Components> =>
-  fetchDecoratorHtml(env, params).then((elements) => {
-    console.log(elements);
-    return({
-      Styles: () => parse(elements.styles),
-      Scripts: () => parse(elements.scripts),
-      Header: () => parse(elements.header),
-      Footer: () => parse(elements.footer),
-    })
-  });
+export const fetchDecoratorReact = async (props: Props): Promise<Components> =>
+  fetchDecoratorHtml(props).then((elements) => ({
+    Styles: () => parse(elements.styles) as ReactElement,
+    Scripts: () => parse(elements.scripts) as ReactElement,
+    Header: () => parse(elements.header) as ReactElement,
+    Footer: () => parse(elements.footer) as ReactElement,
+  }));

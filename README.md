@@ -127,37 +127,69 @@ setParams({
 })
 ```
 
-**SSR.fetchDecoratorHtml**
+**fetchDecoratorHtml**
 
 Hent elementene til dekoratøren server-side
 
 ```tsx
 // Type
-export type ENV = "prod" | "dev" | "q0" | "q1" | "q2" | "q6"
+export type Props =
+    | {
+    env: "prod" | "dev" | "q0" | "q1" | "q2" | "q6";
+    params?: Params;
+}
+    | {
+    env: "localhost";
+    port: number;
+    params?: Params;
+};
 
 // Bruk
-import { SSR } from '@navikt/nav-dekoratoren-moduler'
-SSR.fetchDecoratorHtml(env, params)
+import { fetchDecoratorHtml } from '@navikt/nav-dekoratoren-moduler/ssr'
+fetchDecoratorHtml({
+    env: "localhost",
+    port: 8100,
+    params: {
+        simple: true,
+        chatbot: true
+    }
+})
     // Cached innerHTML of { header, footer, scripts, styles }
     .then((fragments) => {
-      res.render("index.html", fragments);
+        res.render("index.html", fragments);
     })
     .catch((e) => {
-      ...
+        ...
     });
 ```
 
-**SSR.fetchDecoratorReact**
+**fetchDecoratorReact**
 
 Hent React-komponentene til dekoratøren server-side
 
 ```tsx
 // Type
-export type ENV = "prod" | "dev" | "q0" | "q1" | "q2" | "q6"
+export type Props =
+    | {
+    env: "prod" | "dev" | "q0" | "q1" | "q2" | "q6";
+    params?: Params;
+}
+    | {
+    env: "localhost";
+    port: number;
+    params?: Params;
+};
 
 // Bruk
-import { SSR } from '@navikt/nav-dekoratoren-moduler'
-const { Header, Footer, Scripts, Styles } = await SSR.fetchDecoratorReact(env, params);
+import { fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr'
+const { Header, Footer, Scripts, Styles } = await fetchDecoratorReact({
+    env: "localhost",
+    port: 8100,
+    params: {
+        simple: true,
+        chatbot: true
+    }
+});
 ```
 
 ## License
