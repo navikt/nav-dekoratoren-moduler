@@ -9,7 +9,7 @@ import parse from "html-react-parser";
 export type Props = Params &
   (
     | { env: "prod" | "dev" | "q0" | "q1" | "q2" | "q6" }
-    | { env: "localhost"; port: number }
+    | { env: "localhost"; port: number | string }
   );
 
 // Refresh cache every hour
