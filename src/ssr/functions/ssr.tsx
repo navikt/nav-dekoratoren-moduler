@@ -8,17 +8,17 @@ import parse from "html-react-parser";
 import { ENV, NAIS_ENV } from "../types/env";
 import { Elements } from "../types/elements";
 
-export type Props =
-  | {
-      env: NAIS_ENV;
-      port: undefined;
-      params?: Params;
-    }
-  | {
-      env: ENV.LOCALHOST;
-      port: number;
-      params?: Params;
-    };
+export type Props = Params &
+  (
+    | {
+        env: NAIS_ENV;
+        port: undefined;
+      }
+    | {
+        env: ENV.LOCALHOST;
+        port: number;
+      }
+  );
 
 // Refresh cache every hour
 const SECONDS_PER_MINUTE = 60;

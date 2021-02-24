@@ -1,2 +1,3 @@
 import { fetchDecoratorReact, fetchDecoratorHtml } from "./functions/ssr";
-export { fetchDecoratorReact, fetchDecoratorHtml };
+import { ENV } from "./types/env";
+export { fetchDecoratorReact, fetchDecoratorHtml, ENV };

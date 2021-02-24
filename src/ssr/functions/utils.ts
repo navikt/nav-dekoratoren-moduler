@@ -2,7 +2,7 @@ import { Props } from "./ssr";
 import { ENV } from "../types/env";
 
 export const getDekoratorUrl = (props: Props): string => {
-  const { env, port, params } = props;
+  const { env, port, ...params } = props;
   const envUrl = {
     [ENV.LOCALHOST]: `http://localhost:${port}`,
     [ENV.PROD]: `https://www.nav.no/dekoratoren`,
