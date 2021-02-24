@@ -6,10 +6,11 @@
 node_modules
 
 # builds
-build
-dist
-lib
 .rpt2_cache
+/csr
+/ssr
+build
+lib
 
 # misc
 .DS_Store

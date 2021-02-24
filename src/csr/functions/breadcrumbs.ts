@@ -1,5 +1,5 @@
-import { msgSafetyCheck } from './utils';
-import { setParams } from './params';
+import { msgSafetyCheck } from "./utils";
+import { setParams } from "./params";
 
 export interface Breadcrumb {
   url: string;
@@ -15,14 +15,14 @@ export const onBreadcrumbClick = (() => {
     const isSafe = msgSafetyCheck(msg);
     const { source, event, payload } = data;
     if (isSafe) {
-      if (callback && source === 'decorator' && event === 'breadcrumbClick') {
+      if (source === "decorator" && event === "breadcrumbClick" && callback) {
         callback(payload);
       }
     }
   };
 
-  if (typeof window !== 'undefined') {
-    window.addEventListener('message', receiveMessage);
+  if (typeof window !== "undefined") {
+    window.addEventListener("message", receiveMessage);
   }
 
   return (_callback: (breadcrumb: Breadcrumb) => void) => {
