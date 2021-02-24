@@ -6,16 +6,9 @@ import { getDekoratorUrl } from "./utils";
 import { Params } from "@navikt/nav-dekoratoren-moduler";
 import parse from "html-react-parser";
 
-export type Props = Params &
-  (
-    | {
-        env: "prod" | "dev" | "q0" | "q1" | "q2" | "q6";
-        port: undefined;
-      }
-    | {
-        env: "localhost";
-        port: number;
-      }
+export type Props = Params & { port?: number } & (
+    | { env: "prod" | "dev" | "q0" | "q1" | "q2" | "q6" }
+    | { env: "localhost"; port: number }
   );
 
 // Refresh cache every hour
