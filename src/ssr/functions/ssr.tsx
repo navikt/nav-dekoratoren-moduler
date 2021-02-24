@@ -5,17 +5,15 @@ import { FunctionComponent, ReactElement } from "react";
 import { getDekoratorUrl } from "./utils";
 import { Params } from "@navikt/nav-dekoratoren-moduler";
 import parse from "html-react-parser";
-import { ENV, NAIS_ENV } from "../types/env";
-import { Elements } from "../types/elements";
 
 export type Props = Params &
   (
     | {
-        env: NAIS_ENV;
+        env: "prod" | "dev" | "q0" | "q1" | "q2" | "q6";
         port: undefined;
       }
     | {
-        env: ENV.LOCALHOST;
+        env: "localhost";
         port: number;
       }
   );
@@ -27,6 +25,13 @@ const cache = new NodeCache({
   stdTTL: SECONDS_PER_HOUR,
   checkperiod: SECONDS_PER_MINUTE,
 });
+
+export interface Elements {
+  styles: string;
+  scripts: string;
+  header: string;
+  footer: string;
+}
 
 export const fetchDecoratorHtml = async (props: Props): Promise<Elements> => {
   const url = getDekoratorUrl(props);
