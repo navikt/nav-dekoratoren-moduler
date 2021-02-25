@@ -87,7 +87,7 @@ export const injectDecorator = async (props: Injector): Promise<string> =>
     const file = fs.readFileSync(props.filePath).toString();
     const dom = new JSDOM(file);
     const head = dom.window.document.head;
-    const body = dom.window.document.head;
+    const body = dom.window.document.body;
     head.insertAdjacentHTML("beforeend", elements.DECORATOR_STYLES);
     head.insertAdjacentHTML("beforeend", elements.DECORATOR_SCRIPTS);
     body.insertAdjacentHTML("beforebegin", elements.DECORATOR_HEADER);
