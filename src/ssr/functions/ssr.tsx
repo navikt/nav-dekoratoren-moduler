@@ -22,10 +22,10 @@ const cache = new NodeCache({
 });
 
 export interface Elements {
-  styles: string;
-  scripts: string;
-  header: string;
-  footer: string;
+  DECORATOR_STYLES: string;
+  DECORATOR_SCRIPTS: string;
+  DECORATOR_HEADER: string;
+  DECORATOR_FOOTER: string;
 }
 
 export const fetchDecoratorHtml = async (props: Props): Promise<Elements> => {
@@ -50,7 +50,13 @@ export const fetchDecoratorHtml = async (props: Props): Promise<Elements> => {
         throw new Error("'Elements doesn't exist");
       }
 
-      const elements = { styles, scripts, header, footer };
+      const elements = {
+        DECORATOR_STYLES: styles.trim(),
+        DECORATOR_SCRIPTS: scripts.trim(),
+        DECORATOR_HEADER: header.trim(),
+        DECORATOR_FOOTER: footer.trim(),
+      };
+
       cache.set(url, elements);
       return elements;
     });
@@ -65,8 +71,8 @@ export interface Components {
 
 export const fetchDecoratorReact = async (props: Props): Promise<Components> =>
   fetchDecoratorHtml(props).then((elements) => ({
-    Styles: () => parse(elements.styles) as ReactElement,
-    Scripts: () => parse(elements.scripts) as ReactElement,
-    Header: () => parse(elements.header) as ReactElement,
-    Footer: () => parse(elements.footer) as ReactElement,
+    Styles: () => parse(elements.DECORATOR_STYLES) as ReactElement,
+    Scripts: () => parse(elements.DECORATOR_SCRIPTS) as ReactElement,
+    Header: () => parse(elements.DECORATOR_HEADER) as ReactElement,
+    Footer: () => parse(elements.DECORATOR_FOOTER) as ReactElement,
   }));

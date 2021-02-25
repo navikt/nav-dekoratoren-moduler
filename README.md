@@ -141,7 +141,7 @@ export type Props = Params & (
 // Bruk
 import { fetchDecoratorHtml } from '@navikt/nav-dekoratoren-moduler/ssr'
 fetchDecoratorHtml({ env: "dev", simple: true, chatbot: true })
-    // Cached innerHTML of { header, footer, scripts, styles }
+    // Cached innerHTML of { DECORATOR_HEADER, DECORATOR_FOOTER, DECORATOR_SCRIPTS, DECORATOR_STYLES }
     .then((fragments) => {
         res.render("index.html", fragments);
     })
@@ -163,11 +163,23 @@ export type Props = Params & (
 
 // Bruk
 import { fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr'
-const { Header, Footer, Scripts, Styles } = await fetchDecoratorReact({
+const Decorator = await fetchDecoratorReact({
     env: "prod",
     simple: true,
     chatbot: true
 });
+
+return (
+    <Head>
+        <Decorator.Styles />
+        <Decorator.Scripts />
+    </Head>
+    <body>
+        <Decorator.Header />
+        ...
+        <Decorator.Footer />
+    </body>
+)
 ```
 
 ## License
