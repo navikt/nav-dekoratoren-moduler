@@ -129,7 +129,7 @@ setParams({
 
 **injectDecorator**
 
-Injiser dekoratøren på en HTML fil
+Sett inn dekoratøren i en HTML fil
 
 ```tsx
 // Type
