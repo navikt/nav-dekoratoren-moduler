@@ -4,18 +4,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ../node_modules/react-scripts/bin/react-scripts.js start",
-    "build": "node ../node_modules/react-scripts/bin/react-scripts.js build"
+    "start": "react-scripts start",
+    "build": "react-scripts build"
   },
   "dependencies": {
-    "@navikt/nav-dekoratoren-moduler": "file:..",
     "@testing-library/jest-dom": "file:../node_modules/@testing-library/jest-dom",
     "@testing-library/react": "file:../node_modules/@testing-library/react",
     "@testing-library/user-event": "file:../node_modules/@testing-library/user-event",
-    "@types/jest": "file:../node_modules/@types/jest",
-    "@types/node": "file:../node_modules/@types/node",
-    "@types/react": "file:../node_modules/@types/react",
-    "@types/react-dom": "file:../node_modules/@types/react-dom",
     "classnames": "^2.2.6",
     "jsdom": "^16.4.0",
     "nav-frontend-ikoner-assets": "^2.0.3",
@@ -25,15 +20,22 @@
     "node-fetch": "^2.6.1",
     "react": "file:../node_modules/react",
     "react-dom": "file:../node_modules/react-dom",
-    "react-html-parser": "^2.0.2",
     "react-scripts": "file:../node_modules/react-scripts",
-    "typescript": "file:../node_modules/typescript"
+    "typescript": "file:../node_modules/typescript",
+    "@navikt/nav-dekoratoren-moduler": "file:.."
   },
   "devDependencies": {
     "@types/jsdom": "^16.2.6",
     "@types/node-cache": "^4.2.5",
     "@types/node-fetch": "^2.5.8",
-    "@types/react-html-parser": "^2.0.1"
+    "@types/react-html-parser": "^2.0.1",
+    "@types/jest": "file:../node_modules/@types/jest",
+    "@types/node": "file:../node_modules/@types/node",
+    "@types/react": "file:../node_modules/@types/react",
+    "@types/react-dom": "file:../node_modules/@types/react-dom"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
   },
   "browserslist": {
     "production": [

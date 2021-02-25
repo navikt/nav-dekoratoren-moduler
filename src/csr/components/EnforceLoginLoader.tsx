@@ -1,25 +1,25 @@
-import React, { useEffect, useState, Fragment, ReactNode } from 'react';
-import { msgSafetyCheck } from '../functions/utils';
+import React, { useEffect, useState, Fragment } from "react";
+import { msgSafetyCheck } from "../functions/utils";
+import NavFrontendSpinner from "nav-frontend-spinner";
 
 interface Props {
   authCallback?: (data: Auth) => void;
-  spinner: ReactNode;
   children: JSX.Element | JSX.Element[];
 }
 
 export type Auth = {
   authenticated: boolean;
-  securityLevel: '4' | '3';
+  securityLevel: "4" | "3";
   name: string;
 };
 
 export type AuthFetch =
-  | { status: 'LOADING' }
-  | { status: 'RESULT'; payload: any };
+  | { status: "LOADING" }
+  | { status: "RESULT"; payload: any };
 
-const EnforceLoginLoader = ({ children, authCallback, spinner }: Props) => {
+const EnforceLoginLoader = ({ children, authCallback }: Props) => {
   const [authResult, setAuthResult] = useState<AuthFetch>({
-    status: 'LOADING'
+    status: "LOADING",
   });
 
   useEffect(() => {
@@ -28,37 +28,41 @@ const EnforceLoginLoader = ({ children, authCallback, spinner }: Props) => {
       const isSafe = msgSafetyCheck(msg);
       const { source, event, payload } = data;
       if (isSafe) {
-        if (source === 'decorator' && event === 'auth') {
+        if (source === "decorator" && event === "auth") {
           if (authCallback) {
             authCallback(payload);
           }
-          setAuthResult({ status: 'RESULT', payload });
+          setAuthResult({ status: "RESULT", payload });
         }
       }
     };
-    window.addEventListener('message', receiveMessage);
+    window.addEventListener("message", receiveMessage);
     return () => {
-      window.removeEventListener('message', receiveMessage);
+      window.removeEventListener("message", receiveMessage);
     };
   }, []);
 
   switch (authResult.status) {
     default:
-    case 'LOADING':
-      return <div style={styles.spinner}>{spinner}</div>;
-    case 'RESULT':
+    case "LOADING":
+      return (
+        <div style={styles.spinner}>
+          <NavFrontendSpinner type={"XL"} />
+        </div>
+      );
+    case "RESULT":
       return <Fragment>{children}</Fragment>;
   }
 };
 
 const styles = {
   spinner: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '35rem',
-    width: '100%'
-  }
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "35rem",
+    width: "100%",
+  },
 };
 
 export default EnforceLoginLoader;

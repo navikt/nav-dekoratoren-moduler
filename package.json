@@ -23,6 +23,9 @@
   "peerDependencies": {
     "classnames": "^2.2.6",
     "jsdom": "^16.4.0",
+    "nav-frontend-ikoner-assets": "^2.0.3",
+    "nav-frontend-spinner": "2.0.16",
+    "nav-frontend-spinner-style": "1.0.2",
     "node-cache": "^5.1.2",
     "node-fetch": "^2.6.1",
     "prop-types": "^15.7.2",
@@ -31,9 +34,6 @@
   },
   "devDependencies": {
     "@navikt/nav-dekoratoren-moduler": "file:.",
-    "@rollup/plugin-babel": "^5.3.0",
-    "@rollup/plugin-commonjs": "^17.1.0",
-    "@rollup/plugin-typescript": "^8.2.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -46,6 +46,9 @@
     "@types/react-dom": "^16.9.7",
     "@types/react-html-parser": "^2.0.1",
     "html-react-parser": "^1.2.4",
+    "nav-frontend-ikoner-assets": "^2.0.3",
+    "nav-frontend-spinner": "2.0.16",
+    "nav-frontend-spinner-style": "1.0.2",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.1.1",
     "react": "^17.0.1",
@@ -61,5 +64,8 @@
   ],
   "browser": {
     "child_process": false
+  },
+  "dependencies": {
+    "nav-frontend-ikoner-assets": "^2.0.10"
   }
 }

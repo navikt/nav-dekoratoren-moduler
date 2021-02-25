@@ -10,8 +10,10 @@ export default {
     file: "csr/index.js",
     format: "umd",
     sourcemap: true,
+    exports: "named",
     globals: {
-      react: "React",
+      ["react"]: "React",
+      ["nav-frontend-spinner"]: "NavFrontendSpinner",
     },
   },
   plugins: [
