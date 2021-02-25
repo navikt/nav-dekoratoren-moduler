@@ -1,5 +1,17 @@
+import { Params } from "./params";
+import { Props } from "./csr";
+
 export type ENV = "prod" | "dev" | "q1" | "q2" | "q6";
 let ready = false;
+
+export const naisUrls = {
+  prod: `https://www.nav.no/dekoratoren`,
+  q0: `https://www-q0.nav.no/dekoratoren`,
+  q1: `https://www-q1.nav.no/dekoratoren`,
+  q2: `https://www-q2.nav.no/dekoratoren`,
+  q6: `https://www-q6.nav.no/dekoratoren`,
+  dev: `https://dekoratoren.dev.nav.no`,
+};
 
 export const isReady = () => {
   return new Promise((resolve, reject) => {
@@ -48,4 +60,32 @@ export const msgSafetyCheck = (message: MessageEvent) => {
     return true;
   }
   return false;
+};
+
+type UrlProps = Props & {
+  withParams?: boolean;
+};
+
+export const getDecoratorUrl = (props: UrlProps): string => {
+  if (props.env === "localhost") {
+    const { port, env, withParams, ...params } = props;
+    const url = `http://localhost:${port}/dekoratoren`;
+    return withParams ? buildUrl(url, params) : url;
+  } else {
+    const { env, withParams, ...params } = props;
+    const url = naisUrls[env] || naisUrls.prod;
+    return withParams ? buildUrl(url, params) : url;
+  }
+};
+
+export const buildUrl = (url: string, params: Params) => {
+  if (!params) return url;
+  return `${url}/env?${Object.entries(params)
+    .map(
+      ([key, value]) =>
+        `${key}=${encodeURIComponent(
+          Array.isArray(value) ? JSON.stringify(value) : value
+        )}`
+    )
+    .join("&")}`;
 };
