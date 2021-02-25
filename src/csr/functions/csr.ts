@@ -23,6 +23,7 @@ export const injectDecoratorClientSide = async (props: Props) => {
   document.body.insertAdjacentHTML("beforeend", footer);
 
   var script = document.createElement("script");
+  script.async = true;
   script.src = `${url}/client.js`;
   document.body.appendChild(script);
 };
