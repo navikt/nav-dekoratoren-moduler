@@ -5,7 +5,6 @@ import { FunctionComponent, ReactElement } from "react";
 import { getDekoratorUrl } from "./utils";
 import { Params } from "@navikt/nav-dekoratoren-moduler";
 import parse from "html-react-parser";
-import path from "path";
 import fs from "fs";
 
 export type ENV = "localhost" | "prod" | "dev" | "q0" | "q1" | "q2" | "q6";
@@ -79,20 +78,19 @@ export const fetchDecoratorReact = async (props: Props): Promise<Components> =>
     Footer: () => parse(elements.DECORATOR_FOOTER) as ReactElement,
   }));
 
-export interface Injector {
+export type Injector = Props & {
   filePath: string;
-}
+};
 
-export const injectDecorator = async (
-  props: Props & Injector
-): Promise<string> =>
+export const injectDecorator = async (props: Injector): Promise<string> =>
   fetchDecoratorHtml(props).then((elements) => {
-    const filePath = path.resolve(__dirname, props.filePath);
-    const file = fs.readFileSync(filePath).toString();
+    const file = fs.readFileSync(props.filePath).toString();
     const dom = new JSDOM(file);
-    dom.window.document.head.append(elements.DECORATOR_STYLES);
-    dom.window.document.head.append(elements.DECORATOR_SCRIPTS);
-    dom.window.document.body.append(elements.DECORATOR_FOOTER);
-    dom.window.document.body.append(elements.DECORATOR_FOOTER);
+    const head = dom.window.document.head;
+    const body = dom.window.document.head;
+    head.insertAdjacentHTML("beforeend", elements.DECORATOR_STYLES);
+    head.insertAdjacentHTML("beforeend", elements.DECORATOR_SCRIPTS);
+    body.insertAdjacentHTML("beforebegin", elements.DECORATOR_HEADER);
+    body.insertAdjacentHTML("beforeend", elements.DECORATOR_FOOTER);
     return dom.serialize();
   });

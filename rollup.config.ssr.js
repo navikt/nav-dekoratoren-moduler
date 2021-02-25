@@ -22,5 +22,5 @@ export default {
       },
     }),
   ],
-  external: ["fs", "path", ...external],
+  external: ["fs", ...external],
 };
