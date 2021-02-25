@@ -127,9 +127,9 @@ setParams({
 })
 ```
 
-**injectDecorator**
+**injectDecoratorServerSide**
 
-Sett inn dekoratøren i en HTML fil
+Sett inn dekoratøren i en HTML-fil server-side.
 
 ```tsx
 // Type
@@ -139,8 +139,8 @@ export type Props = Params & (
 );
 
 // Bruk
-import { injectDecorator } from '@navikt/nav-dekoratoren-moduler/ssr'
-injectDecorator({ env: "prod", filePath: "index.html", simple: true, chatbot: true })
+import { injectDecoratorServerSide } from '@navikt/nav-dekoratoren-moduler/ssr'
+injectDecoratorServerSide({ env: "prod", filePath: "index.html", simple: true, chatbot: true })
     .then((html) => {
         res.send(html);
     })
@@ -149,9 +149,31 @@ injectDecorator({ env: "prod", filePath: "index.html", simple: true, chatbot: tr
     })
 ```
 
+**injectDecoratorClientSide**
+
+Sett inn dekoratøren dynamisk client-side. <br>
+:warning:   CSR (Client-Side-Rendering) av dekoratøren kan påvirke ytelsen.
+
+```tsx
+// Type
+export type Props = Params & (
+    | { env: "prod" | "dev" | "q0" | "q1" | "q2" | "q6"; }
+    | { env: "localhost"; port: number; }
+);
+
+// Bruk
+import { injectDecoratorClientSide } from '@navikt/nav-dekoratoren-moduler'
+injectDecoratorClientSide({
+    env: "localhost",
+    port: 8100,
+    simple: true,
+    chatbot: true
+});
+```
+
 **fetchDecoratorReact**
 
-Hent React-komponentene til dekoratøren server-side
+Hent React-komponentene til dekoratøren server-side.
 
 ```tsx
 // Type
@@ -183,7 +205,7 @@ return (
 
 **fetchDecoratorHtml**
 
-Hent elementene til dekoratøren server-side
+Hent elementene til dekoratøren server-side.
 
 ```tsx
 // Type
