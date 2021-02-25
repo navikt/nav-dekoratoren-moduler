@@ -127,9 +127,9 @@ setParams({
 })
 ```
 
-**fetchDecoratorHtml**
+**injectDecorator**
 
-Hent elementene til dekoratøren server-side
+Injiser dekoratøren på en HTML fil
 
 ```tsx
 // Type
@@ -139,15 +139,14 @@ export type Props = Params & (
 );
 
 // Bruk
-import { fetchDecoratorHtml } from '@navikt/nav-dekoratoren-moduler/ssr'
-fetchDecoratorHtml({ env: "dev", simple: true, chatbot: true })
-    // Cached innerHTML of { DECORATOR_HEADER, DECORATOR_FOOTER, DECORATOR_SCRIPTS, DECORATOR_STYLES }
-    .then((fragments) => {
-        res.render("index.html", fragments);
+import { injectDecorator } from '@navikt/nav-dekoratoren-moduler/ssr'
+injectDecorator({ env: "prod", filePath: "index.html", simple: true, chatbot: true })
+    .then((html) => {
+        res.send(html);
     })
     .catch((e) => {
         ...
-    });
+    })
 ```
 
 **fetchDecoratorReact**
@@ -180,6 +179,29 @@ return (
         <Decorator.Footer />
     </body>
 )
+```
+
+**fetchDecoratorHtml**
+
+Hent elementene til dekoratøren server-side
+
+```tsx
+// Type
+export type Props = Params & (
+    | { env: "prod" | "dev" | "q0" | "q1" | "q2" | "q6"; }
+    | { env: "localhost"; port: number; }
+);
+
+// Bruk
+import { fetchDecoratorHtml } from '@navikt/nav-dekoratoren-moduler/ssr'
+fetchDecoratorHtml({ env: "dev", simple: true, chatbot: true })
+    // Cached innerHTML of { DECORATOR_HEADER, DECORATOR_FOOTER, DECORATOR_SCRIPTS, DECORATOR_STYLES }
+    .then((fragments) => {
+        res.render("index.html", fragments);
+    })
+    .catch((e) => {
+        ...
+    });
 ```
 
 ## License
