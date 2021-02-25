@@ -5,6 +5,7 @@ import { FunctionComponent, ReactElement } from "react";
 import { getDekoratorUrl } from "./utils";
 import { Params } from "@navikt/nav-dekoratoren-moduler";
 import parse from "html-react-parser";
+import fs from "fs";
 
 export type ENV = "localhost" | "prod" | "dev" | "q0" | "q1" | "q2" | "q6";
 export type Props = Params &
@@ -76,3 +77,20 @@ export const fetchDecoratorReact = async (props: Props): Promise<Components> =>
     Header: () => parse(elements.DECORATOR_HEADER) as ReactElement,
     Footer: () => parse(elements.DECORATOR_FOOTER) as ReactElement,
   }));
+
+export type Injector = Props & {
+  filePath: string;
+};
+
+export const injectDecorator = async (props: Injector): Promise<string> =>
+  fetchDecoratorHtml(props).then((elements) => {
+    const file = fs.readFileSync(props.filePath).toString();
+    const dom = new JSDOM(file);
+    const head = dom.window.document.head;
+    const body = dom.window.document.body;
+    head.insertAdjacentHTML("beforeend", elements.DECORATOR_STYLES);
+    head.insertAdjacentHTML("beforeend", elements.DECORATOR_SCRIPTS);
+    body.insertAdjacentHTML("beforebegin", elements.DECORATOR_HEADER);
+    body.insertAdjacentHTML("beforeend", elements.DECORATOR_FOOTER);
+    return dom.serialize();
+  });
