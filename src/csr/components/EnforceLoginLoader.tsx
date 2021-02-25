@@ -1,9 +1,9 @@
-import React, { useEffect, useState, Fragment, ReactNode } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { msgSafetyCheck } from "../functions/utils";
 import NavFrontendSpinner from "nav-frontend-spinner";
 
 interface Props {
-  spinner: ReactNode;
+  authCallback?: (data: Auth) => void;
   children: JSX.Element | JSX.Element[];
 }
 

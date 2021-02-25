@@ -1,3 +1,5 @@
+// @ts-ignore
+import React from "react";
 import { useState } from "react";
 import { EnforceLoginLoader, Auth } from "@navikt/nav-dekoratoren-moduler";
 import { onLanguageSelect } from "@navikt/nav-dekoratoren-moduler";
@@ -5,6 +7,7 @@ import { setAvailableLanguages } from "@navikt/nav-dekoratoren-moduler";
 import { onBreadcrumbClick } from "@navikt/nav-dekoratoren-moduler";
 import { setBreadcrumbs } from "@navikt/nav-dekoratoren-moduler";
 import { setParams } from "@navikt/nav-dekoratoren-moduler";
+import "nav-frontend-spinner-style/dist/main.css";
 
 const App = () => {
   const initalParams = { simple: true };
