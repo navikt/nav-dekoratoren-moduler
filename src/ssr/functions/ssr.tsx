@@ -2,7 +2,7 @@ import { JSDOM } from "jsdom";
 import fetch from "node-fetch";
 import NodeCache from "node-cache";
 import { FunctionComponent, ReactElement } from "react";
-import { getDekoratorUrl } from "./utils";
+import { getDecoratorUrl } from "./utils";
 import { Params } from "@navikt/nav-dekoratoren-moduler";
 import parse from "html-react-parser";
 import fs from "fs";
@@ -30,7 +30,7 @@ export interface Elements {
 }
 
 export const fetchDecoratorHtml = async (props: Props): Promise<Elements> => {
-  const url = getDekoratorUrl(props);
+  const url = getDecoratorUrl(props);
   const cacheData = cache.get(url);
   if (cacheData) {
     return new Promise((resolve) => resolve(cacheData as Elements));
@@ -82,7 +82,9 @@ export type Injector = Props & {
   filePath: string;
 };
 
-export const injectDecorator = async (props: Injector): Promise<string> =>
+export const injectDecoratorServerSide = async (
+  props: Injector
+): Promise<string> =>
   fetchDecoratorHtml(props).then((elements) => {
     const file = fs.readFileSync(props.filePath).toString();
     const dom = new JSDOM(file);
