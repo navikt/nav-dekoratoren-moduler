@@ -14,11 +14,10 @@ export type Props = Params &
     | { env: Extract<ENV, "localhost">; port: number | string }
   );
 
-// Refresh cache every hour
 const SECONDS_PER_MINUTE = 60;
-const SECONDS_PER_HOUR = SECONDS_PER_MINUTE * 60;
+const FIVE_MINUTES_IN_SECONDS = 5 * SECONDS_PER_MINUTE;
 const cache = new NodeCache({
-  stdTTL: SECONDS_PER_HOUR,
+  stdTTL: FIVE_MINUTES_IN_SECONDS,
   checkperiod: SECONDS_PER_MINUTE,
 });
 
