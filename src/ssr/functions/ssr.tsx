@@ -71,10 +71,10 @@ export interface Components {
 
 export const fetchDecoratorReact = async (props: Props): Promise<Components> => {
   const elements = await fetchDecoratorHtml(props)
-  return await parseDekoratorHTMLToReact(elements)
+  return await parseDecoratorHTMLToReact(elements)
 }
 
-export const parseDekoratorHTMLToReact = async (elements: Elements): Promise<Components> => {
+export const parseDecoratorHTMLToReact = async (elements: Elements): Promise<Components> => {
   const parse = require('html-react-parser')
   return {
     Styles: () => parse(elements.DECORATOR_STYLES) as ReactElement,
