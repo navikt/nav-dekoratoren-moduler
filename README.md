@@ -241,7 +241,3 @@ fetchDecoratorHtml({ env: "dev", simple: true, chatbot: true })
         ...
     });
 ```
-
-## License
-
-MIT © [mjansrud](https://github.com/mjansrud)
