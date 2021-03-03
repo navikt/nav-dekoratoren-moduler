@@ -12,7 +12,7 @@ npm install --save @navikt/nav-dekoratoren-moduler
 
 ## Usage
 
-**< EnforceLoginLoader / >**
+### < EnforceLoginLoader / >
 
 Parameteret **enforceLogin** i dekoratøren sender brukeren til loginservice ved for lavt innloggingsnivå.
 Ulempen er at applikasjonen din kan laste før fronend-kallet mot innloggingslinje-api er ferdig og dekoratøren sender brukeren til loginservice.
@@ -37,7 +37,7 @@ const Wrapper = () => {
 ReactDOM.render(<Wrapper />, document.getElementById('app'))
 ```
 
-**setBreadcrumbs**
+### setBreadcrumbs
 
 Parameteret **breadcrumbs** (brødsmulestien) kan endres / settes i frondend-apper ved behov.
 
@@ -57,7 +57,7 @@ setBreadcrumbs([
 ])
 ```
 
-**onBreadcrumbClick**
+### onBreadcrumbClick
 
 Kalles dersom handleInApp settes til **true**
 
@@ -68,7 +68,7 @@ onBreadcrumbClick((breadcrumb) => {
 })
 ```
 
-**setAvailableLanguages**
+### setAvailableLanguages
 
 Parameteret **languages** (liste av tilgjengelige språk i språkvelgeren) kan endres / settes i frondend-apper ved behov. <br>
 Hent aktivt språk ved hjelp av url eller cookien **decorator-language**.
@@ -89,7 +89,7 @@ setAvailableLanguages([
 ])
 ```
 
-**onLanguageSelect**
+### onLanguageSelect
 
 Kalles dersom handleInApp settes til **true**
 
@@ -100,7 +100,7 @@ onLanguageSelect((language) => {
 })
 ```
 
-**setParams**
+### setParams
 
 Samtlige parameter kan settes via **setParams** dersom **setAvailableLanguages** og **setBreadcrumbs** ikke er tilstrekkelig
 
@@ -127,9 +127,13 @@ setParams({
 })
 ```
 
-**injectDecoratorServerSide**
+### injectDecoratorServerSide
 
 Sett inn dekoratøren i en HTML-fil server-side.
+
+```
+npm install @navikt/nav-dekoratoren-moduler node-cache node-fetch jsdom
+```
 
 ```tsx
 // Type
@@ -149,10 +153,14 @@ injectDecoratorServerSide({ env: "prod", filePath: "index.html", simple: true, c
     })
 ```
 
-**injectDecoratorClientSide**
+### injectDecoratorClientSide
 
 Sett inn dekoratøren dynamisk client-side. <br>
 :warning:   CSR (Client-Side-Rendering) av dekoratøren kan påvirke ytelsen.
+
+```
+npm install @navikt/nav-dekoratoren-moduler
+```
 
 ```tsx
 // Type
@@ -171,9 +179,13 @@ injectDecoratorClientSide({
 });
 ```
 
-**fetchDecoratorReact**
+### fetchDecoratorReact
 
 Hent React-komponentene til dekoratøren server-side.
+
+```
+npm install @navikt/nav-dekoratoren-moduler node-cache node-fetch html-react-parser jsdom
+```
 
 ```tsx
 // Type
@@ -203,9 +215,13 @@ return (
 )
 ```
 
-**fetchDecoratorHtml**
+### fetchDecoratorHtml
 
 Hent elementene til dekoratøren server-side.
+
+```
+npm install @navikt/nav-dekoratoren-moduler node-cache node-fetch jsdom
+```
 
 ```tsx
 // Type
