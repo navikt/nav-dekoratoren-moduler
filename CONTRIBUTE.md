@@ -16,9 +16,12 @@
 ```
   "version": "1.2.4-beta.0",
 ```
-* Run `npm run publish-beta`
+* `npm run build`
+* `npm publish --access public --tag beta`
 
 ### Publish new version
 
-* Run `npm version patch|minor|major`
-* Run `npm run publish`
+* `npm version patch|minor|major`
+* `npm run build`
+* `npm publish --access public`
+
