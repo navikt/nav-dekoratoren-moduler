@@ -1,4 +1,4 @@
-import { Params } from "@navikt/nav-dekoratoren-moduler";
+import { Params } from "@navikt/nav-dekoratoren-moduler/csr/functions/params";
 import { Props } from "./ssr";
 
 const naisUrls = {

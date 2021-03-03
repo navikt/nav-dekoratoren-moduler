@@ -1,9 +1,9 @@
 import { JSDOM } from "jsdom";
 import fetch from "node-fetch";
 import NodeCache from "node-cache";
+import { Params } from "@navikt/nav-dekoratoren-moduler/csr/functions/params";
 import { FunctionComponent, ReactElement } from "react";
 import { getDecoratorUrl } from "./utils";
-import { Params } from "@navikt/nav-dekoratoren-moduler";
 import parse from "html-react-parser";
 import fs from "fs";
 
