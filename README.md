@@ -155,12 +155,12 @@ injectDecoratorServerSide({ env: "prod", filePath: "index.html", simple: true, c
 
 **injectDecoratorClientSide**
 
+Sett inn dekoratøren dynamisk client-side. <br>
+:warning:   CSR (Client-Side-Rendering) av dekoratøren kan påvirke ytelsen.
+
 ```
 npm install @navikt/nav-dekoratoren-moduler
 ```
-
-Sett inn dekoratøren dynamisk client-side. <br>
-:warning:   CSR (Client-Side-Rendering) av dekoratøren kan påvirke ytelsen.
 
 ```tsx
 // Type
@@ -181,11 +181,11 @@ injectDecoratorClientSide({
 
 **fetchDecoratorReact**
 
+Hent React-komponentene til dekoratøren server-side.
+
 ```
 npm install @navikt/nav-dekoratoren-moduler node-cache node-fetch html-react-parser jsdom
 ```
-
-Hent React-komponentene til dekoratøren server-side.
 
 ```tsx
 // Type
@@ -216,11 +216,12 @@ return (
 ```
 
 **fetchDecoratorHtml**
+
+Hent elementene til dekoratøren server-side.
+
 ```
 npm install @navikt/nav-dekoratoren-moduler node-cache node-fetch jsdom
 ```
-
-Hent elementene til dekoratøren server-side.
 
 ```tsx
 // Type
