@@ -131,6 +131,10 @@ setParams({
 
 Sett inn dekoratøren i en HTML-fil server-side.
 
+```
+npm install @navikt/nav-dekoratoren-moduler node-cache node-fetch jsdom
+```
+
 ```tsx
 // Type
 export type Props = Params & (
@@ -150,6 +154,10 @@ injectDecoratorServerSide({ env: "prod", filePath: "index.html", simple: true, c
 ```
 
 **injectDecoratorClientSide**
+
+```
+npm install @navikt/nav-dekoratoren-moduler
+```
 
 Sett inn dekoratøren dynamisk client-side. <br>
 :warning:   CSR (Client-Side-Rendering) av dekoratøren kan påvirke ytelsen.
@@ -172,6 +180,10 @@ injectDecoratorClientSide({
 ```
 
 **fetchDecoratorReact**
+
+```
+npm install @navikt/nav-dekoratoren-moduler node-cache node-fetch html-react-parser jsdom
+```
 
 Hent React-komponentene til dekoratøren server-side.
 
@@ -204,6 +216,9 @@ return (
 ```
 
 **fetchDecoratorHtml**
+```
+npm install @navikt/nav-dekoratoren-moduler node-cache node-fetch jsdom
+```
 
 Hent elementene til dekoratøren server-side.
 
