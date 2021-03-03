@@ -4,7 +4,6 @@ import NodeCache from "node-cache";
 import { Params } from "@navikt/nav-dekoratoren-moduler/csr/functions/params";
 import { FunctionComponent, ReactElement } from "react";
 import { getDecoratorUrl } from "./utils";
-import parse from "html-react-parser";
 import fs from "fs";
 
 export type ENV = "localhost" | "prod" | "dev" | "q0" | "q1" | "q2" | "q6";
@@ -69,13 +68,21 @@ export interface Components {
   Footer: FunctionComponent;
 }
 
-export const fetchDecoratorReact = async (props: Props): Promise<Components> =>
-  fetchDecoratorHtml(props).then((elements) => ({
+
+export const fetchDecoratorReact = async (props: Props): Promise<Components> => {
+  const elements = await fetchDecoratorHtml(props)
+  return await parseDekoratorHTMLToReact(elements)
+}
+
+export const parseDekoratorHTMLToReact = async (elements: Elements): Promise<Components> => {
+  const parse = require('html-react-parser')
+  return {
     Styles: () => parse(elements.DECORATOR_STYLES) as ReactElement,
     Scripts: () => parse(elements.DECORATOR_SCRIPTS) as ReactElement,
     Header: () => parse(elements.DECORATOR_HEADER) as ReactElement,
-    Footer: () => parse(elements.DECORATOR_FOOTER) as ReactElement,
-  }));
+    Footer: () => parse(elements.DECORATOR_FOOTER) as ReactElement
+  }
+}
 
 export type Injector = Props & {
   filePath: string;
