@@ -115,6 +115,7 @@ export interface Params {
   language?: 'nb' | 'nn' | 'en' | 'se'
   availableLanguages?: Language[]
   breadcrumbs?: Breadcrumb[]
+  utilsBackground?: "white" | "gray" | undefined
   feedback?: boolean
   chatbot?: boolean
 }

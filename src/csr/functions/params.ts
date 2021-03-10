@@ -11,7 +11,7 @@ export interface Params {
   language?: "nb" | "nn" | "en" | "se" | "pl";
   availableLanguages?: Language[];
   breadcrumbs?: Breadcrumb[];
-  utilsBackground?: "white" | "gray";
+  utilsBackground?: "white" | "gray" | undefined;
   feedback?: boolean;
   chatbot?: boolean;
 }
