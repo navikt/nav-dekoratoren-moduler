@@ -1,16 +1,17 @@
-import { isReady } from './utils';
-import { Language } from './languages';
-import { Breadcrumb } from './breadcrumbs';
+import { isReady } from "./utils";
+import { Language } from "./languages";
+import { Breadcrumb } from "./breadcrumbs";
 
 export interface Params {
-  context?: 'privatperson' | 'arbeidsgiver' | 'samarbeidspartner';
+  context?: "privatperson" | "arbeidsgiver" | "samarbeidspartner";
   simple?: boolean;
   enforceLogin?: boolean;
   redirectToApp?: boolean;
   level?: string;
-  language?: 'nb' | 'nn' | 'en' | 'se' | 'pl';
+  language?: "nb" | "nn" | "en" | "se" | "pl";
   availableLanguages?: Language[];
   breadcrumbs?: Breadcrumb[];
+  utilsBackground?: "white" | "gray";
   feedback?: boolean;
   chatbot?: boolean;
 }
@@ -20,9 +21,9 @@ export const setParams = (params: Params) =>
     .then(() =>
       window.postMessage(
         {
-          source: 'decoratorClient',
-          event: 'params',
-          payload: params
+          source: "decoratorClient",
+          event: "params",
+          payload: params,
         },
         window.location.origin
       )
