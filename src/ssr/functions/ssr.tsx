@@ -68,31 +68,33 @@ export interface Components {
   Footer: FunctionComponent;
 }
 
-
-export const fetchDecoratorReact = async (props: Props): Promise<Components> => {
-  const elements = await fetchDecoratorHtml(props)
-  return await parseDecoratorHTMLToReact(elements)
-}
+export const fetchDecoratorReact = async (
+  props: Props
+): Promise<Components> => {
+  const elements = await fetchDecoratorHtml(props);
+  return parseDecoratorHTMLToReact(elements);
+};
 
 export const parseDecoratorHTMLToReact = (elements: Elements): Components => {
-  const parse = require('html-react-parser')
+  const parse = require("html-react-parser");
   return {
     Styles: () => parse(elements.DECORATOR_STYLES) as ReactElement,
     Scripts: () => parse(elements.DECORATOR_SCRIPTS) as ReactElement,
     Header: () => parse(elements.DECORATOR_HEADER) as ReactElement,
-    Footer: () => parse(elements.DECORATOR_FOOTER) as ReactElement
-  }
-}
+    Footer: () => parse(elements.DECORATOR_FOOTER) as ReactElement,
+  };
+};
 
 export type Injector = Props & {
   filePath: string;
 };
 
-export const injectDecoratorServerSide = async (
-  props: Injector
-): Promise<string> =>
+export const injectDecoratorServerSide = async ({
+  filePath,
+  ...props
+}: Injector): Promise<string> =>
   fetchDecoratorHtml(props).then((elements) => {
-    const file = fs.readFileSync(props.filePath).toString();
+    const file = fs.readFileSync(filePath).toString();
     const dom = new JSDOM(file);
     const head = dom.window.document.head;
     const body = dom.window.document.body;
