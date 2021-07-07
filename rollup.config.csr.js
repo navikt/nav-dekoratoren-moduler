@@ -1,4 +1,5 @@
 import typescript from "rollup-plugin-ts";
+import { terser } from 'rollup-plugin-terser';
 
 const pkg = require("./package.json");
 let external = Object.keys(pkg.peerDependencies);
@@ -24,6 +25,7 @@ export default {
             }),
             include: ['src/common/**/*.(ts|tsx)', 'src/csr/**/*.(ts|tsx)']
         }),
+        terser()
     ],
     external: external,
 };
