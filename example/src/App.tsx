@@ -1,12 +1,12 @@
 // @ts-ignore
 import React from "react";
 import { useState } from "react";
-import { EnforceLoginLoader, Auth } from "@navikt/nav-dekoratoren-moduler/csr";
-import { onLanguageSelect } from "@navikt/nav-dekoratoren-moduler/csr";
-import { setAvailableLanguages } from "@navikt/nav-dekoratoren-moduler/csr";
-import { onBreadcrumbClick } from "@navikt/nav-dekoratoren-moduler/csr";
-import { setBreadcrumbs } from "@navikt/nav-dekoratoren-moduler/csr";
-import { setParams } from "@navikt/nav-dekoratoren-moduler/csr";
+import { EnforceLoginLoader, Auth } from "@navikt/nav-dekoratoren-moduler";
+import { onLanguageSelect } from "@navikt/nav-dekoratoren-moduler";
+import { setAvailableLanguages } from "@navikt/nav-dekoratoren-moduler";
+import { onBreadcrumbClick } from "@navikt/nav-dekoratoren-moduler";
+import { setBreadcrumbs } from "@navikt/nav-dekoratoren-moduler";
+import { setParams } from "@navikt/nav-dekoratoren-moduler";
 
 const App = () => {
   const initalParams = { simple: true };
