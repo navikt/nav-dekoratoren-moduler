@@ -21,9 +21,8 @@ export default {
       tsconfigOverride: {
         compilerOptions: {
           outDir: "csr",
-          rootDir: "src/csr",
         },
-        include: ["src/csr"],
+        include: ["src/csr", "src/types.ts"],
       },
     }),
   ],

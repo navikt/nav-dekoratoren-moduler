@@ -1,20 +1,5 @@
 import { isReady } from "./utils";
-import { Language } from "./languages";
-import { Breadcrumb } from "./breadcrumbs";
-
-export interface Params {
-  context?: "privatperson" | "arbeidsgiver" | "samarbeidspartner";
-  simple?: boolean;
-  enforceLogin?: boolean;
-  redirectToApp?: boolean;
-  level?: string;
-  language?: "nb" | "nn" | "en" | "se" | "pl";
-  availableLanguages?: Language[];
-  breadcrumbs?: Breadcrumb[];
-  utilsBackground?: "white" | "gray" | "transparent";
-  feedback?: boolean;
-  chatbot?: boolean;
-}
+import { Params } from "../../common-types";
 
 export const setParams = (params: Params) =>
   isReady()

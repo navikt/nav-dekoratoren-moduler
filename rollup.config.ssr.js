@@ -16,9 +16,8 @@ export default {
       tsconfigOverride: {
         compilerOptions: {
           outDir: "ssr",
-          rootDir: "src/ssr",
         },
-        include: ["src/ssr"],
+        include: ["src/ssr", "src/types.ts"],
       },
     }),
   ],
