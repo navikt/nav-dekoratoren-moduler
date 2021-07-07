@@ -13,7 +13,7 @@
   },
   "scripts": {
     "start": "npm-run-all --parallel start:*",
-    "build": "npm-run-all --parallel build:* && cp csr/common-types.d.ts .",
+    "build": "npm-run-all --parallel build:*",
     "start:csr": "rollup -c rollup.config.csr.js -w",
     "start:ssr": "rollup -c rollup.config.ssr.js -w",
     "build:csr": "rollup -c rollup.config.csr.js",
@@ -46,13 +46,12 @@
     "react-dom": "^17.0.2",
     "react-scripts": "^4.0.3",
     "rollup": "^2.52.8",
-    "rollup-plugin-typescript2": "^0.30.0",
+    "rollup-plugin-ts": "^1.4.0",
     "typescript": "^4.3.5"
   },
   "files": [
     "csr",
-    "ssr",
-    "common-types.d.ts"
+    "ssr"
   ],
   "browser": {
     "child_process": false

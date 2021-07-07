@@ -1,5 +1,5 @@
 import { isReady } from "./utils";
-import { Params } from "../../common-types";
+import { Params } from "../../common/common-types";
 
 export const setParams = (params: Params) =>
   isReady()

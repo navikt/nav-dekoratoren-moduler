@@ -5,7 +5,7 @@ import { injectDecoratorClientSide } from "./functions/csr";
 import { getUrlFromLookupTable } from "./url-lookup-table/utils";
 import { urlLookupTable } from "./url-lookup-table/table";
 import { setParams } from "./functions/params";
-import { Breadcrumb, Language, Params } from "../common-types";
+import { Breadcrumb, Language, Params } from "../common/common-types";
 
 export {
   EnforceLoginLoader,

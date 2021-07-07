@@ -1,29 +1,29 @@
-import typescript from "rollup-plugin-typescript2";
+import typescript from "rollup-plugin-ts";
 
 const pkg = require("./package.json");
 let external = Object.keys(pkg.peerDependencies);
 
 export default {
-  input: ["src/csr/index.tsx"],
-  output: {
-    name: "csr",
-    file: "csr/index.js",
-    format: "umd",
-    sourcemap: true,
-    exports: "named",
-    globals: {
-      ["react"]: "React",
-    },
-  },
-  plugins: [
-    typescript({
-      tsconfigOverride: {
-        compilerOptions: {
-          outDir: "csr",
+    input: ["src/csr/index.tsx"],
+    output: {
+        name: "csr",
+        file: "csr/index.js",
+        format: "umd",
+        sourcemap: true,
+        exports: "named",
+        globals: {
+            ["react"]: "React",
         },
-        include: ["src/csr", "src/common-types.ts"],
-      },
-    }),
-  ],
-  external: external,
+    },
+    plugins: [
+        typescript({
+            tsconfig: baseConfig => ({
+                ...baseConfig,
+                outDir: "csr",
+                rootDirs: ['src/csr', 'src/common'],
+            }),
+            include: ['src/common/**/*.(ts|tsx)', 'src/csr/**/*.(ts|tsx)']
+        }),
+    ],
+    external: external,
 };
