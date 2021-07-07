@@ -13,7 +13,6 @@ export default {
     exports: "named",
     globals: {
       ["react"]: "React",
-      ["nav-frontend-spinner"]: "NavFrontendSpinner",
     },
   },
   plugins: [

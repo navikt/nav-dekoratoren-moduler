@@ -1,6 +1,6 @@
 import React, { useEffect, useState, Fragment } from "react";
 import { msgSafetyCheck } from "../functions/utils";
-import { Spinner } from "./spinner/Spinner";
+import { Spinner } from "./Spinner";
 
 interface Props {
   authCallback?: (data: Auth) => void;
