@@ -13,7 +13,7 @@
   },
   "scripts": {
     "start": "npm-run-all --parallel start:*",
-    "build": "npm-run-all --parallel build:*",
+    "build": "npm-run-all --parallel build:* && cp csr/common-types.d.ts .",
     "start:csr": "rollup -c rollup.config.csr.js -w",
     "start:ssr": "rollup -c rollup.config.ssr.js -w",
     "build:csr": "rollup -c rollup.config.csr.js",
@@ -51,7 +51,8 @@
   },
   "files": [
     "csr",
-    "ssr"
+    "ssr",
+    "common-types.d.ts"
   ],
   "browser": {
     "child_process": false

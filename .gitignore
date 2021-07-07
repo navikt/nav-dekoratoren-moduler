@@ -11,6 +11,7 @@ node_modules
 /ssr
 build
 lib
+/common-types.d.ts
 
 # misc
 .DS_Store
