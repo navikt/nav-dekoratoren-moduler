@@ -1,4 +1,4 @@
-import { Params } from "./params";
+import { Params } from "../../common/common-types";
 import { getDecoratorUrl } from "./utils";
 
 export type ENV = "localhost" | "prod" | "dev" | "q0" | "q1" | "q2" | "q6";

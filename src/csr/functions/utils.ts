@@ -1,4 +1,4 @@
-import { Params } from "./params";
+import { Params } from "../../common/common-types";
 import { Props } from "./csr";
 
 export type ENV = "prod" | "dev" | "q1" | "q2" | "q6";
@@ -56,10 +56,7 @@ export const isReady = () => {
 export const msgSafetyCheck = (message: MessageEvent) => {
   const { origin, source } = message;
   // Only allow messages from own window
-  if (window.location.href.indexOf(origin) === 0 && source === window) {
-    return true;
-  }
-  return false;
+  return window.location.href.indexOf(origin) === 0 && source === window
 };
 
 type UrlProps = Props & {

@@ -1,11 +1,6 @@
 import { msgSafetyCheck } from "./utils";
 import { setParams } from "./params";
-
-export interface Breadcrumb {
-  url: string;
-  title: string;
-  handleInApp?: boolean;
-}
+import { Breadcrumb } from "../../common/common-types";
 
 export const onBreadcrumbClick = (() => {
   let callback: (breadcrumb: Breadcrumb) => void;

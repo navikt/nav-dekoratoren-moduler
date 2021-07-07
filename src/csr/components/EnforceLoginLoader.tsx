@@ -1,6 +1,6 @@
 import React, { useEffect, useState, Fragment } from "react";
 import { msgSafetyCheck } from "../functions/utils";
-import NavFrontendSpinner from "nav-frontend-spinner";
+import { Spinner } from "./Spinner";
 
 interface Props {
   authCallback?: (data: Auth) => void;
@@ -45,24 +45,10 @@ const EnforceLoginLoader = ({ children, authCallback }: Props) => {
   switch (authResult.status) {
     default:
     case "LOADING":
-      return (
-        <div style={styles.spinner}>
-          <NavFrontendSpinner type={"XL"} />
-        </div>
-      );
+      return <Spinner />;
     case "RESULT":
       return <Fragment>{children}</Fragment>;
   }
-};
-
-const styles = {
-  spinner: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    height: "35rem",
-    width: "100%",
-  },
 };
 
 export default EnforceLoginLoader;

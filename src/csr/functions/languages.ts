@@ -1,11 +1,6 @@
 import { msgSafetyCheck } from './utils';
 import { setParams } from './params';
-
-export interface Language {
-  url: string;
-  locale: string;
-  handleInApp?: boolean;
-}
+import { Language } from "../../common/common-types";
 
 export const onLanguageSelect = (() => {
   let callback: (language: Language) => void;
