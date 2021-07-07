@@ -21,7 +21,7 @@ export default {
         compilerOptions: {
           outDir: "csr",
         },
-        include: ["src/csr", "src/types.ts"],
+        include: ["src/csr", "src/common-types.ts"],
       },
     }),
   ],

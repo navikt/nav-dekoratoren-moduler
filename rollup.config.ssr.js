@@ -17,7 +17,7 @@ export default {
         compilerOptions: {
           outDir: "ssr",
         },
-        include: ["src/ssr", "src/types.ts"],
+        include: ["src/ssr", "src/common-types.ts"],
       },
     }),
   ],
