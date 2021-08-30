@@ -26,4 +26,5 @@ export interface Params {
     urlLookupTable?: boolean;
     shareScreen?: boolean;
     utloggingsvarsel?: boolean;
+    logoutUrl?: string;
 }
