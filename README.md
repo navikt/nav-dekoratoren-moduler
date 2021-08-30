@@ -118,6 +118,7 @@ export interface Params {
   utilsBackground?: "white" | "gray" | "transparent"
   feedback?: boolean
   chatbot?: boolean
+  taSurveys: string
 }
 
 // Bruk
@@ -242,3 +243,10 @@ fetchDecoratorHtml({ env: "dev", simple: true, chatbot: true })
         ...
     });
 ```
+
+### taSurveys (Task Analytics)
+Dette er for team som ønsker å sette opp egne Task Analytics-undersøkelser i applikasjonen sin. Hver undersøkelse har en egen id, feks '01234' og denne id'en oppgis som verdi i taSurveys.
+
+Det er mulig å legge inn flere undersøkelser samtidig, ved å legge inn kommaseparerte id'er. Feks '01234,04733...', men kun én undersøkelse blir vist av gangen.
+
+Dersom teamet ditt ønsker å komme igang med Task Analytics, ta kontakt med #team-personbruker på Slack.
