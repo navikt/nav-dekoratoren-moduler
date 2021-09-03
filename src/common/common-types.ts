@@ -10,13 +10,15 @@ export interface Breadcrumb {
     handleInApp?: boolean;
 }
 
+export type supportedLanguages = "nb" | "nn" | "en" | "se" | "pl";
+
 export interface Params {
     context?: "privatperson" | "arbeidsgiver" | "samarbeidspartner";
     simple?: boolean;
     enforceLogin?: boolean;
     redirectToApp?: boolean;
     level?: string;
-    language?: "nb" | "nn" | "en" | "se" | "pl";
+    language?: supportedLanguages;
     availableLanguages?: Language[];
     breadcrumbs?: Breadcrumb[];
     utilsBackground?: "white" | "gray" | "transparent";
