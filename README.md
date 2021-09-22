@@ -18,6 +18,7 @@ Parameteret **enforceLogin** i dekoratøren sender brukeren til loginservice ved
 Ulempen er at applikasjonen din kan laste før fronend-kallet mot innloggingslinje-api er ferdig og dekoratøren sender brukeren til loginservice.
 
 EnforceLoginLoader er en wrapper for applikasjonen som viser en spinner mens sjekken pågår. Funksjonen authCallback tigges etter vellykket innlogging og benyttes for å hente ut brukerens navn ved behov.
+
 ```tsx
 import React, { Component } from 'react'
 import { EnforceLoginLoader } from '@navikt/nav-dekoratoren-moduler'
@@ -107,18 +108,23 @@ Samtlige parameter kan settes via **setParams** dersom **setAvailableLanguages**
 ```tsx
 // Type
 export interface Params {
-  context?: 'privatperson' | 'arbeidsgiver' | 'samarbeidspartner'
-  simple?: boolean
-  enforceLogin?: boolean
-  redirectToApp?: boolean
-  level?: string
-  language?: 'nb' | 'nn' | 'en' | 'se'
-  availableLanguages?: Language[]
-  breadcrumbs?: Breadcrumb[]
-  utilsBackground?: "white" | "gray" | "transparent"
-  feedback?: boolean
-  chatbot?: boolean
-  taSurveys: string
+  context?: "privatperson" | "arbeidsgiver" | "samarbeidspartner";
+  simple?: boolean;
+  enforceLogin?: boolean;
+  redirectToApp?: boolean;
+  level?: string;
+  language?: "nb" | "nn" | "en" | "se" | "pl";
+  availableLanguages?: Language[];
+  breadcrumbs?: Breadcrumb[];
+  utilsBackground?: "white" | "gray" | "transparent";
+  feedback?: boolean;
+  chatbot?: boolean;
+  taSurveys?: string;
+  urlLookupTable?: boolean;
+  shareScreen?: boolean;
+  utloggingsvarsel?: boolean;
+  logoutUrl?: string;
+  dekoratorenUrl?: string
 }
 
 // Bruk
@@ -133,7 +139,7 @@ setParams({
 
 Sett inn dekoratøren i en HTML-fil server-side.
 
-```
+```sh
 npm install @navikt/nav-dekoratoren-moduler node-cache node-fetch jsdom
 ```
 
@@ -152,15 +158,16 @@ injectDecoratorServerSide({ env: "prod", filePath: "index.html", simple: true, c
     })
     .catch((e) => {
         ...
-    })
+    })    
 ```
 
 ### injectDecoratorClientSide
 
-Sett inn dekoratøren dynamisk client-side. <br>
+Sett inn dekoratøren dynamisk client-side.
+
 :warning:   CSR (Client-Side-Rendering) av dekoratøren kan påvirke ytelsen.
 
-```
+```sh
 npm install @navikt/nav-dekoratoren-moduler
 ```
 
@@ -185,7 +192,7 @@ injectDecoratorClientSide({
 
 Hent React-komponentene til dekoratøren server-side.
 
-```
+```sh
 npm install @navikt/nav-dekoratoren-moduler node-cache node-fetch html-react-parser jsdom
 ```
 
@@ -221,7 +228,7 @@ return (
 
 Hent elementene til dekoratøren server-side.
 
-```
+```sh
 npm install @navikt/nav-dekoratoren-moduler node-cache node-fetch jsdom
 ```
 
@@ -244,7 +251,19 @@ fetchDecoratorHtml({ env: "dev", simple: true, chatbot: true })
     });
 ```
 
+### URL override
+
+I kall til for eksempel `injectDecoratorServerSide()`, vil verdien av `dekoratorenUrl` overstyre logikken ellers utført på grunnlag av verdien av `env`. Nyttig hvis man trenger å angi URL til Dekoratøren i et Docker Compose-miljø.
+
+```tsx
+injectDecoratorServerSide({
+  env: process.env.DECORATOR_ENV as any
+  dekoratorenUrl: process.env.DECORATOR_URL,
+})
+```
+
 ### taSurveys (Task Analytics)
+
 Dette er for team som ønsker å sette opp egne Task Analytics-undersøkelser i applikasjonen sin. Hver undersøkelse har en egen id, feks '01234' og denne id'en oppgis som verdi i taSurveys.
 
 Det er mulig å legge inn flere undersøkelser samtidig, ved å legge inn kommaseparerte id'er. Feks '01234,04733...', men kun én undersøkelse blir vist av gangen.
