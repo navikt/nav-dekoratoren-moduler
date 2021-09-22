@@ -1,17 +1,10 @@
 import { JSDOM } from "jsdom";
 import fetch from "node-fetch";
 import NodeCache from "node-cache";
-import { Params } from "../../common/common-types";
 import { FunctionComponent, ReactElement } from "react";
 import { getDecoratorUrl } from "./utils";
 import fs from "fs";
-
-export type ENV = "localhost" | "prod" | "dev" | "q0" | "q1" | "q2" | "q6";
-export type Props = Params &
-  (
-    | { env: Exclude<ENV, "localhost"> }
-    | { env: Extract<ENV, "localhost">; port: number | string }
-  );
+import { Props } from "../../common/common-types";
 
 const SECONDS_PER_MINUTE = 60;
 const FIVE_MINUTES_IN_SECONDS = 5 * SECONDS_PER_MINUTE;

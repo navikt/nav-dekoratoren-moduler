@@ -1,7 +1,5 @@
-import { Params } from "../../common/common-types";
-import { Props } from "./csr";
+import { Params, Props } from "../../common/common-types";
 
-export type ENV = "prod" | "dev" | "q1" | "q2" | "q6";
 let ready = false;
 
 export const naisUrls = {

@@ -1,12 +1,5 @@
-import { Params } from "../../common/common-types";
 import { getDecoratorUrl } from "./utils";
-
-export type ENV = "localhost" | "prod" | "dev" | "q0" | "q1" | "q2" | "q6";
-export type Props = Params &
-  (
-    | { env: Exclude<ENV, "localhost"> }
-    | { env: Extract<ENV, "localhost">; port: number | string }
-  );
+import { Props } from "../../common/common-types";
 
 export const injectDecoratorClientSide = async (props: Props) => {
   const url = getDecoratorUrl({ ...props });

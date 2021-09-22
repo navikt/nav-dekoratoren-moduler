@@ -1,5 +1,4 @@
-import { Params } from "../../common/common-types";
-import { Props } from "./ssr";
+import { Params, Props } from "../../common/common-types";
 
 const naisUrls = {
   prod: `https://www.nav.no/dekoratoren`,
