@@ -35,4 +35,5 @@ export interface Params {
     shareScreen?: boolean;
     utloggingsvarsel?: boolean;
     logoutUrl?: string;
+    dekoratorenUrl?: string
 }
