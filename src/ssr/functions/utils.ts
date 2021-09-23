@@ -10,12 +10,11 @@ const naisUrls = {
 };
 
 export const getDecoratorUrl = (props: Props): string => {
-  if (props.dekoratorenUrl) {
-    const { dekoratorenUrl, ...params } = props;
-    return buildUrl(dekoratorenUrl, params);
-  }
   if (props.env === "localhost") {
-    const { port, env, ...params } = props;
+    const { port, dekoratorenUrl, ...params } = props;
+    if (dekoratorenUrl) {
+      return buildUrl(dekoratorenUrl, params);
+    }
     const url = `http://localhost:${port}/dekoratoren`;
     return buildUrl(url, params);
   } else {

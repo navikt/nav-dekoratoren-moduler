@@ -253,12 +253,12 @@ fetchDecoratorHtml({ env: "dev", simple: true, chatbot: true })
 
 ### URL override
 
-I kall til for eksempel `injectDecoratorServerSide()`, vil verdien av `dekoratorenUrl` overstyre logikken ellers utført på grunnlag av verdien av `env`. Nyttig hvis man trenger å angi URL til Dekoratøren i et Docker Compose-miljø.
+Gitt at `env === localhost` vil URL til Dekoratøren kunne overstyres med `dekoratorenUrl`, som da erstatter `localhost:${port}/dekoratoren`. Nyttig hvis man trenger å angi URL til Dekoratøren i et Docker Compose-miljø hvor dekoratøren inkluderes fra en back-end service.
 
 ```tsx
 injectDecoratorServerSide({
-  env: process.env.DECORATOR_ENV as any
-  dekoratorenUrl: process.env.DECORATOR_URL,
+  env: 'localhost'
+  dekoratorenUrl: 'http://dekoratoren:8088/dekoratoren',
 })
 ```
 
