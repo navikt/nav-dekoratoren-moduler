@@ -13,7 +13,7 @@ export type Breadcrumb =
   | {
       url: string;
       title: string;
-      handleInApp?: false | undefined;
+      handleInApp?: false;
     };
 
 export type ENV = "localhost" | "prod" | "dev" | "q0" | "q1" | "q2" | "q6";
