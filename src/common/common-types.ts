@@ -15,7 +15,7 @@ export type ENV = "localhost" | "prod" | "dev" | "q0" | "q1" | "q2" | "q6";
 export type Props = Params &
     (
         | { env: Exclude<ENV, "localhost"> }
-        | { env: Extract<ENV, "localhost">; port: number | string }
+        | { env: Extract<ENV, "localhost">; port: number | string; dekoratorenUrl: string }
         );
 
 export interface Params {
@@ -34,5 +34,5 @@ export interface Params {
     urlLookupTable?: boolean;
     shareScreen?: boolean;
     utloggingsvarsel?: boolean;
-    logoutUrl?: string;
+    logoutUrl?: string
 }
