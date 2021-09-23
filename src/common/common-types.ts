@@ -1,20 +1,20 @@
-export interface Language {
-  url: string;
-  locale: string;
-  handleInApp?: boolean;
-}
-
-export type Breadcrumb =
+export type Language =
   | {
       url?: string;
-      title: string;
+      locale: string;
       handleInApp: true;
     }
   | {
       url: string;
-      title: string;
+      locale: string;
       handleInApp?: false;
     };
+
+export type Breadcrumb = {
+  url: string;
+  title: string;
+  handleInApp?: boolean;
+};
 
 export type ENV = "localhost" | "prod" | "dev" | "q0" | "q1" | "q2" | "q6";
 
