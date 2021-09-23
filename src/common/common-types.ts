@@ -24,7 +24,7 @@ export type Props = Params &
     | {
         env: Extract<ENV, "localhost">;
         port: number | string;
-        dekoratorenUrl: string;
+        dekoratorenUrl?: string;
       }
   );
 
