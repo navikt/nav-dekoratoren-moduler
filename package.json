@@ -1,6 +1,6 @@
 {
   "name": "@navikt/nav-dekoratoren-moduler",
-  "version": "1.6.3",
+  "version": "1.6.4-beta.0",
   "description": "Moduler til nav-dekoratoren",
   "author": "NAVIKT",
   "license": "MIT",
@@ -21,7 +21,7 @@
     "predeploy": "cd example && npm install && npm run build",
     "publish:beta": "npm run build && npm version prerelease --preid beta && npm publish --access public --tag beta"
   },
-  "peerDependencies": {
+  "dependencies": {
     "html-react-parser": "^1.2.7",
     "jsdom": "^16.6.0",
     "node-cache": "^5.1.2",
