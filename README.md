@@ -112,6 +112,7 @@ export interface Params {
   simple?: boolean;
   enforceLogin?: boolean;
   redirectToApp?: boolean;
+  redirectToUrl?: string;
   level?: string;
   language?: "nb" | "nn" | "en" | "se" | "pl";
   availableLanguages?: Language[];
