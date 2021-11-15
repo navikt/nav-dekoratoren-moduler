@@ -82,13 +82,25 @@ export type Injector = Props & {
   filePath: string;
 };
 
+export type DomInjector = Props & {
+  dom: JSDOM;
+};
+
 export const injectDecoratorServerSide = async ({
   filePath,
   ...props
-}: Injector): Promise<string> =>
-  fetchDecoratorHtml(props).then((elements) => {
+}: Injector): Promise<string> => {
     const file = fs.readFileSync(filePath).toString();
     const dom = new JSDOM(file);
+    return injectDecoratorServerSideDom({dom, ...props});
+};
+
+
+export const injectDecoratorServerSideDom =  async ({
+                                                  dom,
+                                                  ...props
+                                                }: DomInjector): Promise<string> =>
+    fetchDecoratorHtml(props).then((elements) => {
     const head = dom.window.document.head;
     const body = dom.window.document.body;
     head.insertAdjacentHTML("beforeend", elements.DECORATOR_STYLES);
@@ -96,4 +108,4 @@ export const injectDecoratorServerSide = async ({
     body.insertAdjacentHTML("afterbegin", elements.DECORATOR_HEADER);
     body.insertAdjacentHTML("beforeend", elements.DECORATOR_FOOTER);
     return dom.serialize();
-  });
+});
