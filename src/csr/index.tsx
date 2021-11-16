@@ -5,7 +5,7 @@ import { injectDecoratorClientSide } from "./functions/csr";
 import { getUrlFromLookupTable } from "./url-lookup-table/utils";
 import { urlLookupTable } from "./url-lookup-table/table";
 import { setParams } from "./functions/params";
-import { ENV, Params, Props } from "../common/common-types";
+import { Env, Params, Props } from "../common/common-types";
 
 export {
   EnforceLoginLoader,
@@ -19,4 +19,4 @@ export {
   injectDecoratorClientSide,
 };
 
-export type { Auth, Params, Props, ENV };
+export type { Auth, Params, Props, Env };
