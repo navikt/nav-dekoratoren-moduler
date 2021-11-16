@@ -2,6 +2,8 @@ import { Props } from "../../common/common-types";
 import { buildUrl, naisUrls } from "../../common/urls";
 
 export const getDecoratorUrl = (props: Props): string => {
+  console.log(`Env: ${props.env}`);
+
   if (props.env === "localhost") {
     const { port, dekoratorenUrl, ...params } = props;
     if (dekoratorenUrl) {
@@ -12,6 +14,8 @@ export const getDecoratorUrl = (props: Props): string => {
   } else {
     const { env, ...params } = props;
     const url = naisUrls[env] || naisUrls.prod;
+    console.log(`Nais url: ${url}`);
+
     return buildUrl(url, params);
   }
 };
