@@ -6,8 +6,7 @@ export const naisUrls: { [env in NaisEnv]: string } = {
   q1: "https://www-q1.nav.no/dekoratoren",
   q2: "https://www-q2.nav.no/dekoratoren",
   q6: "https://www-q6.nav.no/dekoratoren",
-  dev: "https://dekoratoren.dev.nav.no",
-  eksternDev: "https://dekoratoren.ekstern.dev.nav.no",
+  dev: "https://dekoratoren.ekstern.dev.nav.no",
 };
 
 export const buildUrl = (url: string, params: Params, csr?: boolean) => {

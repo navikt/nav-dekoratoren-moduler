@@ -21,7 +21,6 @@ type LookupTable = {
 
 export const urlLookupTable: LookupTable = {
   dev: devUrlLookupTable,
-  eksternDev: devUrlLookupTable,
   q0: {
     "https://aktivitetsplan.nav.no": "https://aktivitetsplan-q0.nav.no",
     "https://arbeidsgiver.nav.no": "https://arbeidsgiver-q0.nav.no",

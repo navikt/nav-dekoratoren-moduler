@@ -146,7 +146,7 @@ npm install @navikt/nav-dekoratoren-moduler node-cache node-fetch jsdom
 ```tsx
 // Type
 export type Props = Params & (
-    | { env: "prod" | "dev" | "eksternDev" | "q0" | "q1" | "q2" | "q6"; }
+    | { env: "prod" | "dev" | "q0" | "q1" | "q2" | "q6"; }
     | { env: "localhost"; port: number; }
 );
 
@@ -174,7 +174,7 @@ npm install @navikt/nav-dekoratoren-moduler
 ```tsx
 // Type
 export type Props = Params & (
-    | { env: "prod" | "dev" | "eksternDev" | "q0" | "q1" | "q2" | "q6"; }
+    | { env: "prod" | "dev" | "q0" | "q1" | "q2" | "q6"; }
     | { env: "localhost"; port: number; }
 );
 
@@ -199,7 +199,7 @@ npm install @navikt/nav-dekoratoren-moduler node-cache node-fetch html-react-par
 ```tsx
 // Type
 export type Props = Params & (
-    | { env: "prod" | "dev" | "eksternDev" | "q0" | "q1" | "q2" | "q6"; }
+    | { env: "prod" | "dev" | "q0" | "q1" | "q2" | "q6"; }
     | { env: "localhost"; port: number; }
 );
 
@@ -235,7 +235,7 @@ npm install @navikt/nav-dekoratoren-moduler node-cache node-fetch jsdom
 ```tsx
 // Type
 export type Props = Params & (
-    | { env: "prod" | "dev" | "eksternDev" | "q0" | "q1" | "q2" | "q6"; }
+    | { env: "prod" | "dev" | "q0" | "q1" | "q2" | "q6"; }
     | { env: "localhost"; port: number; }
 );
 

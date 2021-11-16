@@ -16,15 +16,7 @@ export type Breadcrumb = {
   handleInApp?: boolean;
 };
 
-export type Env =
-  | "localhost"
-  | "prod"
-  | "dev"
-  | "eksternDev"
-  | "q0"
-  | "q1"
-  | "q2"
-  | "q6";
+export type Env = "localhost" | "prod" | "dev" | "q0" | "q1" | "q2" | "q6";
 
 export type NaisEnv = Exclude<Env, "localhost">;
 
