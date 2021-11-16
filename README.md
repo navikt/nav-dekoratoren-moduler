@@ -146,7 +146,7 @@ npm install @navikt/nav-dekoratoren-moduler node-cache node-fetch jsdom
 ```tsx
 // Type
 export type Props = Params & (
-    | { env: "prod" | "dev" | "q0" | "q1" | "q2" | "q6"; }
+    | { env: "prod" | "dev" | "eksternDev" | "q0" | "q1" | "q2" | "q6"; }
     | { env: "localhost"; port: number; }
 );
 
@@ -174,7 +174,7 @@ npm install @navikt/nav-dekoratoren-moduler
 ```tsx
 // Type
 export type Props = Params & (
-    | { env: "prod" | "dev" | "q0" | "q1" | "q2" | "q6"; }
+    | { env: "prod" | "dev" | "eksternDev" | "q0" | "q1" | "q2" | "q6"; }
     | { env: "localhost"; port: number; }
 );
 
@@ -199,7 +199,7 @@ npm install @navikt/nav-dekoratoren-moduler node-cache node-fetch html-react-par
 ```tsx
 // Type
 export type Props = Params & (
-    | { env: "prod" | "dev" | "q0" | "q1" | "q2" | "q6"; }
+    | { env: "prod" | "dev" | "eksternDev" | "q0" | "q1" | "q2" | "q6"; }
     | { env: "localhost"; port: number; }
 );
 
@@ -235,7 +235,7 @@ npm install @navikt/nav-dekoratoren-moduler node-cache node-fetch jsdom
 ```tsx
 // Type
 export type Props = Params & (
-    | { env: "prod" | "dev" | "q0" | "q1" | "q2" | "q6"; }
+    | { env: "prod" | "dev" | "eksternDev" | "q0" | "q1" | "q2" | "q6"; }
     | { env: "localhost"; port: number; }
 );
 
@@ -257,7 +257,7 @@ Gitt at `env === localhost` vil URL til Dekoratøren kunne overstyres med `dekor
 
 ```tsx
 injectDecoratorServerSide({
-  env: 'localhost'
+  env: 'localhost',
   dekoratorenUrl: 'http://dekoratoren:8088/dekoratoren',
 })
 ```
