@@ -1,4 +1,4 @@
-import { ENV, Params, Props } from "../common/common-types";
+import { Env, Params, Props } from "../common/common-types";
 import {
   fetchDecoratorReact,
   fetchDecoratorHtml,
@@ -14,4 +14,4 @@ export {
   parseDecoratorHTMLToReact,
 };
 
-export type { Elements, Components, Params, Props, ENV };
+export type { Elements, Components, Params, Props, Env };

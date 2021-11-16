@@ -257,7 +257,7 @@ Gitt at `env === localhost` vil URL til Dekoratøren kunne overstyres med `dekor
 
 ```tsx
 injectDecoratorServerSide({
-  env: 'localhost'
+  env: 'localhost',
   dekoratorenUrl: 'http://dekoratoren:8088/dekoratoren',
 })
 ```
