@@ -22,7 +22,6 @@ export interface Elements {
 
 export const fetchDecoratorHtml = async (props: Props): Promise<Elements> => {
   const url = getDecoratorUrl(props);
-  console.log(`Final url: ${url}`);
   const cacheData = cache.get(url);
   if (cacheData) {
     return new Promise((resolve) => resolve(cacheData as Elements));
