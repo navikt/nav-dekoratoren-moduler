@@ -1,12 +1,14 @@
+export type Locale = "nb" | "nn" | "en" | "se" | "pl";
+
 export type Language =
   | {
       url?: string;
-      locale: string;
+      locale: Locale;
       handleInApp: true;
     }
   | {
       url: string;
-      locale: string;
+      locale: Locale;
       handleInApp?: false;
     };
 
@@ -37,7 +39,7 @@ export interface Params {
   redirectToApp?: boolean;
   redirectToUrl?: string;
   level?: string;
-  language?: "nb" | "nn" | "en" | "se" | "pl";
+  language?: Locale;
   availableLanguages?: Language[];
   breadcrumbs?: Breadcrumb[];
   utilsBackground?: "white" | "gray" | "transparent";
