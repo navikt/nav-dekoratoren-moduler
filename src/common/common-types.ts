@@ -1,19 +1,26 @@
+type Pathname = `/${string}`;
+type Localhost = `${"http" | "https"}://localhost${`:${number}` | ""}`;
+type NavHostname = `https://${`${string}.nav.no`}`;
+type ValidAbsoluteUrl = `${Localhost | NavHostname}${Pathname | ""}`;
+
+export type ValidUrl = Pathname | ValidAbsoluteUrl;
+
 export type Locale = "nb" | "nn" | "en" | "se" | "pl";
 
 export type Language =
   | {
-      url?: string;
+      url?: ValidUrl;
       locale: Locale;
       handleInApp: true;
     }
   | {
-      url: string;
+      url: ValidUrl;
       locale: Locale;
       handleInApp?: false;
     };
 
 export type Breadcrumb = {
-  url: string;
+  url: ValidUrl;
   title: string;
   handleInApp?: boolean;
 };
@@ -37,7 +44,7 @@ export interface Params {
   simple?: boolean;
   enforceLogin?: boolean;
   redirectToApp?: boolean;
-  redirectToUrl?: string;
+  redirectToUrl?: ValidUrl;
   level?: string;
   language?: Locale;
   availableLanguages?: Language[];
@@ -49,5 +56,5 @@ export interface Params {
   urlLookupTable?: boolean;
   shareScreen?: boolean;
   utloggingsvarsel?: boolean;
-  logoutUrl?: string;
+  logoutUrl?: ValidUrl;
 }
