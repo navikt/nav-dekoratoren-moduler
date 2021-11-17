@@ -135,9 +135,9 @@ setParams({
 })
 ```
 
-### injectDecoratorServerSide
+### injectDecoratorServerSide(Dom)
 
-Sett inn dekoratøren i en HTML-fil server-side.
+Sett inn dekoratøren i en HTML-fil eller JSDOM-objekt server-side.
 
 ```sh
 npm install @navikt/nav-dekoratoren-moduler node-cache node-fetch jsdom
@@ -146,20 +146,34 @@ npm install @navikt/nav-dekoratoren-moduler node-cache node-fetch jsdom
 ```tsx
 // Type
 export type Props = Params & (
-    | { env: "prod" | "dev" | "q0" | "q1" | "q2" | "q6"; }
-    | { env: "localhost"; port: number; }
-);
+  | { env: "prod" | "dev" | "q0" | "q1" | "q2" | "q6"; }
+  | { env: "localhost"; port: number; }
+  );
 
-// Bruk
+// Bruk med HTML-fil
 import { injectDecoratorServerSide } from '@navikt/nav-dekoratoren-moduler/ssr'
+
 injectDecoratorServerSide({ env: "prod", filePath: "index.html", simple: true, chatbot: true })
-    .then((html) => {
-        res.send(html);
-    })
-    .catch((e) => {
-        ...
-    })    
+  .then((html) => {
+    res.send(html);
+  })
+  .catch((e) => {
+  ...
+  })
+
+// Bruk med JSDOM-objekt
+import { injectDecoratorServerSideDom } from '@navikt/nav-dekoratoren-moduler/ssr'
+
+injectDecoratorServerSideDom({ env: "prod", dom: myJsDomObject, simple: true, chatbot: true })
+  .then((html) => {
+    res.send(html);
+  })
+  .catch((e) => {
+  ...
+  })
 ```
+
+Dersom du 
 
 ### injectDecoratorClientSide
 

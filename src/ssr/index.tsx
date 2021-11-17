@@ -3,12 +3,14 @@ import {
   fetchDecoratorReact,
   fetchDecoratorHtml,
   parseDecoratorHTMLToReact,
+  injectDecoratorServerSideDom,
 } from "./functions/ssr";
 import { injectDecoratorServerSide } from "./functions/ssr";
 import { Components, Elements } from "./functions/ssr";
 
 export {
   injectDecoratorServerSide,
+  injectDecoratorServerSideDom,
   fetchDecoratorReact,
   fetchDecoratorHtml,
   parseDecoratorHTMLToReact,
