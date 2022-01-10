@@ -123,7 +123,7 @@ export interface Params {
   taSurveys?: string;
   urlLookupTable?: boolean;
   shareScreen?: boolean;
-  utloggingsvarsel?: boolean;
+  utloggingsvarsel?: boolean; // Eksperimentell. Inneholder kjente feil.
   logoutUrl?: string;
 }
 
