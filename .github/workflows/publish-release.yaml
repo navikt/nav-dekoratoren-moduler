@@ -16,7 +16,7 @@ jobs:
   publish:
     name: Publish to package registry
     runs-on: ubuntu-latest
-    if: contains(github.event.release.target_commitish, 'master')
+    if: github.ref == 'master'
     permissions:
       contents: write
       packages: write
