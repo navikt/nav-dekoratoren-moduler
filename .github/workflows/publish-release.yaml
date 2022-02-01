@@ -1,17 +1,18 @@
-name: Publish beta version to package registry
+name: Publish release version to package registry
 on:
   release:
     types: [released]
 
 jobs:
-  publish-beta:
+  publish:
     name: Publish to package registry
     runs-on: ubuntu-latest
+    if: contains(github.event.release.target_commitish, 'master')
     permissions:
       contents: read
       packages: write
     steps:
-      - name: Checkout
+      - name: Checkout branch
         uses: actions/checkout@v2
       - name: Setup node.js
         uses: actions/setup-node@v2
@@ -35,6 +36,6 @@ jobs:
       - name: Build package
         run: npm run build
       - name: Publish package
-        run: npm publish --tag beta --dry-run
+        run: npm publish --dry-run
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
