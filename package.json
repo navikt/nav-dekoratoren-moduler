@@ -18,8 +18,7 @@
     "start:ssr": "rollup -c rollup.config.ssr.js -w",
     "build:csr": "rollup -c rollup.config.csr.js",
     "build:ssr": "rollup -c rollup.config.ssr.js",
-    "predeploy": "cd example && npm install && npm run build",
-    "tag:beta": "npm version prerelease --preid beta"
+    "predeploy": "cd example && npm install && npm run build"
   },
   "dependencies": {
     "html-react-parser": "^1.2.7",
