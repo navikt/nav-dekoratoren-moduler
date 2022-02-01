@@ -1,4 +1,4 @@
-name: Publish (release)
+name: Publish release (master only)
 on:
   workflow_dispatch:
     inputs:
@@ -44,6 +44,10 @@ jobs:
       - name: Build package
         run: npm run build
       - name: Publish package
-        run: npm publish --dry-run
+        id: publish
+        run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push new version tag
+        if: steps.publish.outcome == 'success'
+        run: git push
