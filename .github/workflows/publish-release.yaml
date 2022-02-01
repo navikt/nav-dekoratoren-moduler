@@ -2,7 +2,7 @@ name: Publish (release)
 on:
   workflow_dispatch:
     inputs:
-      release-type:
+      releaseType:
         type: choice
         description: 'Release type'
         required: true
@@ -38,7 +38,7 @@ jobs:
         run: |
           git config --global user.name '${{ github.actor }}'
           git config --global user.email '${{ github.actor }}@users.noreply.github.com'
-          npm version prerelease --preid beta
+          npm version ${{ github.event.inputs.releaseType }}
       - name: Install dependencies
       - name: Install dependencies
         run: npm ci
