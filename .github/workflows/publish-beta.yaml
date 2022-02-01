@@ -1,4 +1,4 @@
-name: Publish beta version to package registry
+name: Publish (beta)
 on:
   release:
     types: [released]
