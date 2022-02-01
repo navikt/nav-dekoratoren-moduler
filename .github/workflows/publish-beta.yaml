@@ -1,7 +1,6 @@
 name: Publish (beta)
 on:
-  release:
-    types: [released]
+  workflow_dispatch
 
 jobs:
   publish-beta:
