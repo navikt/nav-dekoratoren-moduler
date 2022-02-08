@@ -8,15 +8,15 @@ import { setParams } from "./functions/params";
 import { Env, Params, Props, Locale } from "../common/common-types";
 
 export {
-  EnforceLoginLoader,
-  setAvailableLanguages,
-  onLanguageSelect,
-  setBreadcrumbs,
-  onBreadcrumbClick,
-  setParams,
-  urlLookupTable,
-  getUrlFromLookupTable,
-  injectDecoratorClientSide,
+    EnforceLoginLoader,
+    setAvailableLanguages,
+    onLanguageSelect,
+    setBreadcrumbs,
+    onBreadcrumbClick,
+    setParams,
+    urlLookupTable,
+    getUrlFromLookupTable,
+    injectDecoratorClientSide,
 };
 
 export type { Auth, Params, Props, Env, Locale };
