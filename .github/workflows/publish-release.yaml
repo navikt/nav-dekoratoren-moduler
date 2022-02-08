@@ -1,16 +1,7 @@
 name: Publish release (master only)
 on:
-  workflow_dispatch:
-    inputs:
-      releaseType:
-        type: choice
-        description: 'Release type'
-        required: true
-        default: 'patch'
-        options:
-          - patch
-          - minor
-          - major
+  release:
+    types: [released]
 
 jobs:
   publish:
@@ -33,7 +24,7 @@ jobs:
         run: |
           git config --global user.name '${{ github.actor }}'
           git config --global user.email '${{ github.actor }}@users.noreply.github.com'
-          npm version ${{ github.event.inputs.releaseType }}
+          npm version ${{ github.ref_name }}
       - name: Install dependencies
         run: npm ci
       - name: Build package
