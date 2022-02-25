@@ -35,6 +35,8 @@ export type Props = Params &
 export interface Params {
     context?: "privatperson" | "arbeidsgiver" | "samarbeidspartner";
     simple?: boolean;
+    header?: boolean;
+    footer?: boolean;
     enforceLogin?: boolean;
     redirectToApp?: boolean;
     redirectToUrl?: string;
