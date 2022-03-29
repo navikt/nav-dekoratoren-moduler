@@ -116,6 +116,8 @@ Samtlige parameter kan settes via **setParams** dersom **setAvailableLanguages**
 export interface Params {
     context?: "privatperson" | "arbeidsgiver" | "samarbeidspartner";
     simple?: boolean;
+    simpleHeader?: boolean;
+    simpleFooter?: boolean;
     enforceLogin?: boolean;
     redirectToApp?: boolean;
     redirectToUrl?: string;
