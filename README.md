@@ -133,7 +133,7 @@ export interface Params {
     shareScreen?: boolean;
     utloggingsvarsel?: boolean; // Eksperimentell. Inneholder kjente feil.
     logoutUrl?: string;
-    appName?: string;
+    appDisplayName?: string;
     accessibilityDeclarationUrl?: string;
 }
 

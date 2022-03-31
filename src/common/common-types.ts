@@ -52,6 +52,6 @@ export interface Params {
     shareScreen?: boolean;
     utloggingsvarsel?: boolean;
     logoutUrl?: string;
-    appName?: string;
+    appDisplayName?: string;
     accessibilityDeclarationUrl?: string;
 }
