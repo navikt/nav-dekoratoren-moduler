@@ -1,6 +1,7 @@
 # CONTRIBUTE
 
 ## Local development
+
 ```
   npm i
   npm run build:csr // Pga noen avhengigheter frem og tilbake må denne for øyeblikket kjøres først
@@ -12,16 +13,13 @@
 
 ### Publish beta version
 
-* Add a beta-flag to version in package.json 
-```
-  "version": "1.2.4-beta.0",
-```
-* `npm run build`
-* `npm publish --access public --tag beta`
+-   Make sure your branch is up to date with master and also run `git fetch` to get all remote tags.
+-   `npm run publish:beta`
 
 ### Publish new version
 
-* `npm version patch|minor|major`
-* `npm run build`
-* `npm publish --access public`
+-   Make sure your branch is up to date with master and also run `git fetch` to get all remote tags.
 
+-   `npm run build`
+-   `npm version patch|minor|major`
+-   `npm publish --access public`
