@@ -112,7 +112,7 @@ export interface Params {
   redirectToApp?: boolean;
   redirectToUrl?: string;
   level?: string;
-  language?: "nb" | "nn" | "en" | "se" | "pl";
+  language?: "nb" | "nn" | "en" | "se" | "pl" | "uk";
   availableLanguages?: Language[];
   breadcrumbs?: Breadcrumb[];
   utilsBackground?: "white" | "gray" | "transparent";
@@ -186,7 +186,7 @@ npm install @navikt/nav-dekoratoren-moduler
 ```tsx
 // Type
 export type Props = Params & (
-    | { env: "prod" | "dev" | "q0" | "q1" | "q2" | "q6"; }
+    | { env: "prod" | "dev"; }
     | { env: "localhost"; port: number; }
 );
 
@@ -211,7 +211,7 @@ npm install @navikt/nav-dekoratoren-moduler node-cache node-fetch html-react-par
 ```tsx
 // Type
 export type Props = Params & (
-    | { env: "prod" | "dev" | "q0" | "q1" | "q2" | "q6"; }
+    | { env: "prod" | "dev"; }
     | { env: "localhost"; port: number; }
 );
 
@@ -247,7 +247,7 @@ npm install @navikt/nav-dekoratoren-moduler node-cache node-fetch jsdom
 ```tsx
 // Type
 export type Props = Params & (
-    | { env: "prod" | "dev" | "q0" | "q1" | "q2" | "q6"; }
+    | { env: "prod" | "dev"; }
     | { env: "localhost"; port: number; }
 );
 
