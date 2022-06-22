@@ -118,6 +118,7 @@ export interface Params {
   utilsBackground?: "white" | "gray" | "transparent";
   feedback?: boolean;
   chatbot?: boolean;
+  chatbotVisible?: boolean;
   taSurveys?: string;
   urlLookupTable?: boolean;
   shareScreen?: boolean;
