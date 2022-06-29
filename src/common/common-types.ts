@@ -48,7 +48,6 @@ export interface Params {
     feedback?: boolean;
     chatbot?: boolean;
     chatbotVisible?: boolean;
-    taSurveys?: string;
     urlLookupTable?: boolean;
     shareScreen?: boolean;
     utloggingsvarsel?: boolean;

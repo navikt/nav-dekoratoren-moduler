@@ -119,7 +119,6 @@ export interface Params {
   feedback?: boolean;
   chatbot?: boolean;
   chatbotVisible?: boolean;
-  taSurveys?: string;
   urlLookupTable?: boolean;
   shareScreen?: boolean;
   utloggingsvarsel?: boolean; // Eksperimentell. Inneholder kjente feil.
@@ -274,11 +273,3 @@ injectDecoratorServerSide({
   dekoratorenUrl: 'http://dekoratoren:8088/dekoratoren',
 })
 ```
-
-### taSurveys (Task Analytics)
-
-Dette er for team som ønsker å sette opp egne Task Analytics-undersøkelser i applikasjonen sin. Hver undersøkelse har en egen id, feks '01234' og denne id'en oppgis som verdi i taSurveys.
-
-Det er mulig å legge inn flere undersøkelser samtidig, ved å legge inn kommaseparerte id'er. Feks '01234,04733...', men kun én undersøkelse blir vist av gangen.
-
-Dersom teamet ditt ønsker å komme igang med Task Analytics, ta kontakt med #team-personbruker på Slack.
