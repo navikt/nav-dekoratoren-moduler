@@ -133,6 +133,10 @@ setParams({
 })
 ```
 
+### openChatbot
+
+Hjelpefunksjon for å åpne Chatbot Frida. Denne setter parameteret ```chatbotVisible=true``` og åpner chat-vinduet.
+
 ### injectDecoratorServerSide(Dom)
 
 Sett inn dekoratøren i en HTML-fil eller JSDOM-objekt server-side.

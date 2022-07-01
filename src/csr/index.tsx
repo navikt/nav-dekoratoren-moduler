@@ -5,6 +5,7 @@ import { injectDecoratorClientSide } from "./functions/csr";
 import { getUrlFromLookupTable } from "./url-lookup-table/utils";
 import { urlLookupTable } from "./url-lookup-table/table";
 import { setParams } from "./functions/params";
+import { openChatbot } from "./functions/chatbot";
 import { Env, Params, Props, Locale } from "../common/common-types";
 
 export {
@@ -17,6 +18,7 @@ export {
     urlLookupTable,
     getUrlFromLookupTable,
     injectDecoratorClientSide,
+    openChatbot,
 };
 
 export type { Auth, Params, Props, Env, Locale };
