@@ -1,4 +1,4 @@
-export type Locale = "nb" | "nn" | "en" | "se" | "pl" | "uk";
+export type Locale = "nb" | "nn" | "en" | "se" | "pl" | "uk" | "ru";
 
 export type Language =
     | {

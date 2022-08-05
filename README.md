@@ -112,7 +112,7 @@ export interface Params {
   redirectToApp?: boolean;
   redirectToUrl?: string;
   level?: string;
-  language?: "nb" | "nn" | "en" | "se" | "pl" | "uk";
+  language?: "nb" | "nn" | "en" | "se" | "pl" | "uk" | "ru";
   availableLanguages?: Language[];
   breadcrumbs?: Breadcrumb[];
   utilsBackground?: "white" | "gray" | "transparent";
