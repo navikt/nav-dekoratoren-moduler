@@ -41,7 +41,13 @@ export const fetchDecoratorHtml = async (props: Props): Promise<Elements> => {
                 document.getElementById("footer-withmenu")?.innerHTML;
 
             if (!header || !footer || !styles || !scripts) {
-                throw new Error("'Elements doesn't exist");
+                throw new Error(
+                    `Elements for header, footer, styles or scripts does not exist.
+                    
+                    Decorator url: ${url}
+                    Decorator props: ${JSON.stringify(props)}
+                    Decorator text document: ${res}`
+                );
             }
 
             const elements = {
