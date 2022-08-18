@@ -50,6 +50,5 @@ export interface Params {
     chatbotVisible?: boolean;
     urlLookupTable?: boolean;
     shareScreen?: boolean;
-    utloggingsvarsel?: boolean;
     logoutUrl?: string;
 }

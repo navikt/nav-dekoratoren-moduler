@@ -18,22 +18,22 @@ Ulempen er at applikasjonen din kan laste før fronend-kallet mot innloggingslin
 EnforceLoginLoader er en wrapper for applikasjonen som viser en spinner mens sjekken pågår. Funksjonen authCallback tigges etter vellykket innlogging og benyttes for å hente ut brukerens navn ved behov.
 
 ```tsx
-import React, { Component } from 'react'
-import { EnforceLoginLoader } from '@navikt/nav-dekoratoren-moduler'
+import React, { Component } from "react";
+import { EnforceLoginLoader } from "@navikt/nav-dekoratoren-moduler";
 
 const Wrapper = () => {
     const authCallback = (auth: Auth) => {
-      console.log(auth)
-    }
+        console.log(auth);
+    };
 
     return (
         <EnforceLoginLoader authCallback={authCallback}>
             <App />
         </EnforceLoginLoader>
-    )
-}
+    );
+};
 
-ReactDOM.render(<Wrapper />, document.getElementById('app'))
+ReactDOM.render(<Wrapper />, document.getElementById("app"));
 ```
 
 ### setBreadcrumbs
@@ -43,17 +43,21 @@ Parameteret **breadcrumbs** (brødsmulestien) kan endres / settes i frondend-app
 ```tsx
 // Type
 export interface Breadcrumb {
-  url: string
-  title: string
-  handleInApp?: boolean
+    url: string;
+    title: string;
+    handleInApp?: boolean;
 }
 
 // Bruk
-import { setBreadcrumbs } from '@navikt/nav-dekoratoren-moduler'
+import { setBreadcrumbs } from "@navikt/nav-dekoratoren-moduler";
 setBreadcrumbs([
-  {"title":"Ditt NAV", "url":"https://www.nav.no/person/dittnav" }, // Sender brukeren til definert url
-  {"title":"Kontakt oss", "url":"https://www.nav.no/person/kontakt-oss/nb/", handleInApp: true } // Håndteres av onBreadcrumbClick
-])
+    { title: "Ditt NAV", url: "https://www.nav.no/person/dittnav" }, // Sender brukeren til definert url
+    {
+        title: "Kontakt oss",
+        url: "https://www.nav.no/person/kontakt-oss/nb/",
+        handleInApp: true,
+    }, // Håndteres av onBreadcrumbClick
+]);
 ```
 
 ### onBreadcrumbClick
@@ -75,17 +79,21 @@ Hent aktivt språk ved hjelp av url eller cookien **decorator-language**.
 ```tsx
 // Type
 export interface Language {
-  url: string
-  locale: string
-  handleInApp?: boolean
+    url: string;
+    locale: string;
+    handleInApp?: boolean;
 }
 
 // Bruk
-import { setAvailableLanguages } from '@navikt/nav-dekoratoren-moduler'
+import { setAvailableLanguages } from "@navikt/nav-dekoratoren-moduler";
 setAvailableLanguages([
-  {"locale":"nb", "url":"https://www.nav.no/person/kontakt-oss/nb/" }, // Sender brukeren til definert url
-  {"locale":"en", "url":"https://www.nav.no/person/kontakt-oss/en/", handleInApp: true },  // Håndteres av onLanguageSelect
-])
+    { locale: "nb", url: "https://www.nav.no/person/kontakt-oss/nb/" }, // Sender brukeren til definert url
+    {
+        locale: "en",
+        url: "https://www.nav.no/person/kontakt-oss/en/",
+        handleInApp: true,
+    }, // Håndteres av onLanguageSelect
+]);
 ```
 
 ### onLanguageSelect
@@ -106,36 +114,35 @@ Samtlige parameter kan settes via **setParams** dersom **setAvailableLanguages**
 ```tsx
 // Type
 export interface Params {
-  context?: "privatperson" | "arbeidsgiver" | "samarbeidspartner";
-  simple?: boolean;
-  enforceLogin?: boolean;
-  redirectToApp?: boolean;
-  redirectToUrl?: string;
-  level?: string;
-  language?: "nb" | "nn" | "en" | "se" | "pl" | "uk" | "ru";
-  availableLanguages?: Language[];
-  breadcrumbs?: Breadcrumb[];
-  utilsBackground?: "white" | "gray" | "transparent";
-  feedback?: boolean;
-  chatbot?: boolean;
-  chatbotVisible?: boolean;
-  urlLookupTable?: boolean;
-  shareScreen?: boolean;
-  utloggingsvarsel?: boolean; // Eksperimentell. Inneholder kjente feil.
-  logoutUrl?: string;
+    context?: "privatperson" | "arbeidsgiver" | "samarbeidspartner";
+    simple?: boolean;
+    enforceLogin?: boolean;
+    redirectToApp?: boolean;
+    redirectToUrl?: string;
+    level?: string;
+    language?: "nb" | "nn" | "en" | "se" | "pl" | "uk" | "ru";
+    availableLanguages?: Language[];
+    breadcrumbs?: Breadcrumb[];
+    utilsBackground?: "white" | "gray" | "transparent";
+    feedback?: boolean;
+    chatbot?: boolean;
+    chatbotVisible?: boolean;
+    urlLookupTable?: boolean;
+    shareScreen?: boolean;
+    logoutUrl?: string;
 }
 
 // Bruk
-import { setParams } from '@navikt/nav-dekoratoren-moduler'
+import { setParams } from "@navikt/nav-dekoratoren-moduler";
 setParams({
-  simple: true,
-  chatbot: true
-})
+    simple: true,
+    chatbot: true,
+});
 ```
 
 ### openChatbot
 
-Hjelpefunksjon for å åpne Chatbot Frida. Denne setter parameteret ```chatbotVisible=true``` og åpner chat-vinduet.
+Hjelpefunksjon for å åpne Chatbot Frida. Denne setter parameteret `chatbotVisible=true` og åpner chat-vinduet.
 
 ### injectDecoratorServerSide(Dom)
 
@@ -175,13 +182,13 @@ injectDecoratorServerSideDom({ env: "prod", dom: myJsDomObject, simple: true, ch
   })
 ```
 
-Dersom du 
+Dersom du
 
 ### injectDecoratorClientSide
 
 Sett inn dekoratøren dynamisk client-side.
 
-:warning:   CSR (Client-Side-Rendering) av dekoratøren kan påvirke ytelsen.
+:warning: CSR (Client-Side-Rendering) av dekoratøren kan påvirke ytelsen.
 
 ```sh
 npm install @navikt/nav-dekoratoren-moduler
@@ -189,18 +196,16 @@ npm install @navikt/nav-dekoratoren-moduler
 
 ```tsx
 // Type
-export type Props = Params & (
-    | { env: "prod" | "dev"; }
-    | { env: "localhost"; port: number; }
-);
+export type Props = Params &
+    ({ env: "prod" | "dev" } | { env: "localhost"; port: number });
 
 // Bruk
-import { injectDecoratorClientSide } from '@navikt/nav-dekoratoren-moduler'
+import { injectDecoratorClientSide } from "@navikt/nav-dekoratoren-moduler";
 injectDecoratorClientSide({
     env: "localhost",
     port: 8100,
     simple: true,
-    chatbot: true
+    chatbot: true,
 });
 ```
 
@@ -273,7 +278,7 @@ Gitt at `env === localhost` vil URL til Dekoratøren kunne overstyres med `dekor
 
 ```tsx
 injectDecoratorServerSide({
-  env: 'localhost',
-  dekoratorenUrl: 'http://dekoratoren:8088/dekoratoren',
-})
+    env: "localhost",
+    dekoratorenUrl: "http://dekoratoren:8088/dekoratoren",
+});
 ```
