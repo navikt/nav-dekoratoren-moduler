@@ -15,6 +15,7 @@ export type Language =
 export type Breadcrumb = {
     url: string;
     title: string;
+    analyticsTitle?: string;
     handleInApp?: boolean;
 };
 

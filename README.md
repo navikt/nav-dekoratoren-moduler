@@ -40,11 +40,15 @@ ReactDOM.render(<Wrapper />, document.getElementById("app"));
 
 Parameteret **breadcrumbs** (brødsmulestien) kan endres / settes i frondend-apper ved behov.
 
+Obs! Klikk på breadcrumbs logges til analyseverktøy (Amplitude). Dersom title kan inneholde sensitive opplysninger<br/>
+som f.eks. navn på bruker, må feltet analyticsTitle også settes. Dette feltet vil da logges istedenfor title.
+
 ```tsx
 // Type
 export interface Breadcrumb {
     url: string;
     title: string;
+    analyticsTitle?: string;
     handleInApp?: boolean;
 }
 
@@ -55,9 +59,21 @@ setBreadcrumbs([
     {
         title: "Kontakt oss",
         url: "https://www.nav.no/person/kontakt-oss/nb/",
-        handleInApp: true,
-    }, // Håndteres av onBreadcrumbClick
+        handleInApp: true, // Håndteres av onBreadcrumbClick
+    },
 ]);
+
+// Bruk med analyticsTitle
+setBreadcrumbs([
+    { title: "Ditt NAV", url: "https://www.nav.no/person/dittnav" }, // Sender brukeren til definert url
+    {
+        title: "Opplysninger for Ola Nordmann",
+        analyticsTitle: "Opplysninger for <Navn>",
+        url: "https://www.nav.no/min-innloggede-tjeneste",
+    },
+]);
+
+// Obs!Dersom title kan innholde personopplysinger eller annen sensitiv info
 ```
 
 ### onBreadcrumbClick
