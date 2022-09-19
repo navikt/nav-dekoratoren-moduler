@@ -72,8 +72,6 @@ setBreadcrumbs([
         url: "https://www.nav.no/min-innloggede-tjeneste",
     },
 ]);
-
-// Obs!Dersom title kan innholde personopplysinger eller annen sensitiv info
 ```
 
 ### onBreadcrumbClick
