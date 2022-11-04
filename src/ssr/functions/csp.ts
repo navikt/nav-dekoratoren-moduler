@@ -1,54 +1,27 @@
 import { CSPDirectives as CSPDirectivesAll, getCSP } from "csp-header";
+import { EnvProps } from "../../common/common-types";
+import { getDecoratorUrl } from "../../common/urls";
 
 type CSPDirectives = Partial<CSPDirectivesAll>;
 
-const decoratorCspApi = "http://localhost:8088/dekoratoren/api/csp";
+const decoratorCspApi = "/api/csp";
 
 const fallbackDirectives = {
     "default-src": ["*", "data:", "blob:", "unsafe-inline", "unsafe-eval"],
 };
 
-const removeDuplicates = (array: string[]) =>
-    array.filter(
-        (directive, index, array) => array.indexOf(directive) === index
-    );
-
-const mergeDirectives = (
-    appDirectives: CSPDirectives,
-    decoratorDirectives: CSPDirectives
-): CSPDirectives => {
-    return Object.entries({ ...decoratorDirectives, ...appDirectives }).reduce(
-        (acc, [directiveName, appDirectiveValue]) => {
-            if (!Array.isArray(appDirectiveValue)) {
-                return acc;
-            }
-
-            const decoratorDirectiveValue = decoratorDirectives[directiveName];
-            if (!decoratorDirectiveValue) {
-                return acc;
-            }
-
-            return {
-                ...acc,
-                [directiveName]: removeDuplicates([
-                    ...decoratorDirectiveValue,
-                    ...appDirectiveValue,
-                ]),
-            };
-        },
-        {}
-    );
-};
-
 export const getCspHeader = async (
     appDirectives: CSPDirectives,
+    envProps: EnvProps,
     retries = 3
-): Promise<string> =>
-    fetch(decoratorCspApi)
+): Promise<string> => {
+    const url = `${getDecoratorUrl(envProps, false, false)}${decoratorCspApi}`;
+
+    return fetch(url)
         .then((res) => {
             if (!res.ok) {
                 if (retries > 0) {
-                    return getCspHeader(appDirectives, retries - 1);
+                    return getCspHeader(appDirectives, envProps, retries - 1);
                 }
 
                 throw Error(`${res.status} ${res.statusText}`);
@@ -58,7 +31,7 @@ export const getCspHeader = async (
         })
         .then((decoratorDirectives: CSPDirectives) => {
             return getCSP({
-                directives: mergeDirectives(appDirectives, decoratorDirectives),
+                presets: [appDirectives, decoratorDirectives],
             });
         })
         .catch((e) => {
@@ -67,3 +40,4 @@ export const getCspHeader = async (
             );
             return getCSP({ directives: fallbackDirectives });
         });
+};

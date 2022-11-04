@@ -1,73 +1,55 @@
-import { enableFetchMocks } from "jest-fetch-mock";
-import { getCspHeader } from "./csp";
+const { enableFetchMocks } = require("jest-fetch-mock");
+const { getCspHeader } = require("./csp");
 
-const decoratorDirectives = {
-    "default-src": ["*.nav.no", "localhost:*"],
-    "script-src": [
-        "*.nav.no",
-        "'unsafe-inline'",
-        "'unsafe-eval'",
-        "localhost:*",
-    ],
-    "script-src-elem": [
-        "*.nav.no",
-        "*.psplugin.com",
-        "www.googletagmanager.com",
-        "www.google-analytics.com",
-        "*.hotjar.com",
-        "*.hotjar.io",
-        "*.taskanalytics.com",
-        "'unsafe-inline'",
-        "asdf",
-        "asdf",
-        "localhost:*",
-    ],
-    "worker-src": ["blob:", "localhost:*"],
-    "style-src": ["'unsafe-inline'", "localhost:*"],
-    "style-src-elem": [
-        "*.nav.no",
-        "*.psplugin.com",
-        "'unsafe-inline'",
-        "localhost:*",
-    ],
-    "font-src": ["*.psplugin.com", "data:", "localhost:*"],
-    "img-src": [
-        "*.nav.no",
-        "*.psplugin.com",
-        "www.google-analytics.com",
-        "*.vimeocdn.com",
-        "localhost:*",
-    ],
-    "frame-src": [
-        "*.hotjar.com",
-        "*.hotjar.io",
-        "www.googletagmanager.com",
-        "player.vimeo.com",
-        "video.qbrick.com",
-        "localhost:*",
-    ],
-    "connect-src": [
-        "*.nav.no",
-        "*.boost.ai",
-        "*.psplugin.com",
-        "www.google-analytics.com",
-        "*.hotjar.com",
-        "*.hotjar.io",
-        "localhost:*",
-    ],
-};
-
-describe("CSP header builder function", async () => {
+describe("CSP header builder function", () => {
     enableFetchMocks();
-    fetch.mockResponse(JSON.stringify(decoratorDirectives));
 
-    const appDirectives = {
-        "default-src": ["*.foo"],
-    };
-    const cspHeader = await getCspHeader(appDirectives);
-    console.log(cspHeader);
+    test("Should not include duplicate directives from decorator and app", async () => {
+        fetch.mockResponseOnce(JSON.stringify({ "default-src": ["foo.bar"] }));
 
-    test("test", () => {
-        expect(typeof cspHeader).toContain("string");
+        const cspHeader = await getCspHeader(
+            {
+                "default-src": ["foo.bar"],
+            },
+            {
+                env: "localhost",
+            }
+        );
+
+        expect(cspHeader).toEqual("default-src foo.bar;");
+    });
+
+    test("Should include decorator-specific directive", async () => {
+        fetch.mockResponseOnce(
+            JSON.stringify({ "default-src": ["from.decorator"] })
+        );
+
+        const cspHeader = await getCspHeader(
+            {
+                "default-src": ["from.app"],
+            },
+            {
+                env: "localhost",
+            }
+        );
+
+        expect(cspHeader).toContain("from.decorator");
+    });
+
+    test("Should include app-specific directive", async () => {
+        fetch.mockResponseOnce(
+            JSON.stringify({ "default-src": ["from.decorator"] })
+        );
+
+        const cspHeader = await getCspHeader(
+            {
+                "default-src": ["from.app"],
+            },
+            {
+                env: "localhost",
+            }
+        );
+
+        expect(cspHeader).toContain("from.app");
     });
 });
