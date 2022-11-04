@@ -8,7 +8,34 @@
 npm install --save @navikt/nav-dekoratoren-moduler
 ```
 
-## Usage
+## Bruk
+
+### buildCspHeader
+
+Bygger en Content-Security-Policy header som inkluderer dekoratørens påkrevde direktiver, kombinert med applikasjonens egne direktiver.<br>
+
+Funksjonen gjør et fetch-kall til dekoratøren for å hente gjeldende direktiver.<br>  
+
+Eksempel på bruk:
+```tsx
+import { buildCspHeader } from '@navikt/nav-dekoratoren-moduler/ssr';
+
+// Direktiver appen din benytter
+const myAppDirectives = {
+    'default-src': ['foo.bar.com'],
+    'style-src': ['my.css.cdn.com']
+}
+
+const csp = buildCspHeader(myAppDirectives, {env: 'prod'})
+
+app.get('*', (req, res) => {
+    res.setHeader('Content-Security-Policy', csp);
+    
+    res.send('Hello!')
+})
+
+```
+
 
 ### < EnforceLoginLoader / >
 
