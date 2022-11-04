@@ -1,6 +1,6 @@
-import { NaisEnv, Params } from "./common-types";
+import { NaisEnv, Params, Props } from "./common-types";
 
-export const naisUrls: { [env in NaisEnv]: string } = {
+const naisUrls: { [env in NaisEnv]: string } = {
     prod: "https://www.nav.no/dekoratoren",
     dev: "https://dekoratoren.ekstern.dev.nav.no",
 };
@@ -18,10 +18,32 @@ const objectToQueryString = (params: object) =>
           )
         : "";
 
-export const buildUrl = (url: string, params: Params, csr?: boolean) => {
+const buildUrl = (url: string, params: Params, isCsr: boolean) => {
     if (!params) {
         return url;
     }
 
-    return `${url}/${csr ? "env" : ""}${objectToQueryString(params)}`;
+    return `${url}/${isCsr ? "env" : ""}${objectToQueryString(params)}`;
+};
+
+const getBaseUrl = (props: Props) => {
+    const { env } = props;
+
+    if (env === "localhost") {
+        const { port = 8088, dekoratorenUrl } = props;
+        return dekoratorenUrl || `http://localhost:${port}/dekoratoren`;
+    }
+
+    return naisUrls[env] || naisUrls.prod;
+};
+
+export const getDecoratorUrl = (
+    props: Props,
+    withParams: boolean,
+    isCsr: boolean
+) => {
+    const baseUrl = getBaseUrl(props);
+    const { dekoratorenUrl, env, port, ...params } = props;
+
+    return withParams ? buildUrl(baseUrl, params, isCsr) : baseUrl;
 };

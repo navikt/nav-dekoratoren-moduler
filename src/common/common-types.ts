@@ -23,15 +23,15 @@ export type Env = "localhost" | "prod" | "dev";
 
 export type NaisEnv = Exclude<Env, "localhost">;
 
-export type Props = Params &
-    (
-        | { env: NaisEnv }
-        | {
-              env: "localhost";
-              port: number | string;
-              dekoratorenUrl?: string;
-          }
-    );
+export type EnvProps =
+    | { env: NaisEnv; port?: undefined; dekoratorenUrl?: undefined }
+    | {
+          env: "localhost";
+          port?: number | string;
+          dekoratorenUrl?: string;
+      };
+
+export type Props = Params & EnvProps;
 
 export interface Params {
     context?: "privatperson" | "arbeidsgiver" | "samarbeidspartner";

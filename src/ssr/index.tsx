@@ -4,9 +4,11 @@ import {
     fetchDecoratorHtml,
     parseDecoratorHTMLToReact,
     injectDecoratorServerSideDom,
+    injectDecoratorServerSide,
+    Components,
+    Elements,
 } from "./functions/ssr";
-import { injectDecoratorServerSide } from "./functions/ssr";
-import { Components, Elements } from "./functions/ssr";
+import { buildCspHeader } from "./functions/csp";
 
 export {
     injectDecoratorServerSide,
@@ -14,6 +16,7 @@ export {
     fetchDecoratorReact,
     fetchDecoratorHtml,
     parseDecoratorHTMLToReact,
+    buildCspHeader,
 };
 
 export type { Elements, Components, Params, Props, Env, Locale };

@@ -1,6 +1,3 @@
-import { Props } from "../../common/common-types";
-import { buildUrl, naisUrls } from "../../common/urls";
-
 let ready = false;
 
 export const isReady = () => {
@@ -47,20 +44,4 @@ export const msgSafetyCheck = (message: MessageEvent) => {
     const { origin, source } = message;
     // Only allow messages from own window
     return window.location.href.indexOf(origin) === 0 && source === window;
-};
-
-type UrlProps = Props & {
-    withParams?: boolean;
-};
-
-export const getDecoratorUrl = (props: UrlProps): string => {
-    if (props.env === "localhost") {
-        const { port, env, withParams, ...params } = props;
-        const url = `http://localhost:${port}/dekoratoren`;
-        return withParams ? buildUrl(url, params, true) : url;
-    } else {
-        const { env, withParams, ...params } = props;
-        const url = naisUrls[env] || naisUrls.prod;
-        return withParams ? buildUrl(url, params, true) : url;
-    }
 };
