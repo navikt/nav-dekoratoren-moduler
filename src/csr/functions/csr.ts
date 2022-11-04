@@ -1,9 +1,9 @@
-import { getDecoratorUrl } from "./utils";
+import { getDecoratorUrl } from "../../common/urls";
 import { Props } from "../../common/common-types";
 
 export const injectDecoratorClientSide = async (props: Props) => {
-    const url = getDecoratorUrl({ ...props });
-    const urlWithParams = getDecoratorUrl({ ...props, withParams: true });
+    const url = getDecoratorUrl(props, false, true);
+    const urlWithParams = getDecoratorUrl(props, true, true);
 
     const header = '<div id="decorator-header"></div>';
     const footer = '<div id="decorator-footer"></div>';
@@ -15,7 +15,7 @@ export const injectDecoratorClientSide = async (props: Props) => {
     document.body.insertAdjacentHTML("beforebegin", header);
     document.body.insertAdjacentHTML("beforeend", footer);
 
-    var script = document.createElement("script");
+    const script = document.createElement("script");
     script.async = true;
     script.src = `${url}/client.js`;
     document.body.appendChild(script);
