@@ -2,10 +2,9 @@ import { JSDOM } from "jsdom";
 import fetch from "node-fetch";
 import NodeCache from "node-cache";
 import { FunctionComponent, ReactElement } from "react";
-
+import { getDecoratorUrl } from "../../common/urls";
 import fs from "fs";
 import { Props } from "../../common/common-types";
-import { getDecoratorUrl } from "../../common/urls";
 
 const SECONDS_PER_MINUTE = 60;
 const FIVE_MINUTES_IN_SECONDS = 5 * SECONDS_PER_MINUTE;
