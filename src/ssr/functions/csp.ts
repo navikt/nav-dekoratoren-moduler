@@ -7,7 +7,7 @@ type CSPDirectives = Partial<CSPDirectivesAll>;
 const decoratorCspApi = "/api/csp";
 
 const fallbackDirectives = {
-    "default-src": ["*", "data:", "blob:", "unsafe-inline", "unsafe-eval"],
+    "default-src": ["*", "data:", "blob:", "'unsafe-inline'", "'unsafe-eval'"],
 };
 
 export const getCspHeader = async (
@@ -36,7 +36,7 @@ export const getCspHeader = async (
         })
         .catch((e) => {
             console.error(
-                `Error fetching decorator CSP, returning very permissive fallback directives! - ${e}`
+                `Error fetching decorator CSP, using permissive fallback directives! - ${e}`
             );
             return getCSP({ directives: fallbackDirectives });
         });

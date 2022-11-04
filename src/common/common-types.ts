@@ -27,7 +27,7 @@ export type EnvProps =
     | { env: NaisEnv; port?: undefined; dekoratorenUrl?: undefined }
     | {
           env: "localhost";
-          port?: number;
+          port?: number | string;
           dekoratorenUrl?: string;
       };
 
