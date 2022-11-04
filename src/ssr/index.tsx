@@ -8,7 +8,7 @@ import {
     Components,
     Elements,
 } from "./functions/ssr";
-import { getCspHeader } from "./functions/csp";
+import { buildCspHeader } from "./functions/csp";
 
 export {
     injectDecoratorServerSide,
@@ -16,7 +16,7 @@ export {
     fetchDecoratorReact,
     fetchDecoratorHtml,
     parseDecoratorHTMLToReact,
-    getCspHeader,
+    buildCspHeader,
 };
 
 export type { Elements, Components, Params, Props, Env, Locale };

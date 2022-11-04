@@ -10,7 +10,7 @@ const fallbackDirectives = {
     "default-src": ["*", "data:", "blob:", "'unsafe-inline'", "'unsafe-eval'"],
 };
 
-export const getCspHeader = async (
+export const buildCspHeader = async (
     appDirectives: CSPDirectives,
     envProps: EnvProps,
     retries = 3
@@ -21,7 +21,7 @@ export const getCspHeader = async (
         .then((res) => {
             if (!res.ok) {
                 if (retries > 0) {
-                    return getCspHeader(appDirectives, envProps, retries - 1);
+                    return buildCspHeader(appDirectives, envProps, retries - 1);
                 }
 
                 throw Error(`${res.status} ${res.statusText}`);

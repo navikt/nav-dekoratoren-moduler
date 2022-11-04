@@ -1,5 +1,5 @@
 const { enableFetchMocks } = require("jest-fetch-mock");
-const { getCspHeader } = require("./csp");
+const { buildCspHeader } = require("./csp");
 
 describe("CSP header builder function", () => {
     enableFetchMocks();
@@ -7,7 +7,7 @@ describe("CSP header builder function", () => {
     test("Should not include duplicate directives from decorator and app", async () => {
         fetch.mockResponseOnce(JSON.stringify({ "default-src": ["foo.bar"] }));
 
-        const cspHeader = await getCspHeader(
+        const cspHeader = await buildCspHeader(
             {
                 "default-src": ["foo.bar"],
             },
@@ -24,7 +24,7 @@ describe("CSP header builder function", () => {
             JSON.stringify({ "default-src": ["from.decorator"] })
         );
 
-        const cspHeader = await getCspHeader(
+        const cspHeader = await buildCspHeader(
             {
                 "default-src": ["from.app"],
             },
@@ -41,7 +41,7 @@ describe("CSP header builder function", () => {
             JSON.stringify({ "default-src": ["from.decorator"] })
         );
 
-        const cspHeader = await getCspHeader(
+        const cspHeader = await buildCspHeader(
             {
                 "default-src": ["from.app"],
             },
