@@ -26,7 +26,7 @@ const myAppDirectives = {
     'style-src': ['my.css.cdn.com']
 }
 
-const csp = buildCspHeader(myAppDirectives, {env: 'prod'})
+const csp = await buildCspHeader(myAppDirectives, {env: 'prod'})
 
 app.get('*', (req, res) => {
     res.setHeader('Content-Security-Policy', csp);
