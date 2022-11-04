@@ -12,7 +12,7 @@ export const injectDecoratorClientSide = async (props: Props) => {
 
     document.head.insertAdjacentHTML("beforeend", styles);
     document.head.insertAdjacentHTML("beforeend", scripts);
-    document.body.insertAdjacentHTML("beforebegin", header);
+    document.body.insertAdjacentHTML("afterbegin", header);
     document.body.insertAdjacentHTML("beforeend", footer);
 
     const script = document.createElement("script");
