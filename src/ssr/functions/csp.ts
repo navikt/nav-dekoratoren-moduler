@@ -20,10 +20,6 @@ export const buildCspHeader = async (
     return fetch(url)
         .then((res) => {
             if (!res.ok) {
-                if (retries > 0) {
-                    return buildCspHeader(appDirectives, envProps, retries - 1);
-                }
-
                 throw Error(`${res.status} ${res.statusText}`);
             }
 
@@ -35,6 +31,10 @@ export const buildCspHeader = async (
             });
         })
         .catch((e) => {
+            if (retries > 0) {
+                return buildCspHeader(appDirectives, envProps, retries - 1);
+            }
+
             console.error(
                 `Error fetching decorator CSP, using permissive fallback directives! - ${e}`
             );

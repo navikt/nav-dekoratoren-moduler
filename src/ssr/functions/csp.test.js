@@ -52,4 +52,19 @@ describe("CSP header builder function", () => {
 
         expect(cspHeader).toContain("from.app");
     });
+
+    test("Should return fallback directives on fetch error", async () => {
+        fetch.mockResponse("Not found", { status: 404 });
+
+        const cspHeader = await buildCspHeader(
+            {
+                "default-src": ["from.app"],
+            },
+            { env: "localhost" }
+        );
+
+        expect(cspHeader).toEqual(
+            "default-src * data: blob: 'unsafe-inline' 'unsafe-eval';"
+        );
+    });
 });
