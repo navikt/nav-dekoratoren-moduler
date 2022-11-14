@@ -3,10 +3,38 @@
 > Moduler til [nav-dekoratoren](https://github.com/navikt/nav-dekoratoren)
 
 ## Install
-
-```bash
+```
 npm install --save @navikt/nav-dekoratoren-moduler
 ```
+
+Obs! Pakkene publiseres nå kun i GitHub Packages registry'et. For å kunne installere nyere versjoner må pakker fra @navikt-orgen scopes til GitHub Packages.
+
+#### Ved lokal kjøring:
+- Legg til dette i `.npmrc`-fila for prosjektet. Opprett fila på rot i prosjektet hvis den ikke finnes.
+```
+@navikt:registry=https://npm.pkg.github.com
+```
+- Opprett et PAT med `read:packages` scope, og bruk dette som passord ved login.
+```
+npm login --registry https://npm.pkg.github.com
+```
+
+#### Ved bygg på Github Actions:
+- Sett registry url med f.eks. `actions/setup-node`:
+```
+- name: Setup node.js
+  uses: actions/setup-node@v3
+  with:
+    registry-url: 'https://npm.pkg.github.com'
+```
+- Sett `NODE_AUTH_TOKEN` på `npm ci`. `READER_TOKEN` er en navikt org-wide secret for dette formålet.
+```
+- name: Install dependencies
+  run: npm ci
+  env:
+    NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+```
+
 
 ## Bruk
 
