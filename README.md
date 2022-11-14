@@ -27,7 +27,7 @@ npm login --registry https://npm.pkg.github.com
   with:
     registry-url: 'https://npm.pkg.github.com'
 ```
-- Sett `NODE_AUTH_TOKEN` på `npm ci`. `READER_TOKEN` er en navikt org-wide secret for dette formålet.
+- Sett `NODE_AUTH_TOKEN` på `npm ci`. `READER_TOKEN` er en navikt org-wide secret til dette formålet.
 ```
 - name: Install dependencies
   run: npm ci
