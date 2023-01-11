@@ -64,6 +64,23 @@ app.get('*', (req, res) => {
 
 ```
 
+### logAmplitudeEvent
+
+Sender et event til Amplitude via dekoratørens klient.
+
+Eksempel på bruk:
+```tsx
+import { logAmplitudeEvent } from "@navikt/nav-dekoratoren-moduler";
+
+const myAmplitudeLogger = (event: string, data: Record<string, any>) => {
+    logAmplitudeEvent({
+        appName: "my-app",      // Navn på kallende applikasjon, sendes i data-feltet "app" til Amplitude (påkrevd)
+        eventName: event,       // Event-navn (påkrevd)
+        eventData: data         // Event-data objekt (valgfri)
+    })
+        .catch(e => console.log(`Oh no! ${e}`)) // Valgfri feilhåndtering. Funksjonen rejecter ved feil, men kaster ikke exceptions.
+}
+```
 
 ### < EnforceLoginLoader / >
 
