@@ -74,7 +74,7 @@ import { logAmplitudeEvent } from "@navikt/nav-dekoratoren-moduler";
 
 const myAmplitudeLogger = (event: string, data: Record<string, any>) => {
     logAmplitudeEvent({
-        appName: "my-app",      // Navn på kallende applikasjon, sendes i data-feltet "app" til Amplitude (påkrevd)
+        origin: "my-app",       // Navn på kallende applikasjon, tjeneste, etc. Sendes i data-feltet "origin" til Amplitude (påkrevd)
         eventName: event,       // Event-navn (påkrevd)
         eventData: data         // Event-data objekt (valgfri)
     })

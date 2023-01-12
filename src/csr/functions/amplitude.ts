@@ -1,5 +1,5 @@
 export type AmplitudeParams = {
-    appName: string;
+    origin: string;
     eventName: string;
     eventData?: Record<string, any>;
 };

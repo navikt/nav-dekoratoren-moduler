@@ -1,11 +1,11 @@
 declare global {
     interface Window {
         dekoratorenAmplitude: ({
-            appName,
+            origin,
             eventName,
             eventData,
         }?: {
-            appName: string;
+            origin: string;
             eventName: string;
             eventData?: EventData;
         }) => Promise<any>;
