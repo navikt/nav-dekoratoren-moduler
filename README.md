@@ -74,11 +74,11 @@ import { logAmplitudeEvent } from "@navikt/nav-dekoratoren-moduler";
 
 const myAmplitudeLogger = (event: string, data: Record<string, any>) => {
     logAmplitudeEvent({
-        origin: "my-app",       // Navn på kallende applikasjon, tjeneste, etc. Sendes i data-feltet "origin" til Amplitude (påkrevd)
+        origin: "my-app",       // Navn på kallende applikasjon. Sendes i data-feltet "origin" til Amplitude (påkrevd)
         eventName: event,       // Event-navn (påkrevd)
         eventData: data         // Event-data objekt (valgfri)
     })
-        .catch(e => console.log(`Oh no! ${e}`)) // Valgfri feilhåndtering. Funksjonen rejecter ved feil, men kaster ikke exceptions.
+        .catch(e => console.log(`Oh no! ${e}`)) // Funksjonen rejecter ved feil, men kaster ikke exceptions.
 }
 ```
 
