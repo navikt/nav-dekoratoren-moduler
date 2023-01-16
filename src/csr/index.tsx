@@ -7,6 +7,7 @@ import { urlLookupTable } from "./url-lookup-table/table";
 import { setParams } from "./functions/params";
 import { openChatbot } from "./functions/chatbot";
 import { Env, Params, Props, Locale } from "../common/common-types";
+import { AmplitudeParams, logAmplitudeEvent } from "./functions/amplitude";
 
 export {
     EnforceLoginLoader,
@@ -19,6 +20,7 @@ export {
     getUrlFromLookupTable,
     injectDecoratorClientSide,
     openChatbot,
+    logAmplitudeEvent,
 };
 
-export type { Auth, Params, Props, Env, Locale };
+export type { Auth, Params, Props, Env, Locale, AmplitudeParams };

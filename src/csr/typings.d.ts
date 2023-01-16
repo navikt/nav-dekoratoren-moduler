@@ -1,22 +1,15 @@
-/**
- * Default CSS definition for typescript,
- * will be overridden with file-specific definitions by rollup
- */
-declare module "*.css" {
-    const content: { [className: string]: string };
-    export default content;
+declare global {
+    interface Window {
+        dekoratorenAmplitude: ({
+            origin,
+            eventName,
+            eventData,
+        }?: {
+            origin: string;
+            eventName: string;
+            eventData?: EventData;
+        }) => Promise<any>;
+    }
 }
 
-declare module "*.less" {
-    export default any;
-}
-
-interface SvgrComponent
-    extends React.StatelessComponent<React.SVGAttributes<SVGElement>> {}
-
-declare module "*.svg" {
-    const svgUrl: string;
-    const svgComponent: SvgrComponent;
-    export default svgUrl;
-    export { svgComponent as ReactComponent };
-}
+export {};

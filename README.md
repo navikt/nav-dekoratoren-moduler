@@ -64,13 +64,30 @@ app.get('*', (req, res) => {
 
 ```
 
+### logAmplitudeEvent
+
+Sender events til Amplitude via dekoratørens klient.
+
+Eksempel på bruk:
+```tsx
+import { logAmplitudeEvent } from "@navikt/nav-dekoratoren-moduler";
+
+const myAmplitudeLogger = (event: string, data: Record<string, any>) => {
+    logAmplitudeEvent({
+        origin: "my-app",       // Navn på kallende applikasjon. Sendes i data-feltet "origin" til Amplitude (påkrevd)
+        eventName: event,       // Event-navn (påkrevd)
+        eventData: data         // Event-data objekt (valgfri)
+    })
+        .catch(e => console.log(`Oh no! ${e}`)) // Funksjonen rejecter ved feil, men kaster ikke exceptions.
+}
+```
 
 ### < EnforceLoginLoader / >
 
 Parameteret **enforceLogin** i dekoratøren sender brukeren til loginservice ved for lavt innloggingsnivå.
 Ulempen er at applikasjonen din kan laste før fronend-kallet mot innloggingslinje-api er ferdig og dekoratøren sender brukeren til loginservice.
 
-EnforceLoginLoader er en wrapper for applikasjonen som viser en spinner mens sjekken pågår. Funksjonen authCallback tigges etter vellykket innlogging og benyttes for å hente ut brukerens navn ved behov.
+EnforceLoginLoader er en wrapper for applikasjonen som viser en spinner mens sjekken pågår. Funksjonen authCallback trigges etter vellykket innlogging og benyttes for å hente ut brukerens navn ved behov.
 
 ```tsx
 import React, { Component } from "react";
