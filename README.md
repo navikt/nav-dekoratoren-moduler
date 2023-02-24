@@ -16,7 +16,7 @@ Obs! Pakkene publiseres nå kun i GitHub Packages registry'et. For å kunne inst
 ```
 - Opprett et PAT med `read:packages` scope, og bruk dette som passord ved login.
 ```
-npm login --registry https://npm.pkg.github.com
+npm login --registry=https://npm.pkg.github.com --auth-type=legacy
 ```
 
 #### Ved bygg på Github Actions:
