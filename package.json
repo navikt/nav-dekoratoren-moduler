@@ -23,7 +23,7 @@
         "publish:beta": "npm run build && npm version prerelease --preid beta && npm publish --access public --tag beta"
     },
     "dependencies": {
-        "csp-header": "^5.1.0",
+        "csp-header": "5.1.0",
         "html-react-parser": "3.0.12",
         "jsdom": "^16.6.0",
         "node-cache": "^5.1.2",
@@ -55,7 +55,7 @@
         "rollup-plugin-ts": "3.0.2",
         "ts-jest": "29.0.3",
         "tslib": "2.4.1",
-        "typescript": "4.8.4"
+        "typescript": "5.0.2"
     },
     "files": [
         "csr",
