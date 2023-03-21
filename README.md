@@ -3,6 +3,7 @@
 > Moduler til [nav-dekoratoren](https://github.com/navikt/nav-dekoratoren)
 
 ## Install
+
 ```
 npm install --save @navikt/nav-dekoratoren-moduler
 ```
@@ -10,24 +11,32 @@ npm install --save @navikt/nav-dekoratoren-moduler
 Obs! Pakkene publiseres nå kun i GitHub Packages registry'et. For å kunne installere nyere versjoner må pakker fra @navikt-orgen scopes til GitHub Packages.
 
 #### Ved lokal kjøring:
-- Legg til dette i `.npmrc`-fila for prosjektet. Opprett fila på rot i prosjektet hvis den ikke finnes.
+
+-   Legg til dette i `.npmrc`-fila for prosjektet. Opprett fila på rot i prosjektet hvis den ikke finnes.
+
 ```
 @navikt:registry=https://npm.pkg.github.com
 ```
-- Opprett et PAT med `read:packages` scope, og bruk dette som passord ved login.
+
+-   Opprett et PAT med `read:packages` scope, og bruk dette som passord ved login.
+
 ```
 npm login --registry=https://npm.pkg.github.com --auth-type=legacy
 ```
 
 #### Ved bygg på Github Actions:
-- Sett registry url med f.eks. `actions/setup-node`:
+
+-   Sett registry url med f.eks. `actions/setup-node`:
+
 ```
 - name: Setup node.js
   uses: actions/setup-node@v3
   with:
     registry-url: 'https://npm.pkg.github.com'
 ```
-- Sett `NODE_AUTH_TOKEN` på `npm ci`. `READER_TOKEN` er en navikt org-wide secret til dette formålet.
+
+-   Sett `NODE_AUTH_TOKEN` på `npm ci`. `READER_TOKEN` er en navikt org-wide secret til dette formålet.
+
 ```
 - name: Install dependencies
   run: npm ci
@@ -35,33 +44,32 @@ npm login --registry=https://npm.pkg.github.com --auth-type=legacy
     NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 ```
 
-
 ## Bruk
 
 ### buildCspHeader
 
 Bygger en Content-Security-Policy header som inkluderer dekoratørens påkrevde direktiver, kombinert med applikasjonens egne direktiver.<br>
 
-Funksjonen gjør et fetch-kall til dekoratøren for å hente gjeldende direktiver.<br>  
+Funksjonen gjør et fetch-kall til dekoratøren for å hente gjeldende direktiver.<br>
 
 Eksempel på bruk:
+
 ```tsx
-import { buildCspHeader } from '@navikt/nav-dekoratoren-moduler/ssr';
+import { buildCspHeader } from "@navikt/nav-dekoratoren-moduler/ssr";
 
 // Direktiver appen din benytter
 const myAppDirectives = {
-    'default-src': ['foo.bar.com'],
-    'style-src': ['my.css.cdn.com']
-}
+    "default-src": ["foo.bar.com"],
+    "style-src": ["my.css.cdn.com"],
+};
 
-const csp = await buildCspHeader(myAppDirectives, {env: 'prod'})
+const csp = await buildCspHeader(myAppDirectives, { env: "prod" });
 
-app.get('*', (req, res) => {
-    res.setHeader('Content-Security-Policy', csp);
-    
-    res.send('Hello!')
-})
+app.get("*", (req, res) => {
+    res.setHeader("Content-Security-Policy", csp);
 
+    res.send("Hello!");
+});
 ```
 
 ### logAmplitudeEvent
@@ -69,17 +77,17 @@ app.get('*', (req, res) => {
 Sender events til Amplitude via dekoratørens klient.
 
 Eksempel på bruk:
+
 ```tsx
 import { logAmplitudeEvent } from "@navikt/nav-dekoratoren-moduler";
 
 const myAmplitudeLogger = (event: string, data: Record<string, any>) => {
     logAmplitudeEvent({
-        origin: "my-app",       // Navn på kallende applikasjon. Sendes i data-feltet "origin" til Amplitude (påkrevd)
-        eventName: event,       // Event-navn (påkrevd)
-        eventData: data         // Event-data objekt (valgfri)
-    })
-        .catch(e => console.log(`Oh no! ${e}`)) // Funksjonen rejecter ved feil, men kaster ikke exceptions.
-}
+        origin: "my-app", // Navn på kallende applikasjon. Sendes i data-feltet "origin" til Amplitude (påkrevd)
+        eventName: event, // Event-navn (påkrevd)
+        eventData: data, // Event-data objekt (valgfri)
+    }).catch((e) => console.log(`Oh no! ${e}`)); // Funksjonen rejecter ved feil, men kaster ikke exceptions.
+};
 ```
 
 ### < EnforceLoginLoader / >
