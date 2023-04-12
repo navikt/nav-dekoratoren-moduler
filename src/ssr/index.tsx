@@ -1,4 +1,9 @@
-import { DecoratorParams, DecoratorLocale, DecoratorEnvProps, DecoratorFetchProps } from "../common/common-types";
+import {
+    DecoratorParams,
+    DecoratorLocale,
+    DecoratorEnvProps,
+    DecoratorFetchProps,
+} from "../common/common-types";
 import {
     fetchDecoratorReact,
     fetchDecoratorHtml,
@@ -19,4 +24,11 @@ export {
     buildCspHeader,
 };
 
-export type { DecoratorElements, Components, DecoratorParams, DecoratorLocale, DecoratorFetchProps, DecoratorEnvProps };
+export type {
+    DecoratorElements,
+    Components,
+    DecoratorParams,
+    DecoratorLocale,
+    DecoratorFetchProps,
+    DecoratorEnvProps,
+};

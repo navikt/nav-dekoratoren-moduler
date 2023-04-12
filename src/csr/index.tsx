@@ -6,7 +6,12 @@ import { getUrlFromLookupTable } from "./url-lookup-table/utils";
 import { urlLookupTable } from "./url-lookup-table/table";
 import { setParams } from "./functions/params";
 import { openChatbot } from "./functions/chatbot";
-import { DecoratorParams, DecoratorLocale, DecoratorEnvProps, DecoratorFetchProps } from "../common/common-types";
+import {
+    DecoratorParams,
+    DecoratorLocale,
+    DecoratorEnvProps,
+    DecoratorFetchProps,
+} from "../common/common-types";
 import { AmplitudeParams, logAmplitudeEvent } from "./functions/amplitude";
 
 export {
@@ -23,4 +28,11 @@ export {
     logAmplitudeEvent,
 };
 
-export type { Auth, DecoratorParams, DecoratorLocale, AmplitudeParams, DecoratorEnvProps, DecoratorFetchProps };
+export type {
+    Auth,
+    DecoratorParams,
+    DecoratorLocale,
+    AmplitudeParams,
+    DecoratorEnvProps,
+    DecoratorFetchProps,
+};
