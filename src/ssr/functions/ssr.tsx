@@ -77,18 +77,7 @@ const fetchDecorator = async (
                 return fetchDecorator(url, props, retries - 1);
             }
 
-            console.error(
-                `Failed to fetch decorator, falling back to elements for client-side rendering - Url: ${url} - Error: ${e}`
-            );
-
-            const csrElements = getCsrElements(props);
-
-            return {
-                DECORATOR_STYLES: csrElements.styles,
-                DECORATOR_SCRIPTS: `${csrElements.env}${csrElements.scripts}`,
-                DECORATOR_HEADER: csrElements.header,
-                DECORATOR_FOOTER: csrElements.footer,
-            };
+            throw e;
         });
 
 export const fetchDecoratorHtml = async (
@@ -105,7 +94,20 @@ export const fetchDecoratorHtml = async (
     }
     console.log(`Fetching ${url}`);
 
-    return fetchDecorator(url, props);
+    return fetchDecorator(url, props).catch((e) => {
+        console.error(
+            `Failed to fetch decorator, falling back to elements for client-side rendering - Url: ${url} - Error: ${e}`
+        );
+
+        const csrElements = getCsrElements(props);
+
+        return {
+            DECORATOR_STYLES: csrElements.styles,
+            DECORATOR_SCRIPTS: `${csrElements.env}${csrElements.scripts}`,
+            DECORATOR_HEADER: csrElements.header,
+            DECORATOR_FOOTER: csrElements.footer,
+        };
+    });
 };
 
 export type DecoratorComponents = {
