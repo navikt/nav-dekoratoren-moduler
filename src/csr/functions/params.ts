@@ -1,7 +1,7 @@
 import { isReady } from "./utils";
-import { Params } from "../../common/common-types";
+import { DecoratorParams } from "../../common/common-types";
 
-export const setParams = (params: Params) =>
+export const setParams = (params: DecoratorParams) =>
     isReady()
         .then(() =>
             window.postMessage(

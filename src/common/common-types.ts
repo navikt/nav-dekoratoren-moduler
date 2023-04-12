@@ -1,55 +1,53 @@
-export type Locale = "nb" | "nn" | "en" | "se" | "pl" | "uk" | "ru";
+export type DecoratorLocale = "nb" | "nn" | "en" | "se" | "pl" | "uk" | "ru";
 
-export type Language =
+export type DecoratorLanguageOption =
     | {
           url?: string;
-          locale: Locale;
+          locale: DecoratorLocale;
           handleInApp: true;
       }
     | {
           url: string;
-          locale: Locale;
+          locale: DecoratorLocale;
           handleInApp?: false;
       };
 
-export type Breadcrumb = {
+export type DecoratorBreadcrumb = {
     url: string;
     title: string;
     analyticsTitle?: string;
     handleInApp?: boolean;
 };
 
-export type Env = "localhost" | "prod" | "dev";
+export type DecoratorNaisEnv = "prod" | "dev" | "beta" | "betaTms";
 
-export type NaisEnv = Exclude<Env, "localhost">;
+export type DecoratorEnvProps =
+    | { env: "local"; localUrl: string }
+    | { env: DecoratorNaisEnv };
 
-export type EnvProps =
-    | { env: NaisEnv; port?: undefined; dekoratorenUrl?: undefined }
-    | {
-          env: "localhost";
-          port?: number | string;
-          dekoratorenUrl?: string;
-      };
+export type DecoratorFetchProps = {
+    csr?: boolean;
+    serviceDiscovery?: boolean;
+    params?: DecoratorParams;
+} & DecoratorEnvProps;
 
-export type Props = Params & EnvProps;
-
-export interface Params {
-    context?: "privatperson" | "arbeidsgiver" | "samarbeidspartner";
-    simple?: boolean;
-    simpleHeader?: boolean;
-    simpleFooter?: boolean;
-    enforceLogin?: boolean;
-    redirectToApp?: boolean;
-    redirectToUrl?: string;
-    level?: string;
-    language?: Locale;
-    availableLanguages?: Language[];
-    breadcrumbs?: Breadcrumb[];
-    utilsBackground?: "white" | "gray" | "transparent";
-    feedback?: boolean;
-    chatbot?: boolean;
-    chatbotVisible?: boolean;
-    urlLookupTable?: boolean;
-    shareScreen?: boolean;
-    logoutUrl?: string;
-}
+export type DecoratorParams = Partial<{
+    context: "privatperson" | "arbeidsgiver" | "samarbeidspartner";
+    simple: boolean;
+    simpleHeader: boolean;
+    simpleFooter: boolean;
+    enforceLogin: boolean;
+    redirectToApp: boolean;
+    redirectToUrl: string;
+    level: string;
+    language: DecoratorLocale;
+    availableLanguages: DecoratorLanguageOption[];
+    breadcrumbs: DecoratorBreadcrumb[];
+    utilsBackground: "white" | "gray" | "transparent";
+    feedback: boolean;
+    chatbot: boolean;
+    chatbotVisible: boolean;
+    urlLookupTable: boolean;
+    shareScreen: boolean;
+    logoutUrl: string;
+}>;

@@ -1,9 +1,9 @@
 import { msgSafetyCheck } from "./utils";
 import { setParams } from "./params";
-import { Breadcrumb } from "../../common/common-types";
+import { DecoratorBreadcrumb } from "../../common/common-types";
 
 export const onBreadcrumbClick = (() => {
-    let callback: (breadcrumb: Breadcrumb) => void;
+    let callback: (breadcrumb: DecoratorBreadcrumb) => void;
 
     const receiveMessage = (msg: MessageEvent) => {
         const { data } = msg;
@@ -24,10 +24,10 @@ export const onBreadcrumbClick = (() => {
         window.addEventListener("message", receiveMessage);
     }
 
-    return (_callback: (breadcrumb: Breadcrumb) => void) => {
+    return (_callback: (breadcrumb: DecoratorBreadcrumb) => void) => {
         callback = _callback;
     };
 })();
 
-export const setBreadcrumbs = (breadcrumbs: Breadcrumb[]) =>
+export const setBreadcrumbs = (breadcrumbs: DecoratorBreadcrumb[]) =>
     setParams({ breadcrumbs });

@@ -1,22 +1,42 @@
 import { getDecoratorUrl } from "../../common/urls";
-import { Props } from "../../common/common-types";
+import {
+    DecoratorEnvProps,
+    DecoratorFetchProps,
+    DecoratorParams,
+} from "../../common/common-types";
 
-export const injectDecoratorClientSide = async (props: Props) => {
-    const url = getDecoratorUrl(props, false, true);
-    const urlWithParams = getDecoratorUrl(props, true, true);
+type CSRProps = DecoratorEnvProps & { params?: DecoratorParams };
 
-    const header = '<div id="decorator-header"></div>';
-    const footer = '<div id="decorator-footer"></div>';
-    const scripts = `<div id="decorator-env" data-src="${urlWithParams}"></div>`;
-    const styles = `<link href="${url}/css/client.css" rel="stylesheet" />`;
+export const getCsrElements = (csrProps: CSRProps) => {
+    const props: DecoratorFetchProps = {
+        ...csrProps,
+        csr: true,
+        serviceDiscovery: false,
+    };
+
+    const envUrl = getDecoratorUrl(props);
+    const assetsUrl = getDecoratorUrl({ ...props, params: undefined });
+
+    return {
+        header: '<div id="decorator-header"></div>',
+        footer: '<div id="decorator-footer"></div>',
+        envElement: `<div id="decorator-env" data-src="${envUrl}"></div>`,
+        styles: `<link href="${assetsUrl}/css/client.css" rel="stylesheet" />`,
+        scriptSrc: `${assetsUrl}/client.js`,
+    };
+};
+
+export const injectDecoratorClientSide = async (csrProps: CSRProps) => {
+    const { envElement, header, scriptSrc, styles, footer } =
+        getCsrElements(csrProps);
 
     document.head.insertAdjacentHTML("beforeend", styles);
-    document.head.insertAdjacentHTML("beforeend", scripts);
+    document.head.insertAdjacentHTML("beforeend", envElement);
     document.body.insertAdjacentHTML("afterbegin", header);
     document.body.insertAdjacentHTML("beforeend", footer);
 
     const script = document.createElement("script");
     script.async = true;
-    script.src = `${url}/client.js`;
+    script.src = scriptSrc;
     document.body.appendChild(script);
 };

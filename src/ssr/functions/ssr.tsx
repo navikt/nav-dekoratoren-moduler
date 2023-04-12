@@ -4,28 +4,33 @@ import NodeCache from "node-cache";
 import { FunctionComponent, ReactElement } from "react";
 import { getDecoratorUrl } from "../../common/urls";
 import fs from "fs";
-import { Props } from "../../common/common-types";
+import { DecoratorFetchProps } from "../../common/common-types";
 
 const SECONDS_PER_MINUTE = 60;
 const FIVE_MINUTES_IN_SECONDS = 5 * SECONDS_PER_MINUTE;
+
 const cache = new NodeCache({
     stdTTL: FIVE_MINUTES_IN_SECONDS,
     checkperiod: SECONDS_PER_MINUTE,
 });
 
-export interface Elements {
+export type DecoratorElements = {
     DECORATOR_STYLES: string;
     DECORATOR_SCRIPTS: string;
     DECORATOR_HEADER: string;
     DECORATOR_FOOTER: string;
-}
+};
 
-export const fetchDecoratorHtml = async (props: Props): Promise<Elements> => {
-    const url = getDecoratorUrl(props, true, false);
+export const fetchDecoratorHtml = async (
+    props: DecoratorFetchProps
+): Promise<DecoratorElements> => {
+    const url = getDecoratorUrl(props);
 
     const cacheData = cache.get(url);
     if (cacheData) {
-        return new Promise((resolve) => resolve(cacheData as Elements));
+        return new Promise((resolve) =>
+            resolve(cacheData as DecoratorElements)
+        );
     }
 
     return fetch(url)
@@ -65,13 +70,15 @@ export interface Components {
 }
 
 export const fetchDecoratorReact = async (
-    props: Props
+    props: DecoratorFetchProps
 ): Promise<Components> => {
     const elements = await fetchDecoratorHtml(props);
     return parseDecoratorHTMLToReact(elements);
 };
 
-export const parseDecoratorHTMLToReact = (elements: Elements): Components => {
+export const parseDecoratorHTMLToReact = (
+    elements: DecoratorElements
+): Components => {
     const parse = require("html-react-parser");
     return {
         Styles: () => parse(elements.DECORATOR_STYLES) as ReactElement,
@@ -81,11 +88,11 @@ export const parseDecoratorHTMLToReact = (elements: Elements): Components => {
     };
 };
 
-export type Injector = Props & {
+type Injector = DecoratorFetchProps & {
     filePath: string;
 };
 
-export type DomInjector = Props & {
+type DomInjector = DecoratorFetchProps & {
     dom: JSDOM;
 };
 

@@ -1,11 +1,22 @@
-import { NaisEnv, Params, Props } from "./common-types";
+import { DecoratorFetchProps, DecoratorNaisEnv } from "./common-types";
 
-const naisUrls: { [env in NaisEnv]: string } = {
+type NaisUrls = Record<DecoratorNaisEnv, string>;
+
+const externalUrls: NaisUrls = {
     prod: "https://www.nav.no/dekoratoren",
     dev: "https://dekoratoren.ekstern.dev.nav.no",
+    beta: "https://dekoratoren-beta.dev.nav.no",
+    betaTms: "https://dekoratoren-beta-tms.dev.nav.no",
 };
 
-const objectToQueryString = (params: object) =>
+const serviceUrls: NaisUrls = {
+    prod: "http://nav-dekoratoren.personbruker",
+    dev: "http://nav-dekoratoren.personbruker",
+    beta: "http://nav-dekoratoren-beta.personbruker",
+    betaTms: "http://nav-dekoratoren-beta-tms.personbruker",
+};
+
+const objectToQueryString = (params: Record<string, any>) =>
     params
         ? Object.entries(params).reduce(
               (acc, [k, v], i) =>
@@ -18,32 +29,21 @@ const objectToQueryString = (params: object) =>
           )
         : "";
 
-const buildUrl = (url: string, params: Params, isCsr: boolean) => {
+const getNaisUrl = (env: DecoratorNaisEnv, serviceDiscovery?: boolean) => {
+    return (
+        (serviceDiscovery ? serviceUrls[env] : externalUrls[env]) ||
+        externalUrls.prod
+    );
+};
+
+export const getDecoratorUrl = (props: DecoratorFetchProps) => {
+    const { env, params, serviceDiscovery, csr } = props;
+    const baseUrl =
+        env === "local" ? props.localUrl : getNaisUrl(env, serviceDiscovery);
+
     if (!params) {
-        return url;
+        return baseUrl;
     }
 
-    return `${url}/${isCsr ? "env" : ""}${objectToQueryString(params)}`;
-};
-
-const getBaseUrl = (props: Props) => {
-    const { env } = props;
-
-    if (env === "localhost") {
-        const { port = 8088, dekoratorenUrl } = props;
-        return dekoratorenUrl || `http://localhost:${port}/dekoratoren`;
-    }
-
-    return naisUrls[env] || naisUrls.prod;
-};
-
-export const getDecoratorUrl = (
-    props: Props,
-    withParams: boolean,
-    isCsr: boolean
-) => {
-    const baseUrl = getBaseUrl(props);
-    const { dekoratorenUrl, env, port, ...params } = props;
-
-    return withParams ? buildUrl(baseUrl, params, isCsr) : baseUrl;
+    return `${baseUrl}/${csr ? "env" : ""}${objectToQueryString(params)}`;
 };
