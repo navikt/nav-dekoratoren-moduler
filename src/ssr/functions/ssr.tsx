@@ -72,13 +72,13 @@ const fetchDecorator = async (
         .catch((e) => {
             if (retries > 0) {
                 console.warn(
-                    `Failed to fetch decorator, retrying ${retries} more times - ${e}`
+                    `Failed to fetch decorator, retrying ${retries} more times - Url: ${url} - Error: ${e}`
                 );
                 return fetchDecorator(url, props, retries - 1);
             }
 
             console.error(
-                `Failed to fetch decorator, falling back to elements for client-side rendering - ${e}`
+                `Failed to fetch decorator, falling back to elements for client-side rendering - Url: ${url} - Error: ${e}`
             );
 
             const csrElements = getCsrElements(props);
