@@ -1,8 +1,8 @@
-import { DecoratorCSRProps } from "../../common/common-types";
+import { DecoratorFetchProps } from "../../common/common-types";
 import { getCsrElements } from "../../common/csr-elements";
 
 export const injectDecoratorClientSide = async (
-    csrProps: DecoratorCSRProps
+    csrProps: DecoratorFetchProps
 ) => {
     const { env, header, scriptSrc, styles, footer } = getCsrElements(csrProps);
 

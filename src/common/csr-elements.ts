@@ -1,11 +1,10 @@
-import { DecoratorCSRProps, DecoratorFetchProps } from "./common-types";
+import { DecoratorFetchProps, DecoratorUrlProps } from "./common-types";
 import { getDecoratorUrl } from "./urls";
 
-export const getCsrElements = (csrProps: DecoratorCSRProps) => {
-    const props: DecoratorFetchProps = {
+export const getCsrElements = (csrProps: DecoratorFetchProps) => {
+    const props: DecoratorUrlProps = {
         ...csrProps,
         csr: true,
-        serviceDiscovery: false,
     };
 
     const envUrl = getDecoratorUrl(props);

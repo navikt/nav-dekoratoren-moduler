@@ -1,4 +1,4 @@
-import { DecoratorFetchProps, DecoratorNaisEnv } from "./common-types";
+import { DecoratorNaisEnv, DecoratorUrlProps } from "./common-types";
 
 type NaisUrls = Record<DecoratorNaisEnv, string>;
 
@@ -36,12 +36,12 @@ const getNaisUrl = (env: DecoratorNaisEnv, serviceDiscovery?: boolean) => {
     );
 };
 
-export const getDecoratorUrl = (props: DecoratorFetchProps) => {
-    const { env, params, serviceDiscovery, csr } = props;
+export const getDecoratorUrl = (props: DecoratorUrlProps) => {
+    const { env, params, csr } = props;
     const baseUrl =
         env === "localhost"
             ? props.localUrl
-            : getNaisUrl(env, serviceDiscovery);
+            : getNaisUrl(env, props.serviceDiscovery);
 
     if (!params) {
         return baseUrl;

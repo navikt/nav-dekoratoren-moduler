@@ -23,17 +23,15 @@ export type DecoratorNaisEnv = "prod" | "dev" | "beta" | "betaTms";
 
 export type DecoratorEnvProps =
     | { env: "localhost"; localUrl: string }
-    | { env: DecoratorNaisEnv };
+    | { env: DecoratorNaisEnv; serviceDiscovery?: boolean };
 
 export type DecoratorFetchProps = {
-    csr?: boolean;
-    serviceDiscovery?: boolean;
     params?: DecoratorParams;
 } & DecoratorEnvProps;
 
-export type DecoratorCSRProps = DecoratorEnvProps & {
-    params?: DecoratorParams;
-};
+export type DecoratorUrlProps = {
+    csr?: boolean;
+} & DecoratorFetchProps;
 
 export type DecoratorParams = Partial<{
     context: "privatperson" | "arbeidsgiver" | "samarbeidspartner";

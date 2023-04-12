@@ -24,4 +24,9 @@ module.exports = {
         fetch: false,
         require: false,
     },
+    settings: {
+        react: {
+            version: "detect",
+        },
+    },
 };
