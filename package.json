@@ -19,6 +19,7 @@
         "start:ssr": "rollup -c rollup.config.ssr.js --bundleConfigAsCjs -w",
         "build:csr": "rollup -c rollup.config.csr.js",
         "build:ssr": "rollup -c rollup.config.ssr.js",
+        "lint": "eslint src/",
         "predeploy": "cd example && npm install && npm run build",
         "publish:beta": "npm run build && npm version prerelease --preid beta && npm publish --access public --tag beta"
     },
@@ -41,6 +42,8 @@
         "@types/react": "17.0.13",
         "@types/react-dom": "17.0.2",
         "@types/react-html-parser": "2.0.1",
+        "eslint": "8.38.0",
+        "eslint-plugin-jest": "27.2.1",
         "html-react-parser": "1.2.7",
         "jest": "29.2.2",
         "jest-fetch-mock": "3.0.3",

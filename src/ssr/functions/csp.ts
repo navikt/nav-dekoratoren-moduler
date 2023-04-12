@@ -1,5 +1,5 @@
 import { CSPDirectives as CSPDirectivesAll, getCSP } from "csp-header";
-import { EnvProps } from "../../common/common-types";
+import { DecoratorEnvProps } from "../../common/common-types";
 import { getDecoratorUrl } from "../../common/urls";
 
 type CSPDirectives = Partial<CSPDirectivesAll>;
@@ -12,10 +12,10 @@ const fallbackDirectives = {
 
 export const buildCspHeader = async (
     appDirectives: CSPDirectives,
-    envProps: EnvProps,
+    envProps: DecoratorEnvProps,
     retries = 3
 ): Promise<string> => {
-    const url = `${getDecoratorUrl(envProps, false, false)}${decoratorCspApi}`;
+    const url = `${getDecoratorUrl(envProps)}${decoratorCspApi}`;
 
     return fetch(url)
         .then((res) => {
