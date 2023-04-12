@@ -16,22 +16,23 @@ export const getCsrElements = (csrProps: CSRProps) => {
 
     const envUrl = getDecoratorUrl(props);
     const assetsUrl = getDecoratorUrl({ ...props, params: undefined });
+    const scriptSrc = `${assetsUrl}/client.js`;
 
     return {
-        header: '<div id="decorator-header"></div>',
-        footer: '<div id="decorator-footer"></div>',
-        envElement: `<div id="decorator-env" data-src="${envUrl}"></div>`,
+        header: '<div id="decorator-header"/>',
+        footer: '<div id="decorator-footer"/>',
+        env: `<div id="decorator-env" data-src="${envUrl}"/>`,
         styles: `<link href="${assetsUrl}/css/client.css" rel="stylesheet" />`,
-        scriptSrc: `${assetsUrl}/client.js`,
+        scripts: `<script src="${scriptSrc}" async/>`,
+        scriptSrc,
     };
 };
 
 export const injectDecoratorClientSide = async (csrProps: CSRProps) => {
-    const { envElement, header, scriptSrc, styles, footer } =
-        getCsrElements(csrProps);
+    const { env, header, scriptSrc, styles, footer } = getCsrElements(csrProps);
 
     document.head.insertAdjacentHTML("beforeend", styles);
-    document.head.insertAdjacentHTML("beforeend", envElement);
+    document.head.insertAdjacentHTML("beforeend", env);
     document.body.insertAdjacentHTML("afterbegin", header);
     document.body.insertAdjacentHTML("beforeend", footer);
 

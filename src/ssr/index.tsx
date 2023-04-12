@@ -10,7 +10,7 @@ import {
     parseDecoratorHTMLToReact,
     injectDecoratorServerSideDom,
     injectDecoratorServerSide,
-    Components,
+    DecoratorComponents,
     DecoratorElements,
 } from "./functions/ssr";
 import { buildCspHeader } from "./functions/csp";
@@ -26,7 +26,7 @@ export {
 
 export type {
     DecoratorElements,
-    Components,
+    DecoratorComponents,
     DecoratorParams,
     DecoratorLocale,
     DecoratorFetchProps,

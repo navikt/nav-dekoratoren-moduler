@@ -1,5 +1,4 @@
 import { JSDOM } from "jsdom";
-import fetch from "node-fetch";
 import NodeCache from "node-cache";
 import React, { FunctionComponent } from "react";
 import { getDecoratorUrl } from "../../common/urls";
@@ -63,23 +62,23 @@ export const fetchDecoratorHtml = async (
         });
 };
 
-export interface Components {
+export type DecoratorComponents = {
     Styles: FunctionComponent;
     Scripts: FunctionComponent;
     Header: FunctionComponent;
     Footer: FunctionComponent;
-}
+};
 
 export const fetchDecoratorReact = async (
     props: DecoratorFetchProps
-): Promise<Components> => {
+): Promise<DecoratorComponents> => {
     const elements = await fetchDecoratorHtml(props);
     return parseDecoratorHTMLToReact(elements);
 };
 
 export const parseDecoratorHTMLToReact = (
     elements: DecoratorElements
-): Components => {
+): DecoratorComponents => {
     return {
         Styles: () => <>{parse(elements.DECORATOR_STYLES)}</>,
         Scripts: () => <>{parse(elements.DECORATOR_SCRIPTS)}</>,
@@ -110,8 +109,7 @@ export const injectDecoratorServerSideDom = async ({
     ...props
 }: DomInjector): Promise<string> =>
     fetchDecoratorHtml(props).then((elements) => {
-        const head = dom.window.document.head;
-        const body = dom.window.document.body;
+        const { head, body } = dom.window.document;
         head.insertAdjacentHTML("beforeend", elements.DECORATOR_STYLES);
         head.insertAdjacentHTML("beforeend", elements.DECORATOR_SCRIPTS);
         body.insertAdjacentHTML("afterbegin", elements.DECORATOR_HEADER);
