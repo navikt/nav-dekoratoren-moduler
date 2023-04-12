@@ -1,10 +1,10 @@
+import React, { FunctionComponent } from "react";
+import fs from "fs";
 import { JSDOM } from "jsdom";
 import NodeCache from "node-cache";
-import React, { FunctionComponent } from "react";
-import { getDecoratorUrl } from "../../common/urls";
-import fs from "fs";
-import { DecoratorFetchProps } from "../../common/common-types";
 import parse from "html-react-parser";
+import { getDecoratorUrl } from "../../common/urls";
+import { DecoratorFetchProps } from "../../common/common-types";
 import { getCsrElements } from "../../common/csr-elements";
 
 const SECONDS_PER_MINUTE = 60;
@@ -66,7 +66,6 @@ const fetchDecorator = async (
                 DECORATOR_FOOTER: footer.trim(),
             };
 
-            cache.set(url, elements);
             return elements;
         })
         .catch((e) => {
@@ -85,29 +84,32 @@ export const fetchDecoratorHtml = async (
 ): Promise<DecoratorElements> => {
     const url = getDecoratorUrl(props);
 
-    const cacheData = cache.get(url);
+    const cacheData = cache.get<DecoratorElements>(url);
     if (cacheData) {
         console.log(`${url} was cached`);
-        return new Promise((resolve) =>
-            resolve(cacheData as DecoratorElements)
-        );
+        return Promise.resolve(cacheData);
     }
     console.log(`Fetching ${url}`);
 
-    return fetchDecorator(url, props).catch((e) => {
-        console.error(
-            `Failed to fetch decorator, falling back to elements for client-side rendering - Url: ${url} - Error: ${e}`
-        );
+    return fetchDecorator(url, props)
+        .then((decoratorElements) => {
+            cache.set(url, decoratorElements);
+            return decoratorElements;
+        })
+        .catch((e) => {
+            console.error(
+                `Failed to fetch decorator, falling back to elements for client-side rendering - Url: ${url} - Error: ${e}`
+            );
 
-        const csrElements = getCsrElements(props);
+            const csrElements = getCsrElements(props);
 
-        return {
-            DECORATOR_STYLES: csrElements.styles,
-            DECORATOR_SCRIPTS: `${csrElements.env}${csrElements.scripts}`,
-            DECORATOR_HEADER: csrElements.header,
-            DECORATOR_FOOTER: csrElements.footer,
-        };
-    });
+            return {
+                DECORATOR_STYLES: csrElements.styles,
+                DECORATOR_SCRIPTS: `${csrElements.env}${csrElements.scripts}`,
+                DECORATOR_HEADER: csrElements.header,
+                DECORATOR_FOOTER: csrElements.footer,
+            };
+        });
 };
 
 export type DecoratorComponents = {
