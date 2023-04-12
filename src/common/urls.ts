@@ -39,7 +39,9 @@ const getNaisUrl = (env: DecoratorNaisEnv, serviceDiscovery?: boolean) => {
 export const getDecoratorUrl = (props: DecoratorFetchProps) => {
     const { env, params, serviceDiscovery, csr } = props;
     const baseUrl =
-        env === "local" ? props.localUrl : getNaisUrl(env, serviceDiscovery);
+        env === "localhost"
+            ? props.localUrl
+            : getNaisUrl(env, serviceDiscovery);
 
     if (!params) {
         return baseUrl;

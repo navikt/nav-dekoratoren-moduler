@@ -22,7 +22,7 @@ export type DecoratorBreadcrumb = {
 export type DecoratorNaisEnv = "prod" | "dev" | "beta" | "betaTms";
 
 export type DecoratorEnvProps =
-    | { env: "local"; localUrl: string }
+    | { env: "localhost"; localUrl: string }
     | { env: DecoratorNaisEnv };
 
 export type DecoratorFetchProps = {
