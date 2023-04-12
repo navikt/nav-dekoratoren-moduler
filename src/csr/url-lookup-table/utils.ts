@@ -1,7 +1,7 @@
 import { urlLookupTable } from "./table";
-import { NaisEnv } from "../../common/common-types";
+import { DecoratorNaisEnv } from "../../common/common-types";
 
-export const getUrlFromLookupTable = (url: string, env: NaisEnv) => {
+export const getUrlFromLookupTable = (url: string, env: DecoratorNaisEnv) => {
     let match;
     const lookupTable = urlLookupTable[env];
     if (url && lookupTable) {
