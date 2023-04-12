@@ -5,6 +5,7 @@ import { getDecoratorUrl } from "../../common/urls";
 import fs from "fs";
 import { DecoratorFetchProps } from "../../common/common-types";
 import parse from "html-react-parser";
+import { getCsrElements } from "../../csr/functions/csr";
 
 const SECONDS_PER_MINUTE = 60;
 const FIVE_MINUTES_IN_SECONDS = 5 * SECONDS_PER_MINUTE;
@@ -21,6 +22,72 @@ export type DecoratorElements = {
     DECORATOR_FOOTER: string;
 };
 
+const fetchDecorator = async (
+    url: string,
+    props: DecoratorFetchProps,
+    retries = 3
+): Promise<DecoratorElements> =>
+    fetch(url)
+        .then((res) => {
+            return res.text();
+        })
+        .then((res) => {
+            const { document } = new JSDOM(res).window;
+
+            const styles = document.getElementById("styles")?.innerHTML;
+            if (!styles) {
+                throw new Error("Decorator styles element not found!");
+            }
+
+            const scripts = document.getElementById("scripts")?.innerHTML;
+            if (!scripts) {
+                throw new Error("Decorator scripts element not found!");
+            }
+
+            const header =
+                document.getElementById("header-withmenu")?.innerHTML;
+            if (!header) {
+                throw new Error("Decorator header element not found!");
+            }
+
+            const footer =
+                document.getElementById("footer-withmenu")?.innerHTML;
+            if (!footer) {
+                throw new Error("Decorator footer element not found!");
+            }
+
+            const elements = {
+                DECORATOR_STYLES: styles.trim(),
+                DECORATOR_SCRIPTS: scripts.trim(),
+                DECORATOR_HEADER: header.trim(),
+                DECORATOR_FOOTER: footer.trim(),
+            };
+
+            cache.set(url, elements);
+            return elements;
+        })
+        .catch((e) => {
+            if (retries > 0) {
+                console.warn(
+                    `Failed to fetch decorator, retrying ${retries} more times - ${e}`
+                );
+                return fetchDecorator(url, props, retries - 1);
+            }
+
+            console.error(
+                `Failed to fetch decorator, falling back to elements for client-side rendering - ${e}`
+            );
+
+            const csrElements = getCsrElements(props);
+
+            return {
+                DECORATOR_STYLES: csrElements.styles,
+                DECORATOR_SCRIPTS: `${csrElements.env}${csrElements.scripts}`,
+                DECORATOR_HEADER: csrElements.header,
+                DECORATOR_FOOTER: csrElements.footer,
+            };
+        });
+
 export const fetchDecoratorHtml = async (
     props: DecoratorFetchProps
 ): Promise<DecoratorElements> => {
@@ -33,33 +100,7 @@ export const fetchDecoratorHtml = async (
         );
     }
 
-    return fetch(url)
-        .then((res) => {
-            return res.text();
-        })
-        .then((res) => {
-            const { document } = new JSDOM(res).window;
-            const styles = document.getElementById("styles")?.innerHTML;
-            const scripts = document.getElementById("scripts")?.innerHTML;
-            const header =
-                document.getElementById("header-withmenu")?.innerHTML;
-            const footer =
-                document.getElementById("footer-withmenu")?.innerHTML;
-
-            if (!header || !footer || !styles || !scripts) {
-                throw new Error("'Elements doesn't exist");
-            }
-
-            const elements = {
-                DECORATOR_STYLES: styles.trim(),
-                DECORATOR_SCRIPTS: scripts.trim(),
-                DECORATOR_HEADER: header.trim(),
-                DECORATOR_FOOTER: footer.trim(),
-            };
-
-            cache.set(url, elements);
-            return elements;
-        });
+    return fetchDecorator(url, props);
 };
 
 export type DecoratorComponents = {
