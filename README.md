@@ -2,6 +2,11 @@
 
 > NPM-pakke med hjelpefunksjoner for [nav-dekoratoren](https://github.com/navikt/nav-dekoratoren) (header og footer på nav.no)
 
+### Breaking changes i versjon 2.0
+- Node.js v18 eller nyere er påkrevd, ettersom vi ikke lengre benytter node-fetch
+- Ved bruk av `env: "localhost"` må dekoratørens url nå alltid settes med parameteret `localUrl`. Dette erstatter parameterene `port` og `dakoratorenUrl`, og vi har ikke lengre en default localhost url.
+- Flere typer er endret eller har fått mer spesifikke navn (f.eks. `Params` -> `DecoratorParams`)
+
 ## Kom i gang
 
 ```
