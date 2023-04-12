@@ -31,6 +31,10 @@ export type DecoratorFetchProps = {
     params?: DecoratorParams;
 } & DecoratorEnvProps;
 
+export type DecoratorCSRProps = DecoratorEnvProps & {
+    params?: DecoratorParams;
+};
+
 export type DecoratorParams = Partial<{
     context: "privatperson" | "arbeidsgiver" | "samarbeidspartner";
     simple: boolean;

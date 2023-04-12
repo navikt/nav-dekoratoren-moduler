@@ -5,7 +5,7 @@ import { getDecoratorUrl } from "../../common/urls";
 import fs from "fs";
 import { DecoratorFetchProps } from "../../common/common-types";
 import parse from "html-react-parser";
-import { getCsrElements } from "../../csr/functions/csr";
+import { getCsrElements } from "../../common/csr-elements";
 
 const SECONDS_PER_MINUTE = 60;
 const FIVE_MINUTES_IN_SECONDS = 5 * SECONDS_PER_MINUTE;
