@@ -2,7 +2,7 @@
 
 > NPM-pakke med hjelpefunksjoner for [nav-dekoratoren](https://github.com/navikt/nav-dekoratoren) (header og footer på nav.no)
 
-## Install
+## Kom i gang
 
 ```
 npm install --save @navikt/nav-dekoratoren-moduler
@@ -46,91 +46,74 @@ npm login --registry=https://npm.pkg.github.com --auth-type=legacy
 
 # Laste inn dekoratøren
 
-Pakka inneholder flere funksjoner for å laste inn dekoratøren i appen din på ulike måter.
+Pakka inneholder funksjoner for å laste inn dekoratøren i appen din på ulike måter.
 
-## Server side rendering (anbefalt)
+Husk at du må sette outbound access policy for appen `nav-dekoratoren` i namespace `personbruker`
+dersom service discovery skal benyttes (se [nais doc](https://docs.nais.io/nais-application/access-policy) for oppsett av dette).
 
-Funksjonene for server-side fetch av dekoratøren tar inn parametre med følgende type:
+Samtlige funksjoner for fetch av dekoratøren tar inn parametre med følgende type:
 ```tsx
-export type DecoratorNaisEnv = 
-  | "prod"    // Henter produksjons-instansen av dekoratøren
-  | "dev"     // Henter "stabil" dev-instans
-  | "beta"    // Beta-instanser er ment for intern test-bruk og bør generelt ikke benyttes  
-  | "betaTms" // da de kan være ustabile i perioder
-  ;
+type DecoratorNaisEnv = 
+  | "prod"     // For produksjons-instans av dekoratøren
+  | "dev"      // For stabil dev-instans
+  | "beta"     // Beta dev-instanser ment for internt test-bruk
+  | "betaTms"; // Disse kan være ustabile i lengre perioder
 
-export type DecoratorEnvProps =
+type DecoratorEnvProps =
     // Dersom env er satt til localhost, kan du selv sette url for dekoratøren.
     // Benyttes dersom du f.eks. kjører dekoratøren lokalt på egen maskin, eller den nåes via en proxy
-    | { env: "localhost"; localUrl: string }
+    | { env: "localhost"; localUrl: string; }
     // Ved kjøring på nais, kan service discovery benyttes. Dekoratøren vil ta hentes via service hostname
-    // internt i k8s-clusteret. Husk at du må sette outbound access policy for appen "nav-dekoratoren"
-    // dersom service discovery benyttes (se nais app dokumentasjon for oppsett av dette)
-    | { env: DecoratorNaisEnv, serviceDiscovery?: boolean; };
+    // internt i k8s-clusteret.
+    | { env: DecoratorNaisEnv; serviceDiscovery?: boolean; };
 
-export type DecoratorFetchProps = {
-    csr?: boolean;
-    params?: DecoratorParams;
+type DecoratorFetchProps = {
+  // Parametre til dekoratøren, se dekoratørens readme for dokumentasjon
+  params?: DecoratorParams;
 } & DecoratorEnvProps;
 ```
+
+## Server side rendering (anbefalt)
+Server-side rendering av dekoratøren anbefales for optimal brukeropplevelse. Dersom kallet feiler, faller vi tilbake til client-side rendret dekoratør etter 3 retries.
 
 ### injectDecoratorServerSide / injectDecoratorServerSideDom
 
 Sett inn dekoratøren i en HTML-fil eller et JSDOM-objekt.
 
-Eksempel på bruk:
+Eksempler på bruk:
 ```tsx
-// Type
-export type Props = { params: DecoratorParams } & (
-  | { env: "prod" | "dev" | "beta" | "betaTms"; }
-  | { env: "localhost"; localUrl: string; }
-  );
-
-// Bruk med HTML-fil
+// Bruk med HTML-fil, uten service discovery
 import { injectDecoratorServerSide } from '@navikt/nav-dekoratoren-moduler/ssr'
 
-injectDecoratorServerSide({ env: "prod", filePath: "index.html", simple: true, chatbot: true })
+injectDecoratorServerSide({ env: "prod", filePath: "index.html", params: { context: "privatperson", simple: true } })
   .then((html) => {
     res.send(html);
   })
-  .catch((e) => {
-  ...
-  })
 
-// Bruk med JSDOM-objekt
+// Bruk med JSDOM-objekt, med service discovery
 import { injectDecoratorServerSideDom } from '@navikt/nav-dekoratoren-moduler/ssr'
 
-injectDecoratorServerSideDom({ env: "prod", dom: myJsDomObject, simple: true, chatbot: true })
+injectDecoratorServerSideDom({ env: "prod", serviceDiscovery: true, dom: myJsDomObject, params: { context: "arbeidsgiver" } })
   .then((html) => {
     res.send(html);
-  })
-  .catch((e) => {
-  ...
   })
 ```
 
 
 ### fetchDecoratorReact
 
-Hent React-komponentene til dekoratøren server-side.
+Henter dekoratøren som React-komponenter.
 
-```sh
-npm install @navikt/nav-dekoratoren-moduler node-cache node-fetch html-react-parser jsdom
-```
-
+Eksempel på bruk:
 ```tsx
-// Type
-export type Props = Params & (
-    | { env: "prod" | "dev"; }
-    | { env: "localhost"; port: number; }
-);
-
-// Bruk
 import { fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr'
+
 const Decorator = await fetchDecoratorReact({
     env: "prod",
-    simple: true,
-    chatbot: true
+    serviceDiscovery: true,
+    params: {
+      language: 'en',      
+    }
 });
 
 return (
@@ -140,7 +123,7 @@ return (
     </Head>
     <body>
         <Decorator.Header />
-        ...
+        <MyAppGoesHere />
         <Decorator.Footer />
     </body>
 )
@@ -148,67 +131,54 @@ return (
 
 ### fetchDecoratorHtml
 
-Hent elementene til dekoratøren server-side.
-
-```sh
-npm install @navikt/nav-dekoratoren-moduler node-cache node-fetch jsdom
-```
+Henter dekoratøren som HTML-elementer.
 
 ```tsx
-// Type
-export type Props = Params & (
-    | { env: "prod" | "dev"; }
-    | { env: "localhost"; port: number; }
-);
-
-// Bruk
 import { fetchDecoratorHtml } from '@navikt/nav-dekoratoren-moduler/ssr'
-fetchDecoratorHtml({ env: "dev", simple: true, chatbot: true })
-    // Cached innerHTML of { DECORATOR_HEADER, DECORATOR_FOOTER, DECORATOR_SCRIPTS, DECORATOR_STYLES }
-    .then((fragments) => {
-        res.render("index.html", fragments);
-    })
-    .catch((e) => {
-        ...
-    });
+
+const fragments = await fetchDecoratorHtml({ env: "dev", params: { context: "privatperson" } })
+
+const {
+  DECORATOR_STYLES,
+  DECORATOR_SCRIPTS,
+  DECORATOR_HEADER,
+  DECORATOR_FOOTER
+} = fragments;
+
+// Fragmenter settes inn i app HTML'en via en template engine el.
+
 ```
 
-Dersom du
+## Client-side rendering
+
+CSR vil gi en redusert brukeropplevelse pga layout-shifting/"flicker", og bør unngås om mulig.
 
 ### injectDecoratorClientSide
 
-Sett inn dekoratøren dynamisk client-side.
-
-:warning: CSR (Client-Side-Rendering) av dekoratøren kan påvirke ytelsen.
-
-```sh
-npm install @navikt/nav-dekoratoren-moduler
-```
+Setter inn dekoratøren i DOM'en client-side. Service discovery kan ikke benyttes ved client-side injection.
 
 ```tsx
-// Type
-export type Props = Params &
-    ({ env: "prod" | "dev" } | { env: "localhost"; port: number });
-
-// Bruk
 import { injectDecoratorClientSide } from "@navikt/nav-dekoratoren-moduler";
+
 injectDecoratorClientSide({
-    env: "localhost",
-    port: 8100,
-    simple: true,
-    chatbot: true,
+    env: "prod",
+    params: {
+      simple: true,
+      chatbot: true,
+    }
 });
 ```
 
 
-### URL override
+## Bruk med egendefinert dekoratør-url.
 
-Gitt at `env === localhost` vil URL til Dekoratøren kunne overstyres med `dekoratorenUrl`, som da erstatter `localhost:${port}/dekoratoren`. Nyttig hvis man trenger å angi URL til Dekoratøren i et Docker Compose-miljø hvor dekoratøren inkluderes fra en back-end service.
+Dersom `env` er satt til `localhost` må dekoratørens URL settes med parametret `localUrl`. Benyttes dersom du f.eks. kjører dekoratøren lokalt på egen maskin, eller den hentes via en proxy.
 
+Eksempel:
 ```tsx
 injectDecoratorServerSide({
     env: "localhost",
-    dekoratorenUrl: "http://dekoratoren:8088/dekoratoren",
+    localUrl: "http://localhost:8088/dekoratoren",
 });
 ```
 
