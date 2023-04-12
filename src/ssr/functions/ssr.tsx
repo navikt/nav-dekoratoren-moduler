@@ -86,10 +86,8 @@ export const fetchDecoratorHtml = async (
 
     const cacheData = cache.get<DecoratorElements>(url);
     if (cacheData) {
-        console.log(`${url} was cached`);
         return Promise.resolve(cacheData);
     }
-    console.log(`Fetching ${url}`);
 
     return fetchDecorator(url, props)
         .then((decoratorElements) => {
