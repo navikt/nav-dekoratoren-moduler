@@ -29,7 +29,10 @@ const fetchDecorator = async (
 ): Promise<DecoratorElements> =>
     fetch(url)
         .then((res) => {
-            return res.text();
+            if (res.ok) {
+                return res.text();
+            }
+            throw new Error(`${res.status} - ${res.statusText}`);
         })
         .then((res) => {
             const { document } = new JSDOM(res).window;
@@ -95,10 +98,12 @@ export const fetchDecoratorHtml = async (
 
     const cacheData = cache.get(url);
     if (cacheData) {
+        console.log(`${url} was cached`);
         return new Promise((resolve) =>
             resolve(cacheData as DecoratorElements)
         );
     }
+    console.log(`Fetching ${url}`);
 
     return fetchDecorator(url, props);
 };
