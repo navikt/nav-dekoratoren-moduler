@@ -1,11 +1,27 @@
-import { NaisEnv, Params, Props } from "./common-types";
+import { DecoratorNaisEnv, DecoratorUrlProps } from "./common-types";
 
-const naisUrls: { [env in NaisEnv]: string } = {
+type NaisUrls = Record<DecoratorNaisEnv, string>;
+
+const externalUrls: NaisUrls = {
     prod: "https://www.nav.no/dekoratoren",
     dev: "https://dekoratoren.ekstern.dev.nav.no",
+    beta: "https://dekoratoren-beta.dev.nav.no",
+    betaTms: "https://dekoratoren-beta-tms.dev.nav.no",
 };
 
-const objectToQueryString = (params: object) =>
+const serviceUrls: NaisUrls = {
+    prod: "http://nav-dekoratoren.personbruker",
+    dev: "http://nav-dekoratoren.personbruker",
+    beta: "http://nav-dekoratoren-beta.personbruker",
+    betaTms: "http://nav-dekoratoren-beta-tms.personbruker",
+};
+
+const naisGcpClusters: Record<string, true> = {
+    "dev-gcp": true,
+    "prod-gcp": true,
+};
+
+const objectToQueryString = (params: Record<string, any>) =>
     params
         ? Object.entries(params).reduce(
               (acc, [k, v], i) =>
@@ -18,32 +34,34 @@ const objectToQueryString = (params: object) =>
           )
         : "";
 
-const buildUrl = (url: string, params: Params, isCsr: boolean) => {
-    if (!params) {
-        return url;
-    }
+const isNaisApp = () =>
+    typeof process !== "undefined" &&
+    process.env.NAIS_CLUSTER_NAME &&
+    naisGcpClusters[process.env.NAIS_CLUSTER_NAME];
 
-    return `${url}/${isCsr ? "env" : ""}${objectToQueryString(params)}`;
-};
-
-const getBaseUrl = (props: Props) => {
-    const { env } = props;
-
-    if (env === "localhost") {
-        const { port = 8088, dekoratorenUrl } = props;
-        return dekoratorenUrl || `http://localhost:${port}/dekoratoren`;
-    }
-
-    return naisUrls[env] || naisUrls.prod;
-};
-
-export const getDecoratorUrl = (
-    props: Props,
-    withParams: boolean,
-    isCsr: boolean
+const getNaisUrl = (
+    env: DecoratorNaisEnv,
+    csr = false,
+    serviceDiscovery = true
 ) => {
-    const baseUrl = getBaseUrl(props);
-    const { dekoratorenUrl, env, port, ...params } = props;
+    const shouldUseServiceDiscovery = serviceDiscovery && !csr && isNaisApp();
 
-    return withParams ? buildUrl(baseUrl, params, isCsr) : baseUrl;
+    return (
+        (shouldUseServiceDiscovery ? serviceUrls[env] : externalUrls[env]) ||
+        externalUrls.prod
+    );
+};
+
+export const getDecoratorUrl = (props: DecoratorUrlProps) => {
+    const { env, params, csr } = props;
+    const baseUrl =
+        env === "localhost"
+            ? props.localUrl
+            : getNaisUrl(env, csr, props.serviceDiscovery);
+
+    if (!params) {
+        return baseUrl;
+    }
+
+    return `${baseUrl}/${csr ? "env" : ""}${objectToQueryString(params)}`;
 };

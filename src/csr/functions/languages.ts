@@ -1,9 +1,9 @@
 import { msgSafetyCheck } from "./utils";
 import { setParams } from "./params";
-import { Language } from "../../common/common-types";
+import { DecoratorLanguageOption } from "../../common/common-types";
 
 export const onLanguageSelect = (() => {
-    let callback: (language: Language) => void;
+    let callback: (language: DecoratorLanguageOption) => void;
 
     const receiveMessage = (msg: MessageEvent) => {
         const { data } = msg;
@@ -24,10 +24,11 @@ export const onLanguageSelect = (() => {
         window.addEventListener("message", receiveMessage);
     }
 
-    return (_callback: (language: Language) => void) => {
+    return (_callback: (language: DecoratorLanguageOption) => void) => {
         callback = _callback;
     };
 })();
 
-export const setAvailableLanguages = (availableLanguages: Language[]) =>
-    setParams({ availableLanguages });
+export const setAvailableLanguages = (
+    availableLanguages: DecoratorLanguageOption[]
+) => setParams({ availableLanguages });

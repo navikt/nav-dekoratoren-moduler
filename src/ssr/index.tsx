@@ -1,12 +1,17 @@
-import { Env, Params, Props, Locale } from "../common/common-types";
+import {
+    DecoratorParams,
+    DecoratorLocale,
+    DecoratorEnvProps,
+    DecoratorFetchProps,
+} from "../common/common-types";
 import {
     fetchDecoratorReact,
     fetchDecoratorHtml,
     parseDecoratorHTMLToReact,
     injectDecoratorServerSideDom,
     injectDecoratorServerSide,
-    Components,
-    Elements,
+    DecoratorComponents,
+    DecoratorElements,
 } from "./functions/ssr";
 import { buildCspHeader } from "./functions/csp";
 
@@ -19,4 +24,11 @@ export {
     buildCspHeader,
 };
 
-export type { Elements, Components, Params, Props, Env, Locale };
+export type {
+    DecoratorElements,
+    DecoratorComponents,
+    DecoratorParams,
+    DecoratorLocale,
+    DecoratorFetchProps,
+    DecoratorEnvProps,
+};

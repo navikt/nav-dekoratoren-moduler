@@ -2,7 +2,7 @@ const typescript = require("rollup-plugin-ts");
 const terser = require("@rollup/plugin-terser");
 
 const pkg = require("./package.json");
-let external = Object.keys(pkg.dependencies);
+const external = Object.keys(pkg.dependencies);
 
 module.exports = {
     input: ["src/ssr/index.tsx"],

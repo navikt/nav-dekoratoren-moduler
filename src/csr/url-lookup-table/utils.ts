@@ -1,17 +1,17 @@
 import { urlLookupTable } from "./table";
-import { NaisEnv } from "../../common/common-types";
+import { DecoratorNaisEnv } from "../../common/common-types";
 
-export const getUrlFromLookupTable = (url: string, env: NaisEnv) => {
-    let match;
-    const lookupTable = urlLookupTable[env];
-    if (url && lookupTable) {
-        Object.keys(lookupTable).some((key) => {
-            if (url.startsWith(key)) {
-                match = key;
-                return true;
-            }
-            return false;
-        });
+export const getUrlFromLookupTable = (url: string, env: DecoratorNaisEnv) => {
+    if (!url) {
+        return;
     }
+
+    const lookupTable = urlLookupTable[env];
+    if (!lookupTable) {
+        return;
+    }
+
+    const match = Object.keys(lookupTable).find((key) => url.startsWith(key));
+
     return match ? url.replace(match, lookupTable[match]) : url;
 };
