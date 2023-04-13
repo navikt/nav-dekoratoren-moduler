@@ -183,7 +183,7 @@ Eksempel på bruk med next.js (settes inn i en custom _document page):
 ```tsx
 import { fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr'
 
-class Document extends Document<DocumentProps> {
+class MyDocument extends Document<DocumentProps> {
     static async getInitialProps(ctx: DocumentContext) {
         const initialProps = await Document.getInitialProps(ctx);
         
