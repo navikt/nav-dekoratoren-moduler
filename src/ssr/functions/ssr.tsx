@@ -59,8 +59,6 @@ const fetchDecorator = async (
                 throw new Error("Decorator footer element not found!");
             }
 
-            console.log(`Fetched decorator from ${url}`);
-
             const elements = {
                 DECORATOR_STYLES: styles.trim(),
                 DECORATOR_SCRIPTS: scripts.trim(),
