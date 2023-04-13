@@ -16,6 +16,11 @@ const serviceUrls: NaisUrls = {
     betaTms: "http://nav-dekoratoren-beta-tms.personbruker",
 };
 
+const naisClusters: Record<string, true> = {
+    "dev-gcp": true,
+    "prod-gcp": true,
+};
+
 const objectToQueryString = (params: Record<string, any>) =>
     params
         ? Object.entries(params).reduce(
@@ -29,9 +34,15 @@ const objectToQueryString = (params: Record<string, any>) =>
           )
         : "";
 
-const getNaisUrl = (env: DecoratorNaisEnv, serviceDiscovery?: boolean) => {
+const isNaisApp = () =>
+    typeof process !== "undefined" &&
+    naisClusters[process.env.NAIS_CLUSTER_NAME as string];
+
+const getNaisUrl = (env: DecoratorNaisEnv, serviceDiscovery = true) => {
+    const shouldUseServiceDiscovery = serviceDiscovery && isNaisApp();
+
     return (
-        (serviceDiscovery ? serviceUrls[env] : externalUrls[env]) ||
+        (shouldUseServiceDiscovery ? serviceUrls[env] : externalUrls[env]) ||
         externalUrls.prod
     );
 };

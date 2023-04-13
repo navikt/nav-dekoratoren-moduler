@@ -2,9 +2,14 @@
 
 > NPM-pakke med hjelpefunksjoner for [nav-dekoratoren](https://github.com/navikt/nav-dekoratoren) (header og footer på nav.no)
 
-### Breaking changes i versjon 2.0
+### Nytt i versjon 2.0
+
+#### Breaking changes
 - Node.js v18 eller nyere er påkrevd, ettersom vi ikke lengre benytter node-fetch
-- Ved bruk av `env: "localhost"` må dekoratørens url nå alltid settes med parameteret `localUrl`. Dette erstatter parameterene `port` og `dakoratorenUrl`, og vi har ikke lengre en default localhost url.
+- Server-side fetch-funksjoner benytter nå [service discovery](https://docs.nais.io/clusters/service-discovery) som default.
+- Parametre til fetch-funksjoner er endret, slik at query-parametre til dekoratøren nå er et separat objekt.<br/>
+Eksempel 1.x -> 2.0: `{ env: "prod", context: "arbeidsgiver", simple: true}` -> `{ env: "prod", params: { context: "arbeidsgiver", simple: true }}`)
+- Ved bruk av `env: "localhost"` må dekoratørens url nå alltid settes med parameteret `localUrl`. Dette erstatter parameterene `port` og `dekoratorenUrl`, og vi har ikke lengre en default localhost url.
 - Flere typer er endret eller har fått mer spesifikke navn (f.eks. `Params` -> `DecoratorParams`)
 
 ## Kom i gang
@@ -49,12 +54,9 @@ npm login --registry=https://npm.pkg.github.com --auth-type=legacy
     NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 ```
 
-# Laste inn dekoratøren
+# Hente dekoratøren
 
 Pakka inneholder funksjoner for å laste inn dekoratøren i appen din på ulike måter.
-
-Husk at du må sette outbound access policy for appen `nav-dekoratoren` i namespace `personbruker`
-dersom service discovery skal benyttes (se [nais doc](https://docs.nais.io/nais-application/access-policy) for oppsett av dette).
 
 Samtlige funksjoner for fetch av dekoratøren tar inn parametre med følgende type:
 ```tsx
@@ -68,14 +70,41 @@ type DecoratorEnvProps =
     // Dersom env er satt til localhost, kan du selv sette url for dekoratøren.
     // Benyttes dersom du f.eks. kjører dekoratøren lokalt på egen maskin, eller den nåes via en proxy
     | { env: "localhost"; localUrl: string; }
-    // Ved kjøring på nais, kan service discovery benyttes. Dekoratøren vil ta hentes via service hostname
-    // internt i k8s-clusteret.
     | { env: DecoratorNaisEnv; serviceDiscovery?: boolean; };
 
 type DecoratorFetchProps = {
-  // Parametre til dekoratøren, se dekoratørens readme for dokumentasjon
+  // Query-parametre til dekoratøren, se dekoratørens readme for dokumentasjon
   params?: DecoratorParams;
 } & DecoratorEnvProps;
+```
+
+### Service discovery
+Server-side fetch-funksjonene benytter [service discovery](https://docs.nais.io/clusters/service-discovery) som default fra versjon 2.0.
+Vær obs på at dette kun fungerer ved kjøring på dev-gcp eller prod-gcp nais-clusterne. Dersom appen ikke kjører i ett av disse clusterne, vil vi falle tilbake til å kalle eksterne ingresser. 
+
+Du kan også sette parameteret `serviceDiscovery: false` for å alltid benytte eksterne ingresser. 
+
+### Access policy
+Se [nais doc](https://docs.nais.io/nais-application/access-policy) for oppsett av access policy.
+
+#### Service discovery (default)
+Ved bruk av service discovery må følgende regel inkluderes i access policy:
+```yaml
+accessPolicy:
+  outbound:
+    rules:
+      - application: nav-dekoratoren
+        namespace: personbruker
+```
+
+#### Eksterne ingresser
+Dersom service discovery ikke benyttes, vil dekoratørens eksterne ingresser kalles. Følgende access policy kreves:
+```yaml
+accessPolicy:
+  outbound:
+    external:
+      - host: www.nav.no                      # for prod
+      - host: dekoratoren.ekstern.dev.nav.no  # for dev
 ```
 
 ## Server side rendering (anbefalt)
