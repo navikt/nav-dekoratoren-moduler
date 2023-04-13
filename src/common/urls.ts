@@ -39,8 +39,12 @@ const isNaisApp = () =>
     process.env.NAIS_CLUSTER_NAME &&
     naisGcpClusters[process.env.NAIS_CLUSTER_NAME];
 
-const getNaisUrl = (env: DecoratorNaisEnv, serviceDiscovery = true) => {
-    const shouldUseServiceDiscovery = serviceDiscovery && isNaisApp();
+const getNaisUrl = (
+    env: DecoratorNaisEnv,
+    csr = false,
+    serviceDiscovery = true
+) => {
+    const shouldUseServiceDiscovery = serviceDiscovery && !csr && isNaisApp();
 
     return (
         (shouldUseServiceDiscovery ? serviceUrls[env] : externalUrls[env]) ||
@@ -53,7 +57,7 @@ export const getDecoratorUrl = (props: DecoratorUrlProps) => {
     const baseUrl =
         env === "localhost"
             ? props.localUrl
-            : getNaisUrl(env, props.serviceDiscovery);
+            : getNaisUrl(env, csr, props.serviceDiscovery);
 
     if (!params) {
         return baseUrl;
