@@ -96,7 +96,7 @@ fetchDecoratorHtml({
 ### Access policy
 Se [nais doc](https://docs.nais.io/nais-application/access-policy) for oppsett av access policy.
 
-#### Service discovery (default)
+#### Service discovery (default fra versjon 2.0)
 Ved bruk av service discovery må følgende regel inkluderes i access policy:
 ```yaml
 accessPolicy:
@@ -106,7 +106,7 @@ accessPolicy:
         namespace: personbruker
 ```
 
-#### Eksterne ingresser
+#### Eksterne ingresser (1.9 eller tidligere)
 Dersom service discovery ikke benyttes, vil dekoratørens eksterne ingresser kalles. Dette gjelder ved bruk av versjon 1.9 eller tidligere, eller dersom `serviceDiscovery: false` er satt.
 
 Følgende access policy kreves:
