@@ -107,7 +107,9 @@ accessPolicy:
 ```
 
 #### Eksterne ingresser
-Dersom service discovery ikke benyttes, vil dekoratørens eksterne ingresser kalles. Følgende access policy kreves:
+Dersom service discovery ikke benyttes, vil dekoratørens eksterne ingresser kalles. Dette gjelder ved bruk av versjon 1.9 eller tidligere, eller dersom `serviceDiscovery: false` er satt.
+
+Følgende access policy kreves:
 ```yaml
 accessPolicy:
   outbound:
