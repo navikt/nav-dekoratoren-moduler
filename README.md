@@ -202,12 +202,14 @@ class MyDocument extends Document<DocumentProps> {
         
         return (
             <Html lang={"no"}>
-                <Head>{<Decorator.Styles />}</Head>
+                <Head>
+                  <Decorator.Styles />
+                </Head>
                 <body>
-                    {<Decorator.Header />}
+                    <Decorator.Header />
                     <Main />
-                    {<Decorator.Footer />}
-                    {<Decorator.Scripts />}
+                    <Decorator.Footer />
+                    <Decorator.Scripts />
                     <NextScript />
                 </body>
             </Html>
