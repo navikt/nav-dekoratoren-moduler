@@ -5,8 +5,8 @@ type NaisUrls = Record<DecoratorNaisEnv, string>;
 const externalUrls: NaisUrls = {
     prod: "https://www.nav.no/dekoratoren",
     dev: "https://dekoratoren.ekstern.dev.nav.no",
-    beta: "https://dekoratoren-beta.dev.nav.no",
-    betaTms: "https://dekoratoren-beta-tms.dev.nav.no",
+    beta: "https://dekoratoren-beta.intern.dev.nav.no",
+    betaTms: "https://dekoratoren-beta-tms.intern.dev.nav.no",
 };
 
 const serviceUrls: NaisUrls = {
