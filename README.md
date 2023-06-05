@@ -3,12 +3,13 @@
 > NPM-pakke med hjelpefunksjoner for [nav-dekoratoren](https://github.com/navikt/nav-dekoratoren) (header og footer på nav.no)
 
 ### Breaking changes i versjon 2.0
-- Node.js v18 eller nyere er påkrevd, ettersom vi ikke lengre benytter node-fetch. (Node 18 har fetch innebygd)
-- Server-side fetch-funksjoner benytter nå [service discovery](#service-discovery) som default. Dette krever visse [access policy](#access-policy) regler.
-- Parametre til fetch-funksjoner er endret, slik at query-parametre til dekoratøren nå er et separat objekt.<br/>
-Eksempel 1.x -> 2.0: `{ env: "prod", context: "arbeidsgiver", simple: true}` -> `{ env: "prod", params: { context: "arbeidsgiver", simple: true }}`)
-- Ved bruk av `env: "localhost"` må dekoratørens url nå alltid settes med parameteret `localUrl`. Dette erstatter parameterene `port` og `dekoratorenUrl`, og vi har ikke lengre en default localhost url.
-- Flere typer er endret eller har fått mer spesifikke navn (f.eks. `Params` -> `DecoratorParams`)
+
+-   Node.js v18 eller nyere er påkrevd, ettersom vi ikke lengre benytter node-fetch. (Node 18 har fetch innebygd)
+-   Server-side fetch-funksjoner benytter nå [service discovery](#service-discovery) som default. Dette krever visse [access policy](#access-policy) regler.
+-   Parametre til fetch-funksjoner er endret, slik at query-parametre til dekoratøren nå er et separat objekt.<br/>
+    Eksempel 1.x -> 2.0: `{ env: "prod", context: "arbeidsgiver", simple: true}` -> `{ env: "prod", params: { context: "arbeidsgiver", simple: true }}`)
+-   Ved bruk av `env: "localhost"` må dekoratørens url nå alltid settes med parameteret `localUrl`. Dette erstatter parameterene `port` og `dekoratorenUrl`, og vi har ikke lengre en default localhost url.
+-   Flere typer er endret eller har fått mer spesifikke navn (f.eks. `Params` -> `DecoratorParams`)
 
 ## Kom i gang
 
@@ -57,30 +58,32 @@ npm login --registry=https://npm.pkg.github.com --auth-type=legacy
 Pakka inneholder funksjoner for å laste inn dekoratøren i apper på ulike måter.
 
 Samtlige funksjoner for fetch av dekoratøren tar inn parametre med følgende type:
+
 ```tsx
-type DecoratorNaisEnv = 
-  | "prod"     // For produksjons-instans av dekoratøren
-  | "dev"      // For stabil dev-instans
-  | "beta"     // Beta dev-instanser ment for internt test-bruk
-  | "betaTms"; // Disse kan være ustabile i lengre perioder
+type DecoratorNaisEnv =
+    | "prod" // For produksjons-instans av dekoratøren
+    | "dev" // For stabil dev-instans
+    | "beta" // Beta dev-instanser ment for internt test-bruk
+    | "betaTms"; // Disse kan være ustabile i lengre perioder
 
 type DecoratorEnvProps =
     // Dersom env er satt til localhost, må du selv sette url for dekoratøren.
-    | { env: "localhost"; localUrl: string; }
+    | { env: "localhost"; localUrl: string }
     // For nais-miljøer settes url automatisk
-    | { env: DecoratorNaisEnv; serviceDiscovery?: boolean; };
+    | { env: DecoratorNaisEnv; serviceDiscovery?: boolean };
 
 type DecoratorFetchProps = {
-  // Query-parametre til dekoratøren, se dekoratørens readme for dokumentasjon
-  params?: DecoratorParams;
+    // Query-parametre til dekoratøren, se dekoratørens readme for dokumentasjon
+    params?: DecoratorParams;
 } & DecoratorEnvProps;
 ```
 
 <span id="service-discovery"/>
 
 ### Service discovery
+
 Server-side fetch-funksjonene benytter [service discovery](https://docs.nais.io/clusters/service-discovery) som default fra versjon 2.0.
-Vær obs på at dette kun fungerer ved kjøring på dev-gcp eller prod-gcp nais-clusterne. Dersom appen ikke kjører i ett av disse clusterne, vil vi falle tilbake til å kalle eksterne ingresser. 
+Vær obs på at dette kun fungerer ved kjøring på dev-gcp eller prod-gcp nais-clusterne. Dersom appen ikke kjører i ett av disse clusterne, vil vi falle tilbake til å kalle eksterne ingresser.
 
 Du kan også sette parameteret `serviceDiscovery: false` for å alltid benytte eksterne ingresser.
 
@@ -88,37 +91,43 @@ Du kan også sette parameteret `serviceDiscovery: false` for å alltid benytte e
 fetchDecoratorHtml({
     env: "prod",
     serviceDiscovery: false,
-})
+});
 ```
 
 <span id="access-policy"/>
 
 ### Access policy
+
 Se [nais doc](https://docs.nais.io/nais-application/access-policy) for oppsett av access policy.
 
 #### Service discovery (default fra versjon 2.0)
+
 Ved bruk av service discovery må følgende regel inkluderes i access policy:
+
 ```yaml
 accessPolicy:
-  outbound:
-    rules:
-      - application: nav-dekoratoren
-        namespace: personbruker
+    outbound:
+        rules:
+            - application: nav-dekoratoren
+              namespace: personbruker
 ```
 
 #### Eksterne ingresser (1.9 eller tidligere)
+
 Dersom service discovery ikke benyttes, vil dekoratørens eksterne ingresser kalles. Dette gjelder ved bruk av versjon 1.9 eller tidligere, eller dersom `serviceDiscovery: false` er satt.
 
 Følgende access policy kreves:
+
 ```yaml
 accessPolicy:
-  outbound:
-    external:
-      - host: www.nav.no                      # for prod
-      - host: dekoratoren.ekstern.dev.nav.no  # for dev
+    outbound:
+        external:
+            - host: www.nav.no # for prod
+            - host: dekoratoren.ekstern.dev.nav.no # for dev
 ```
 
 ## Server side rendering (anbefalt)
+
 Server-side rendering av dekoratøren anbefales for optimal brukeropplevelse. Dersom kallet feiler (etter 3 retries), faller vi tilbake til statiske placeholder-elementer som client-side rendres.
 
 ### injectDecoratorServerSide / injectDecoratorServerSideDom
@@ -126,31 +135,31 @@ Server-side rendering av dekoratøren anbefales for optimal brukeropplevelse. De
 Setter inn dekoratøren i en HTML-fil eller et JSDOM-objekt, og returnerer en HTML-string.
 
 Bruk med HTML-fil:
+
 ```tsx
-import { injectDecoratorServerSide } from '@navikt/nav-dekoratoren-moduler/ssr'
+import { injectDecoratorServerSide } from "@navikt/nav-dekoratoren-moduler/ssr";
 
 injectDecoratorServerSide({
     env: "prod",
     filePath: "index.html",
-    params: { context: "privatperson", simple: true }
-})
-    .then((html) => {
-      res.send(html);
-    })
+    params: { context: "privatperson", simple: true },
+}).then((html) => {
+    res.send(html);
+});
 ```
 
 Bruk med JSDOM-objekt:
+
 ```tsx
-import { injectDecoratorServerSideDom } from '@navikt/nav-dekoratoren-moduler/ssr'
+import { injectDecoratorServerSideDom } from "@navikt/nav-dekoratoren-moduler/ssr";
 
 injectDecoratorServerSideDom({
     env: "prod",
     dom: myJsDomObject,
-    params: { context: "privatperson", simple: true }
-})
-    .then((html) => {
-      res.send(html);
-    })
+    params: { context: "privatperson", simple: true },
+}).then((html) => {
+    res.send(html);
+});
 ```
 
 ### fetchDecoratorHtml
@@ -158,52 +167,53 @@ injectDecoratorServerSideDom({
 Henter dekoratøren som HTML-fragmenter.
 
 Eksempel på bruk:
+
 ```tsx
-import { fetchDecoratorHtml } from '@navikt/nav-dekoratoren-moduler/ssr'
+import { fetchDecoratorHtml } from "@navikt/nav-dekoratoren-moduler/ssr";
 
 const fragments = await fetchDecoratorHtml({
     env: "dev",
-    params: { context: "privatperson" }
+    params: { context: "privatperson" },
 });
 
 const {
-  DECORATOR_STYLES,
-  DECORATOR_SCRIPTS,
-  DECORATOR_HEADER,
-  DECORATOR_FOOTER
+    DECORATOR_STYLES,
+    DECORATOR_SCRIPTS,
+    DECORATOR_HEADER,
+    DECORATOR_FOOTER,
 } = fragments;
 
 // Sett inn fragmenter i app-html'en med f.eks. en template engine
-
 ```
 
 ### fetchDecoratorReact
 
 Henter dekoratøren som React-komponenter. Kan benyttes med React rammeverk som støtter server-side rendering.
 
-Eksempel på bruk med next.js (settes inn i en custom _document page):
+Eksempel på bruk med next.js (settes inn i en custom \_document page):
+
 ```tsx
-import { fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr'
+import { fetchDecoratorReact } from "@navikt/nav-dekoratoren-moduler/ssr";
 
 class MyDocument extends Document<DocumentProps> {
     static async getInitialProps(ctx: DocumentContext) {
         const initialProps = await Document.getInitialProps(ctx);
-        
+
         const Decorator = await fetchDecoratorReact({
             env: "prod",
-            params: { language: "no", context: "arbeidsgiver" }
+            params: { language: "no", context: "arbeidsgiver" },
         });
-        
+
         return { ...initialProps, Decorator };
     }
-    
+
     render() {
         const { Decorator } = this.props;
-        
+
         return (
             <Html lang={"no"}>
                 <Head>
-                  <Decorator.Styles />
+                    <Decorator.Styles />
                 </Head>
                 <body>
                     <Decorator.Header />
@@ -227,15 +237,16 @@ CSR vil gi en redusert brukeropplevelse pga layout-shifting/"pop-in" når header
 Setter inn dekoratøren i DOM'en client-side. Service discovery kan ikke benyttes ved client-side injection.
 
 Eksempel på bruk:
+
 ```tsx
 import { injectDecoratorClientSide } from "@navikt/nav-dekoratoren-moduler";
 
 injectDecoratorClientSide({
     env: "prod",
     params: {
-      simple: true,
-      chatbot: true,
-    }
+        simple: true,
+        chatbot: true,
+    },
 });
 ```
 
@@ -244,6 +255,7 @@ injectDecoratorClientSide({
 Dersom `env` er satt til `localhost` må dekoratørens URL settes med parametret `localUrl`. Benyttes dersom du f.eks. kjører dekoratøren lokalt på egen maskin, eller den hentes via en proxy.
 
 Eksempel:
+
 ```tsx
 injectDecoratorServerSide({
     filePath: "index.html",
@@ -293,7 +305,7 @@ const myAmplitudeLogger = (event: string, data: Record<string, any>) => {
     logAmplitudeEvent({
         origin: "my-app", // Navn på kallende applikasjon. Sendes i data-feltet "origin" til Amplitude (påkrevd)
         eventName: event, // Event-navn (påkrevd)
-        eventData: data,  // Event-data objekt (valgfri)
+        eventData: data, // Event-data objekt (valgfri)
     }).catch((e) => console.log(`Oh no! ${e}`)); // Funksjonen rejecter ved feil
 };
 ```
@@ -367,12 +379,12 @@ setBreadcrumbs([
 Kalles med `breadcrumb`-parametre dersom `handleInApp` var satt til `true`. Kan benyttes for client-side routing.
 
 ```tsx
-import { onBreadcrumbClick } from '@navikt/nav-dekoratoren-moduler';
-import router from 'my-routing-library';
+import { onBreadcrumbClick } from "@navikt/nav-dekoratoren-moduler";
+import router from "my-routing-library";
 
 onBreadcrumbClick((breadcrumb) => {
     router.push(breadcrumb.url);
-})
+});
 ```
 
 ### setAvailableLanguages
@@ -384,16 +396,16 @@ Aktivt språk kan hentes ut fra cookien `decorator-language`.
 // Type
 export type DecoratorLocale = "nb" | "nn" | "en" | "se" | "pl" | "uk" | "ru";
 export type DecoratorLanguageOption =
-  | {
-      url?: string;
-      locale: DecoratorLocale;
-      handleInApp: true;
-    }
-  | {
-      url: string;
-      locale: DecoratorLocale;
-      handleInApp?: false;
-    };
+    | {
+          url?: string;
+          locale: DecoratorLocale;
+          handleInApp: true;
+      }
+    | {
+          url: string;
+          locale: DecoratorLocale;
+          handleInApp?: false;
+      };
 
 // Bruk
 import { setAvailableLanguages } from "@navikt/nav-dekoratoren-moduler";
@@ -412,12 +424,12 @@ setAvailableLanguages([
 Kalles med `language`-parametre dersom `handleInApp` var satt til `true`. Kan benyttes for client-side routing.
 
 ```tsx
-import { onLanguageSelect } from '@navikt/nav-dekoratoren-moduler'
-import router from 'my-routing-library';
+import { onLanguageSelect } from "@navikt/nav-dekoratoren-moduler";
+import router from "my-routing-library";
 
 onLanguageSelect((language) => {
-    router.push(language.url)
-})
+    router.push(language.url);
+});
 ```
 
 ### setParams
@@ -456,12 +468,22 @@ setParams({
 });
 ```
 
+## Språkstøtte
+
+Grensesnittet (header, meny etc) finnes i tre språkdrakter: norsk bokmål (nb), engelsk (en) og delvis samisk (se).
+
+Du kan angi at språkvelgeren skal støtte flere språk enn dette, som beskrevet i seksjonen ovenfor, men det er kun disse tre språkene som kan vises i selve dekoratør-grensesnittet. For de resterende sprøkene som språkvelgeren støtter, så vil "nærmeste" relevante språk vises istedet, feks:
+
+-   nn => nb
+-   pl => en
+-   ru => en
+
 ### openChatbot
 
 Hjelpefunksjon for å åpne Chatbot Frida. Denne setter parameteret `chatbotVisible=true` og åpner chat-vinduet.
 
 ```tsx
-import { openChatbot } from '@navikt/nav-dekoratoren-moduler';
+import { openChatbot } from "@navikt/nav-dekoratoren-moduler";
 
 openChatbot();
 ```
