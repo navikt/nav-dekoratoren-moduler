@@ -26,11 +26,14 @@
     "dependencies": {
         "csp-header": "^5.1.0",
         "html-react-parser": "^3.0.16",
-        "jsdom": "^22.0.0",
         "node-cache": "^5.1.2"
     },
+    "comments": {
+        "jsdom": "More recent versions crashes when parsing in some environments (for unknown reasons). Keep 16.x as minimum for now, and consider switching to a different parser."
+    },
     "peerDependencies": {
-        "react": "17.x || 18.x"
+        "react": "17.x || 18.x",
+        "jsdom": ">=16.x"
     },
     "devDependencies": {
         "@rollup/plugin-terser": "0.4.1",
