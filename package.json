@@ -1,6 +1,6 @@
 {
     "name": "@navikt/nav-dekoratoren-moduler",
-    "version": "2.0.1",
+    "version": "2.0.2-beta.4",
     "description": "Moduler til nav-dekoratoren",
     "author": "NAVIKT",
     "license": "MIT",
