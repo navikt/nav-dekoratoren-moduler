@@ -457,6 +457,7 @@ export type DecoratorParams = Partial<{
     urlLookupTable: boolean;
     shareScreen: boolean;
     logoutUrl: string;
+    initialUserParams: object;
 }>;
 
 // Bruk
