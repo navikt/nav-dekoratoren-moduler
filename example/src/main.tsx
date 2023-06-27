@@ -22,7 +22,7 @@ document.body.innerHTML = document.body.innerHTML.replace(
 
 const rootElement = document.getElementById("app") as HTMLElement;
 
-var script = document.createElement("script");
+const script = document.createElement("script");
 script.src = "http://localhost:8088/client.js";
 
 document.body.appendChild(script);
