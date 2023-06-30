@@ -41,6 +41,7 @@ export type DecoratorParams = Partial<{
     enforceLogin: boolean;
     redirectToApp: boolean;
     redirectToUrl: string;
+    redirectToUrlLogout: string;
     level: string;
     language: DecoratorLocale;
     availableLanguages: DecoratorLanguageOption[];
