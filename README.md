@@ -298,16 +298,40 @@ Sender events til Amplitude via dekoratørens klient.
 
 Eksempel på bruk:
 
-```tsx
-import { logAmplitudeEvent } from "@navikt/nav-dekoratoren-moduler";
+```ts
+import { createAmplitudeInstance } from "@navikt/nav-dekoratoren-moduler";
 
-const myAmplitudeLogger = (event: string, data: Record<string, any>) => {
-    logAmplitudeEvent({
-        origin: "my-app", // Navn på kallende applikasjon. Sendes i data-feltet "origin" til Amplitude (påkrevd)
-        eventName: event, // Event-navn (påkrevd)
-        eventData: data, // Event-data objekt (valgfri)
-    }).catch((e) => console.log(`Oh no! ${e}`)); // Funksjonen rejecter ved feil
-};
+const logger = createAmplitudeInstance("dekoratoren");
+
+logger("skjema åpnet", {
+    skjemaId: 1234,
+    skjemanavn: "aap",
+});
+```
+
+Du kan også extende taxonomien som er definert. Det har ingen funksjonell effekt, men vil gjøre det lettere for utviklerene i prosjektet å følge en standard hvis ønskelig.
+
+Eksempel på å definere events:
+
+```ts
+declare global {
+    export namespace NDM {
+        export type CustomEvents = CustomEvent<
+            "hello",
+            {
+                text: string;
+            }
+        >;
+    }
+}
+```
+
+Så kan det brukes slik
+
+```ts
+logger("hello", {
+    text: "world",
+});
 ```
 
 ### < EnforceLoginLoader / >
