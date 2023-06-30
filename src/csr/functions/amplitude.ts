@@ -21,24 +21,6 @@ const validateAmplitudeFunction = async (retries = 5): Promise<boolean> => {
     return validateAmplitudeFunction(retries - 1);
 };
 
-export const logmplitudeEvent = async (
-    params: AmplitudeParams
-): Promise<any> => {
-    if (typeof window === "undefined") {
-        return Promise.reject("Amplitude is only available in the browser");
-    }
-
-    const isValid = await validateAmplitudeFunction();
-
-    if (!isValid) {
-        return Promise.reject(
-            "Amplitude instance not found, it may not have been initialized yet"
-        );
-    }
-
-    return window.dekoratorenAmplitude(params);
-};
-
 type MakeExtendable<T> = Partial<T> & Record<string, unknown>;
 
 /**
