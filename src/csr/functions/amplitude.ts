@@ -355,8 +355,6 @@ type AutocompleteString = string & {};
 export type AmplitudeEventName = AmplitudeEvent["name"];
 export type AutocompleteEventName = AmplitudeEventName | AutocompleteString;
 
-//@TODO: Skriv en oneliner om når man burde bruke de ulike
-
 /**
  * This function logs an event to Amplitude. It validates the Amplitude instance before logging the event.
  *
