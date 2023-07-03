@@ -82,15 +82,16 @@ type Besøk = Event<
         /**
          * url på siden som ble besøkt
          */
-        url: `https://${string}`;
+        url: string;
         /**
          * tittel på siden som ble besøkt
          */
         sidetittel: string;
     }
 >;
+
 /**
- * en bruker avsluttet en chat
+ * Brukeren avslutter chatten med oss
  */
 type ChatAvsluttet = Event<
     "chat avsluttet",
@@ -100,7 +101,7 @@ type ChatAvsluttet = Event<
 >;
 
 /**
- * en bruker starter en chat
+ * Brukeren starter en chat dialog med oss
  */
 type ChatStartet = Event<
     "chat startet",
@@ -167,7 +168,6 @@ type LastNed = Event<
 /**
  * En bruker lukket en modal
  */
-
 type ModalLukket = Event<
     "modal lukket",
     {
@@ -241,7 +241,7 @@ type SkjemaFullført = Event<"skjema fullført", MakeExtendable<Skjema>>;
  * For eksempel når vår server er nede eller noe ikke kan svare tidsnok for å sende inn et skjema.
  */
 type SkjemaInnsendingFeilet = Event<
-    "skjerma innsending feilet",
+    "skjema innsending feilet",
     MakeExtendable<Skjema>
 >;
 
@@ -257,7 +257,7 @@ type SkjemaSpørsmålBesvart = Event<
              */
             spørsmål: string;
             /**
-             * spørsmålet som ble stilt
+             * svaret bruker oppga
              */
             svar: string;
         }
@@ -274,7 +274,7 @@ type SkjemaStartet = Event<"skjema startet", MakeExtendable<Skjema>>;
  * Kan brukes når et skjema består av flere steg, for eksempel mange spørsmål.
  */
 type SkjemaStegFullført = Event<
-    "skjema startet",
+    "skjema steg fullført",
     MakeExtendable<
         Skjema & {
             /**
