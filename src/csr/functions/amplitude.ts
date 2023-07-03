@@ -234,40 +234,35 @@ type Skjema = {
 /**
  * En bruker har sendt inn et skjema.
  */
-type SkjemaFullført = Event<"skjema fullført", MakeExtendable<Skjema>>;
+type SkjemaFullført = Event<"skjema fullført", Skjema>;
 
 /**
  * En bruker prøvde å sende inn et skjema og noe gikk galt.
  * For eksempel når vår server er nede eller noe ikke kan svare tidsnok for å sende inn et skjema.
  */
-type SkjemaInnsendingFeilet = Event<
-    "skjema innsending feilet",
-    MakeExtendable<Skjema>
->;
+type SkjemaInnsendingFeilet = Event<"skjema innsending feilet", Skjema>;
 
 /**
  * En bruker har besvart et spørsmål i et skjema.
  */
 type SkjemaSpørsmålBesvart = Event<
     "skjema spørsmål besvart",
-    MakeExtendable<
-        Skjema & {
-            /**
-             * spørsmålet som ble stilt
-             */
-            spørsmål: string;
-            /**
-             * svaret bruker oppga
-             */
-            svar: string;
-        }
-    >
+    Skjema & {
+        /**
+         * spørsmålet som ble stilt
+         */
+        spørsmål: string;
+        /**
+         * svaret bruker oppga
+         */
+        svar: string;
+    }
 >;
 
 /**
  * En bruker har startet å fylle ut et skjema.
  */
-type SkjemaStartet = Event<"skjema startet", MakeExtendable<Skjema>>;
+type SkjemaStartet = Event<"skjema startet", Skjema>;
 
 /**
  * En bruker har fullført et steg i utfylling i et skjema.
@@ -275,29 +270,24 @@ type SkjemaStartet = Event<"skjema startet", MakeExtendable<Skjema>>;
  */
 type SkjemaStegFullført = Event<
     "skjema steg fullført",
-    MakeExtendable<
-        Skjema & {
-            /**
-             * steg i skjemautfylling
-             */
-            steg: number;
-        }
-    >
+    Skjema & {
+        /**
+         * steg i skjemautfylling
+         */
+        steg: number;
+    }
 >;
 
 /**
  * En bruker har fullført et steg i utfylling i et skjema.
  * Kan brukes når et skjema består av flere steg, for eksempel mange spørsmål.
  */
-type SkjemaValideringFeilet = Event<
-    "skjema validering feilet",
-    MakeExtendable<Skjema>
->;
+type SkjemaValideringFeilet = Event<"skjema validering feilet", Skjema>;
 
 /**
  * En bruker åpnet et skjema
  */
-type SkjemaÅpnet = Event<"skjema åpnet", MakeExtendable<Skjema>>;
+type SkjemaÅpnet = Event<"skjema åpnet", Skjema>;
 
 /**
  * Et søk er sendt inn
