@@ -23,38 +23,43 @@ const validateAmplitudeFunction = async (retries = 5): Promise<boolean> => {
 
 type MakeExtendable<T> = Partial<T> & Record<string, unknown>;
 
+type Event<TName extends string, TProperties> = {
+    name: TName;
+    properties: MakeExtendable<TProperties>;
+};
+
 /**
  * En bruker åpnet en accordion
  */
-export type AccordianÅpnet = {
-    name: "accordian åpnet";
-    properties: MakeExtendable<{
+export type AccordianÅpnet = Event<
+    "accordian åpnet",
+    {
         /**
          * Tekst på accordian som åpnes.
          */
         tekst: string;
-    }>;
-};
+    }
+>;
 
 /**
  * En bruker lukket en accordian
  */
-type AccordianLukket = {
-    name: "accordian lukket";
-    properties: MakeExtendable<{
+type AccordianLukket = Event<
+    "accordian lukket",
+    {
         /**
          * Tekst på accordian som lukkes.
          */
         tekst: string;
-    }>;
-};
+    }
+>;
 
 /**
  * En bruker får vist en alert komponent fra designsystemet
  */
-type AlertVist = {
-    name: "alert vist";
-    properties: MakeExtendable<{
+type AlertVist = Event<
+    "alert vist",
+    {
         /**
          * Hvilken variant av alert. F.eks warning
          */
@@ -63,17 +68,17 @@ type AlertVist = {
          * Tekst i alerten
          */
         tekst: string;
-    }>;
-};
+    }
+>;
 
 /**
  * Når en bruker har besøkt en side. Inneholder URL brukeren besøkte.
  * Denne event-typen følger med dekoratøren så team som bruker dekoratøren trenger ikke logge denne hendelsen i sin app.
  * I Amplitude proxy berikes denne event-typen med URL og sidetittelen brukeren er på når besøk logges.
  */
-type Besøk = {
-    name: "besøk";
-    properties: MakeExtendable<{
+type Besøk = Event<
+    "besøk",
+    {
         /**
          * url på siden som ble besøkt
          */
@@ -82,35 +87,34 @@ type Besøk = {
          * tittel på siden som ble besøkt
          */
         sidetittel: string;
-    }>;
-};
-
+    }
+>;
 /**
  * en bruker avsluttet en chat
  */
-type ChatAvsluttet = {
-    name: "chat avsluttet";
-    properties: MakeExtendable<{
+type ChatAvsluttet = Event<
+    "chat avsluttet",
+    {
         komponent: string;
-    }>;
-};
+    }
+>;
 
 /**
  * en bruker starter en chat
  */
-type ChatStartet = {
-    name: "chat startet";
-    properties: MakeExtendable<{
+type ChatStartet = Event<
+    "chat startet",
+    {
         komponent: string;
-    }>;
-};
+    }
+>;
 
 /**
  * En bruker filtrerer visning av informasjon
  */
-type FilterValg = {
-    name: "filter valg";
-    properties: MakeExtendable<{
+type FilterValg = Event<
+    "filter valg",
+    {
         /**
          * Tekst på filter som brukes
          */
@@ -119,15 +123,15 @@ type FilterValg = {
          * Tekst på filteralternativet som brukes
          */
         filternavn: string;
-    }>;
-};
+    }
+>;
 
 /**
  * En bruker får vist en guidepanel komponent fra designsystemet
  */
-type GuidePanelVist = {
-    name: "guidepanel vist";
-    properties: MakeExtendable<{
+type GuidePanelVist = Event<
+    "guidepanel vist",
+    {
         /**
          * statisk beskrivelse av hvilken komponent denne ligger i. Nyttig hvis teksten varierer.
          */
@@ -136,15 +140,15 @@ type GuidePanelVist = {
          * Tekst på filteralternativet som brukes. Valgfri
          */
         tekst: string;
-    }>;
-};
+    }
+>;
 
 /**
  * En innbygger laster ned noe. Et dokument fra sin innboks for eksempel, eller en excelfil med statistikk.
  */
-type LastNed = {
-    name: "last ned";
-    properties: MakeExtendable<{
+type LastNed = Event<
+    "last ned",
+    {
         /**
          * hva slags fil laster man ned? Saksdokument, statistikk
          */
@@ -157,35 +161,35 @@ type LastNed = {
          * tittel på dokumentet som lastes ned
          */
         tittel: string;
-    }>;
-};
+    }
+>;
 
 /**
  * En bruker lukket en modal
  */
 
-type ModalLukket = {
-    name: "modal lukket";
-    properties: MakeExtendable<{
+type ModalLukket = Event<
+    "modal lukket",
+    {
         /**
          * tekst på modal som lukkes
          */
         tekst: string;
-    }>;
-};
+    }
+>;
 
 /**
  * En bruker åpnet en modal
  */
-type ModalÅpnet = {
-    name: "modal åpnet";
-    properties: MakeExtendable<{
+type ModalÅpnet = Event<
+    "modal åpnet",
+    {
         /**
          * tekst på modal som åpnes
          */
         tekst: string;
-    }>;
-};
+    }
+>;
 
 /**
  * Når en bruker har navigert, for eksempel når de trykker på en lenke.
@@ -202,9 +206,9 @@ type ModalÅpnet = {
  * Dette lar teamene se hvor brukeren var og hvor de gikk, og har historikk på hva som stod i lenketeksten.
  * Dette er nyttig når man eksperimenterer med ulike formuleringer for å gjøre det lettere for brukeren å finne frem og forstå innholdet.
  */
-type Navigere = {
-    name: "navigere";
-    properties: MakeExtendable<{
+type Navigere = Event<
+    "navigere",
+    {
         /**
          * teksten på lenken som brukeren trykker på
          */
@@ -213,8 +217,8 @@ type Navigere = {
          * target URL brukeren sendes til
          */
         destinasjon: string;
-    }>;
-};
+    }
+>;
 
 type Skjema = {
     /**
@@ -230,26 +234,23 @@ type Skjema = {
 /**
  * En bruker har sendt inn et skjema.
  */
-type SkjemaFullført = {
-    name: "skjema fullført";
-    properties: MakeExtendable<Skjema>;
-};
+type SkjemaFullført = Event<"skjema fullført", MakeExtendable<Skjema>>;
 
 /**
  * En bruker prøvde å sende inn et skjema og noe gikk galt.
  * For eksempel når vår server er nede eller noe ikke kan svare tidsnok for å sende inn et skjema.
  */
-type SkjemaInnsendingFeilet = {
-    name: "skjerma innsending feilet";
-    properties: MakeExtendable<Skjema>;
-};
+type SkjemaInnsendingFeilet = Event<
+    "skjerma innsending feilet",
+    MakeExtendable<Skjema>
+>;
 
 /**
  * En bruker har besvart et spørsmål i et skjema.
  */
-type SkjemaSpørsmålBesvart = {
-    name: "skjema spørsmål besvart";
-    properties: MakeExtendable<
+type SkjemaSpørsmålBesvart = Event<
+    "skjema spørsmål besvart",
+    MakeExtendable<
         Skjema & {
             /**
              * spørsmålet som ble stilt
@@ -260,56 +261,50 @@ type SkjemaSpørsmålBesvart = {
              */
             svar: string;
         }
-    >;
-};
+    >
+>;
 
 /**
  * En bruker har startet å fylle ut et skjema.
  */
-type SkjemaStartet = {
-    name: "skjema startet";
-    properties: MakeExtendable<Skjema>;
-};
+type SkjemaStartet = Event<"skjema startet", MakeExtendable<Skjema>>;
 
 /**
  * En bruker har fullført et steg i utfylling i et skjema.
  * Kan brukes når et skjema består av flere steg, for eksempel mange spørsmål.
  */
-type SkjemaStegFullført = {
-    name: "skjema startet";
-    properties: MakeExtendable<
+type SkjemaStegFullført = Event<
+    "skjema startet",
+    MakeExtendable<
         Skjema & {
             /**
              * steg i skjemautfylling
              */
             steg: number;
         }
-    >;
-};
+    >
+>;
 
 /**
  * En bruker har fullført et steg i utfylling i et skjema.
  * Kan brukes når et skjema består av flere steg, for eksempel mange spørsmål.
  */
-type SkjemaValideringFeilet = {
-    name: "skjema validering feilet";
-    properties: MakeExtendable<Skjema>;
-};
+type SkjemaValideringFeilet = Event<
+    "skjema validering feilet",
+    MakeExtendable<Skjema>
+>;
 
 /**
  * En bruker åpnet et skjema
  */
-type SkjemaÅpnet = {
-    name: "skjema åpnet";
-    properties: MakeExtendable<Skjema>;
-};
+type SkjemaÅpnet = Event<"skjema åpnet", MakeExtendable<Skjema>>;
 
 /**
  * Et søk er sendt inn
  */
-type Søk = {
-    name: "søk";
-    properties: MakeExtendable<{
+type Søk = Event<
+    "søk",
+    {
         /**
          * tjenste-url som benyttes til søket
          */
@@ -322,8 +317,8 @@ type Søk = {
          * navn på komponent søket utføres fra (hvis relevant)
          */
         komponent: string;
-    }>;
-};
+    }
+>;
 
 export type PredefinedEvents =
     | AccordianÅpnet
