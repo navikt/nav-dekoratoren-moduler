@@ -23,7 +23,6 @@ const validateAmplitudeFunction = async (retries = 5): Promise<boolean> => {
     return validateAmplitudeFunction(retries - 1);
 };
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 type AutocompleteString = string & {};
 export type AmplitudeEventName = AmplitudeEvent["name"];
 export type AutocompleteEventName = AmplitudeEventName | AutocompleteString;
