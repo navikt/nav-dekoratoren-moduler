@@ -1,3 +1,5 @@
+import { AmplitudeEvent } from "../events";
+
 export type AmplitudeParams = {
     origin: string;
     eventName: string;
@@ -21,9 +23,19 @@ const validateAmplitudeFunction = async (retries = 5): Promise<boolean> => {
     return validateAmplitudeFunction(retries - 1);
 };
 
-export const logAmplitudeEvent = async (
-    params: AmplitudeParams
-): Promise<any> => {
+type AutocompleteString = string & {};
+export type AmplitudeEventName = AmplitudeEvent["name"];
+export type AutocompleteEventName = AmplitudeEventName | AutocompleteString;
+
+export async function logAmplitudeEvent<
+    TName extends AutocompleteEventName
+>(params: {
+    eventName: TName;
+    eventData?: TName extends AmplitudeEventName
+        ? Extract<AmplitudeEvent, { name: TName }>["properties"]
+        : any;
+    origin: string;
+}): Promise<any> {
     if (typeof window === "undefined") {
         return Promise.reject("Amplitude is only available in the browser");
     }
@@ -37,4 +49,21 @@ export const logAmplitudeEvent = async (
     }
 
     return window.dekoratorenAmplitude(params);
-};
+}
+
+export function createAmplitudeInstance<TOrigin extends string>(
+    origin: TOrigin
+) {
+    return <TName extends AutocompleteEventName>(
+        eventName: TName,
+        eventData?: TName extends AmplitudeEventName
+            ? Extract<AmplitudeEvent, { name: TName }>["properties"]
+            : any
+    ) => {
+        return logAmplitudeEvent({
+            eventName,
+            eventData,
+            origin,
+        });
+    };
+}
