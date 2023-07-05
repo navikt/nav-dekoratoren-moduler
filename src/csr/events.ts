@@ -1,6 +1,9 @@
 type MakeExtendable<T> = Partial<T> & Record<string, unknown>;
 
-type Event<TName extends string, TProperties> = {
+/**
+ * En type helper for å definere amplitude eventer.
+ */
+export type AmplitudeEvent<TName extends string, TProperties> = {
     name: TName;
     properties: MakeExtendable<TProperties>;
 };
@@ -8,7 +11,7 @@ type Event<TName extends string, TProperties> = {
 /**
  * En bruker åpnet en accordion
  */
-export type AccordionÅpnet = Event<
+export type AccordionÅpnet = AmplitudeEvent<
     "accordion åpnet",
     {
         /**
@@ -21,7 +24,7 @@ export type AccordionÅpnet = Event<
 /**
  * En bruker lukket en accordian
  */
-type AccordionLukket = Event<
+type AccordionLukket = AmplitudeEvent<
     "accordion lukket",
     {
         /**
@@ -34,7 +37,7 @@ type AccordionLukket = Event<
 /**
  * En bruker får vist en alert komponent fra designsystemet
  */
-type AlertVist = Event<
+type AlertVist = AmplitudeEvent<
     "alert vist",
     {
         /**
@@ -53,7 +56,7 @@ type AlertVist = Event<
  * Denne event-typen følger med dekoratøren så team som bruker dekoratøren trenger ikke logge denne hendelsen i sin app.
  * I Amplitude proxy berikes denne event-typen med URL og sidetittelen brukeren er på når besøk logges.
  */
-type Besøk = Event<
+type Besøk = AmplitudeEvent<
     "besøk",
     {
         /**
@@ -70,7 +73,7 @@ type Besøk = Event<
 /**
  * Brukeren avslutter chatten med oss
  */
-type ChatAvsluttet = Event<
+type ChatAvsluttet = AmplitudeEvent<
     "chat avsluttet",
     {
         komponent: string;
@@ -80,7 +83,7 @@ type ChatAvsluttet = Event<
 /**
  * Brukeren starter en chat dialog med oss
  */
-type ChatStartet = Event<
+type ChatStartet = AmplitudeEvent<
     "chat startet",
     {
         komponent: string;
@@ -90,7 +93,7 @@ type ChatStartet = Event<
 /**
  * En bruker filtrerer visning av informasjon
  */
-type FilterValg = Event<
+type FilterValg = AmplitudeEvent<
     "filter valg",
     {
         /**
@@ -107,7 +110,7 @@ type FilterValg = Event<
 /**
  * En bruker får vist en guidepanel komponent fra designsystemet
  */
-type GuidePanelVist = Event<
+type GuidePanelVist = AmplitudeEvent<
     "guidepanel vist",
     {
         /**
@@ -124,7 +127,7 @@ type GuidePanelVist = Event<
 /**
  * En innbygger laster ned noe. Et dokument fra sin innboks for eksempel, eller en excelfil med statistikk.
  */
-type LastNed = Event<
+type LastNed = AmplitudeEvent<
     "last ned",
     {
         /**
@@ -145,7 +148,7 @@ type LastNed = Event<
 /**
  * En bruker lukket en modal
  */
-type ModalLukket = Event<
+type ModalLukket = AmplitudeEvent<
     "modal lukket",
     {
         /**
@@ -158,7 +161,7 @@ type ModalLukket = Event<
 /**
  * En bruker åpnet en modal
  */
-type ModalÅpnet = Event<
+type ModalÅpnet = AmplitudeEvent<
     "modal åpnet",
     {
         /**
@@ -183,7 +186,7 @@ type ModalÅpnet = Event<
  * Dette lar teamene se hvor brukeren var og hvor de gikk, og har historikk på hva som stod i lenketeksten.
  * Dette er nyttig når man eksperimenterer med ulike formuleringer for å gjøre det lettere for brukeren å finne frem og forstå innholdet.
  */
-type Navigere = Event<
+type Navigere = AmplitudeEvent<
     "navigere",
     {
         /**
@@ -211,18 +214,21 @@ type Skjema = {
 /**
  * En bruker har sendt inn et skjema.
  */
-type SkjemaFullført = Event<"skjema fullført", Skjema>;
+type SkjemaFullført = AmplitudeEvent<"skjema fullført", Skjema>;
 
 /**
  * En bruker prøvde å sende inn et skjema og noe gikk galt.
  * For eksempel når vår server er nede eller noe ikke kan svare tidsnok for å sende inn et skjema.
  */
-type SkjemaInnsendingFeilet = Event<"skjema innsending feilet", Skjema>;
+type SkjemaInnsendingFeilet = AmplitudeEvent<
+    "skjema innsending feilet",
+    Skjema
+>;
 
 /**
  * En bruker har besvart et spørsmål i et skjema.
  */
-type SkjemaSpørsmålBesvart = Event<
+type SkjemaSpørsmålBesvart = AmplitudeEvent<
     "skjema spørsmål besvart",
     Skjema & {
         /**
@@ -239,13 +245,13 @@ type SkjemaSpørsmålBesvart = Event<
 /**
  * En bruker har startet å fylle ut et skjema.
  */
-type SkjemaStartet = Event<"skjema startet", Skjema>;
+type SkjemaStartet = AmplitudeEvent<"skjema startet", Skjema>;
 
 /**
  * En bruker har fullført et steg i utfylling i et skjema.
  * Kan brukes når et skjema består av flere steg, for eksempel mange spørsmål.
  */
-type SkjemaStegFullført = Event<
+type SkjemaStegFullført = AmplitudeEvent<
     "skjema steg fullført",
     Skjema & {
         /**
@@ -259,17 +265,20 @@ type SkjemaStegFullført = Event<
  * En bruker har fullført et steg i utfylling i et skjema.
  * Kan brukes når et skjema består av flere steg, for eksempel mange spørsmål.
  */
-type SkjemaValideringFeilet = Event<"skjema validering feilet", Skjema>;
+type SkjemaValideringFeilet = AmplitudeEvent<
+    "skjema validering feilet",
+    Skjema
+>;
 
 /**
  * En bruker åpnet et skjema
  */
-type SkjemaÅpnet = Event<"skjema åpnet", Skjema>;
+type SkjemaÅpnet = AmplitudeEvent<"skjema åpnet", Skjema>;
 
 /**
  * Et søk er sendt inn
  */
-type Søk = Event<
+type Søk = AmplitudeEvent<
     "søk",
     {
         /**
@@ -310,4 +319,4 @@ export type PredefinedEvents =
     | Søk;
 
 // Mulig for å legge til custom types
-export type AmplitudeEvent = PredefinedEvents | NDM.CustomEvents;
+export type AmplitudeEvents = PredefinedEvents;

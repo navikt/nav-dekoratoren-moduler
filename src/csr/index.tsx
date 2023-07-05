@@ -12,7 +12,12 @@ import {
     DecoratorEnvProps,
     DecoratorFetchProps,
 } from "../common/common-types";
-import { AmplitudeParams, logAmplitudeEvent } from "./functions/amplitude";
+import {
+    AmplitudeParams,
+    createAmplitudeInstance,
+    logAmplitudeEvent,
+} from "./functions/amplitude";
+import { AmplitudeEvent } from "./events";
 
 export {
     EnforceLoginLoader,
@@ -26,6 +31,7 @@ export {
     injectDecoratorClientSide,
     openChatbot,
     logAmplitudeEvent,
+    createAmplitudeInstance,
 };
 
 export type {
@@ -35,4 +41,5 @@ export type {
     AmplitudeParams,
     DecoratorEnvProps,
     DecoratorFetchProps,
+    AmplitudeEvent,
 };

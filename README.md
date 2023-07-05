@@ -309,28 +309,21 @@ logger("skjema åpnet", {
 });
 ```
 
-Du kan også extende taxonomien som er definert. Det har ingen funksjonell effekt, men vil gjøre det lettere for utviklerene i prosjektet å følge en standard hvis ønskelig.
+Du kan også utvide taxonomien som er definert for å tilpasse ditt bruk. Det har ingen funksjonell effekt, men vil gjøre det lettere for utviklerene i prosjektet å følge en standard hvis ønskelig.
 
 Eksempel på å definere events:
 
 ```ts
-declare global {
-    export namespace NDM {
-        export type CustomEvents = CustomEvent<
-            "hello",
-            {
-                text: string;
-            }
-        >;
-    }
-}
-```
+import { AmplitudeEvent } from "@navikt/nav-dekoratoren-moduler";
 
-Så kan det brukes slik
+type SampleCustomEvents =
+    | AmplitudeEvent<"first", { hei: string }>
+    | AmplitudeEvent<"second", { hei: string }>;
 
-```ts
-logger("hello", {
-    text: "world",
+const logger = createAmplitudeInstance<SampleCustomEvents>("dekoatoren");
+
+logger("first", {
+    hei: "hei",
 });
 ```
 

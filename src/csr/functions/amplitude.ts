@@ -1,4 +1,4 @@
-import { AmplitudeEvent } from "../events";
+import { AmplitudeEvent, AmplitudeEvents } from "../events";
 
 export type AmplitudeParams = {
     origin: string;
@@ -24,7 +24,7 @@ const validateAmplitudeFunction = async (retries = 5): Promise<boolean> => {
 };
 
 type AutocompleteString = string & {};
-export type AmplitudeEventName = AmplitudeEvent["name"];
+export type AmplitudeEventName = AmplitudeEvents["name"];
 export type AutocompleteEventName = AmplitudeEventName | AutocompleteString;
 
 export async function logAmplitudeEvent<
@@ -32,7 +32,7 @@ export async function logAmplitudeEvent<
 >(params: {
     eventName: TName;
     eventData?: TName extends AmplitudeEventName
-        ? Extract<AmplitudeEvent, { name: TName }>["properties"]
+        ? Extract<AmplitudeEvents, { name: TName }>["properties"]
         : any;
     origin: string;
 }): Promise<any> {
@@ -51,13 +51,25 @@ export async function logAmplitudeEvent<
     return window.dekoratorenAmplitude(params);
 }
 
-export function createAmplitudeInstance<TOrigin extends string>(
-    origin: TOrigin
-) {
-    return <TName extends AutocompleteEventName>(
-        eventName: TName,
+type DefaultCustomEvents = AmplitudeEvent<"hei", { heisann: string }>;
+
+export function createAmplitudeInstance<
+    TCustomEvents extends AmplitudeEvent<
+        string,
+        Record<string, unknown>
+    > = DefaultCustomEvents
+>(origin: string) {
+    return <TName extends AutocompleteEventName | TCustomEvents["name"]>(
+        // Can be set to never if we want to be more strict
+        eventName: TName extends AmplitudeEventName
+            ? TName
+            : TName extends TCustomEvents["name"]
+            ? TName
+            : TName,
         eventData?: TName extends AmplitudeEventName
-            ? Extract<AmplitudeEvent, { name: TName }>["properties"]
+            ? Extract<AmplitudeEvents, { name: TName }>["properties"]
+            : TName extends TCustomEvents["name"]
+            ? Extract<TCustomEvents, { name: TName }>["properties"]
             : any
     ) => {
         return logAmplitudeEvent({
