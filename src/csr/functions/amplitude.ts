@@ -23,7 +23,7 @@ const validateAmplitudeFunction = async (retries = 5): Promise<boolean> => {
     return validateAmplitudeFunction(retries - 1);
 };
 
-type AutocompleteString = string & {};
+export type AutocompleteString = string & {};
 export type AmplitudeEventName = AmplitudeEvents["name"];
 export type AutocompleteEventName = AmplitudeEventName | AutocompleteString;
 

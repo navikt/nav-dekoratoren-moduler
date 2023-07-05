@@ -296,7 +296,7 @@ type Søk = AmplitudeEvent<
     }
 >;
 
-export type PredefinedEvents =
+export type AmplitudeEvents =
     | AccordionÅpnet
     | AccordionLukket
     | AlertVist
@@ -317,6 +317,3 @@ export type PredefinedEvents =
     | SkjemaValideringFeilet
     | SkjemaÅpnet
     | Søk;
-
-// Mulig for å legge til custom types
-export type AmplitudeEvents = PredefinedEvents;
