@@ -310,6 +310,8 @@ const myAmplitudeLogger = (event: string, data: Record<string, any>) => {
 };
 ```
 
+user properties i ampltiude kan settes ved å bruke analyticsUserConfig.
+
 ### < EnforceLoginLoader / >
 
 Parameteret `enforceLogin` i dekoratøren sender brukeren til loginservice ved for lavt innloggingsnivå.
@@ -457,7 +459,7 @@ export type DecoratorParams = Partial<{
     urlLookupTable: boolean;
     shareScreen: boolean;
     logoutUrl: string;
-    initialUserParams: object;
+    analyticsUserConfig: Record<string, string>;
 }>;
 
 // Bruk
