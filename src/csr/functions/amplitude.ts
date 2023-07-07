@@ -33,7 +33,7 @@ export async function logAmplitudeEvent<
     eventName: TName;
     eventData?: TName extends AmplitudeEventName
         ? Extract<AmplitudeEvents, { name: TName }>["properties"]
-        : any;
+        : Record<string, any>;
     origin: string;
 }): Promise<any> {
     if (typeof window === "undefined") {
@@ -65,7 +65,7 @@ export function getAmplitudeInstance<
             ? Extract<AmplitudeEvents, { name: TName }>["properties"]
             : TName extends TCustomEvents["name"]
             ? Extract<TCustomEvents, { name: TName }>["properties"]
-            : any
+            : Record<string, any>
     ) => {
         return logAmplitudeEvent({
             eventName,

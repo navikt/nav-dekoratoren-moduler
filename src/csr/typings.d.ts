@@ -6,8 +6,8 @@ declare global {
             eventData,
         }?: {
             origin: string;
-            eventName: any;
-            eventData?: any;
+            eventName: string;
+            eventData?: Record<string, any>;
         }) => Promise<any>;
     }
 }
