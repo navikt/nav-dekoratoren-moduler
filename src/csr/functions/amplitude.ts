@@ -51,15 +51,10 @@ export async function logAmplitudeEvent<
     return window.dekoratorenAmplitude(params);
 }
 
-type DefaultCustomEvents = AmplitudeEvent<"hei", { heisann: string }>;
-
 export function getAmplitudeInstance<
-    TCustomEvents extends AmplitudeEvent<
-        string,
-        Record<string, unknown>
-    > = DefaultCustomEvents
+    TCustomEvents extends AmplitudeEvent<string, Record<string, unknown>> = any
 >(origin: string) {
-    return <TName extends AutocompleteEventName | TCustomEvents["name"]>(
+    return <TName extends AutocompleteEventName>(
         // Can be set to never if we want to be more strict
         eventName: TName extends AmplitudeEventName
             ? TName
