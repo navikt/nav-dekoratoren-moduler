@@ -1,3 +1,5 @@
+import { AmplitudeEvent, AmplitudeEvents } from "../events";
+
 export type AmplitudeParams = {
     origin: string;
     eventName: string;
@@ -21,9 +23,19 @@ const validateAmplitudeFunction = async (retries = 5): Promise<boolean> => {
     return validateAmplitudeFunction(retries - 1);
 };
 
-export const logAmplitudeEvent = async (
-    params: AmplitudeParams
-): Promise<any> => {
+export type AutocompleteString = string & {};
+export type AmplitudeEventName = AmplitudeEvents["name"];
+export type AutocompleteEventName = AmplitudeEventName | AutocompleteString;
+
+export async function logAmplitudeEvent<
+    TName extends AmplitudeEventName
+>(params: {
+    eventName: TName | AutocompleteString;
+    eventData?: TName extends AmplitudeEventName
+        ? Extract<AmplitudeEvents, { name: TName }>["properties"]
+        : Record<string, any>;
+    origin: string;
+}): Promise<any> {
     if (typeof window === "undefined") {
         return Promise.reject("Amplitude is only available in the browser");
     }
@@ -37,4 +49,28 @@ export const logAmplitudeEvent = async (
     }
 
     return window.dekoratorenAmplitude(params);
-};
+}
+
+export function getAmplitudeInstance<
+    TCustomEvents extends AmplitudeEvent<string, Record<string, unknown>> = any
+>(origin: string) {
+    return <TName extends AutocompleteEventName>(
+        // Can be set to never if we want to be more strict
+        eventName: TName extends AmplitudeEventName
+            ? TName
+            : TName extends TCustomEvents["name"]
+            ? TName
+            : TName,
+        eventData?: TName extends AmplitudeEventName
+            ? Extract<AmplitudeEvents, { name: TName }>["properties"]
+            : TName extends TCustomEvents["name"]
+            ? Extract<TCustomEvents, { name: TName }>["properties"]
+            : Record<string, any>
+    ) => {
+        return logAmplitudeEvent({
+            eventName,
+            eventData,
+            origin,
+        });
+    };
+}
