@@ -22,7 +22,7 @@ export type AccordionÅpnet = AmplitudeEvent<
 >;
 
 /**
- * En bruker lukket en accordian
+ * En bruker lukket en accordion
  */
 type AccordionLukket = AmplitudeEvent<
     "accordion lukket",
