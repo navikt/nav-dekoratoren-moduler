@@ -330,6 +330,8 @@ logger("first", {
 });
 ```
 
+user properties i ampltiude kan settes ved å bruke analyticsUserConfig.
+
 ### < EnforceLoginLoader / >
 
 Parameteret `enforceLogin` i dekoratøren sender brukeren til loginservice ved for lavt innloggingsnivå.
@@ -477,6 +479,7 @@ export type DecoratorParams = Partial<{
     urlLookupTable: boolean;
     shareScreen: boolean;
     logoutUrl: string;
+    analyticsUserConfig: Record<string, string>;
 }>;
 
 // Bruk
