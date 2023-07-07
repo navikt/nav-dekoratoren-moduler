@@ -14,7 +14,7 @@ import {
 } from "../common/common-types";
 import {
     AmplitudeParams,
-    createAmplitudeInstance,
+    getAmplitudeInstance,
     logAmplitudeEvent,
 } from "./functions/amplitude";
 import { AmplitudeEvent } from "./events";
@@ -31,7 +31,7 @@ export {
     injectDecoratorClientSide,
     openChatbot,
     logAmplitudeEvent,
-    createAmplitudeInstance,
+    getAmplitudeInstance,
 };
 
 export type {

@@ -299,9 +299,9 @@ Sender events til Amplitude via dekoratørens klient.
 Eksempel på bruk:
 
 ```ts
-import { createAmplitudeInstance } from "@navikt/nav-dekoratoren-moduler";
+import { getAmplitudeInstance } from "@navikt/nav-dekoratoren-moduler";
 
-const logger = createAmplitudeInstance("dekoratoren");
+const logger = getAmplitudeInstance("dekoratoren");
 
 logger("skjema åpnet", {
     skjemaId: 1234,
@@ -314,13 +314,16 @@ Du kan også utvide taxonomien som er definert for å tilpasse ditt bruk. Det ha
 Eksempel på å definere events:
 
 ```ts
-import { AmplitudeEvent } from "@navikt/nav-dekoratoren-moduler";
+import {
+    AmplitudeEvent,
+    getAmplitudeInstance,
+} from "@navikt/nav-dekoratoren-moduler";
 
 type SampleCustomEvents =
     | AmplitudeEvent<"first", { hei: string }>
     | AmplitudeEvent<"second", { hei: string }>;
 
-const logger = createAmplitudeInstance<SampleCustomEvents>("dekoatoren");
+const logger = getAmplitudeInstance<SampleCustomEvents>("dekoatoren");
 
 logger("first", {
     hei: "hei",

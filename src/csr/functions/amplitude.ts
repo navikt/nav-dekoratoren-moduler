@@ -53,7 +53,7 @@ export async function logAmplitudeEvent<
 
 type DefaultCustomEvents = AmplitudeEvent<"hei", { heisann: string }>;
 
-export function createAmplitudeInstance<
+export function getAmplitudeInstance<
     TCustomEvents extends AmplitudeEvent<
         string,
         Record<string, unknown>
