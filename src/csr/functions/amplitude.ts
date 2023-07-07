@@ -28,9 +28,9 @@ export type AmplitudeEventName = AmplitudeEvents["name"];
 export type AutocompleteEventName = AmplitudeEventName | AutocompleteString;
 
 export async function logAmplitudeEvent<
-    TName extends AutocompleteEventName
+    TName extends AmplitudeEventName
 >(params: {
-    eventName: TName;
+    eventName: TName | AutocompleteString;
     eventData?: TName extends AmplitudeEventName
         ? Extract<AmplitudeEvents, { name: TName }>["properties"]
         : Record<string, any>;
