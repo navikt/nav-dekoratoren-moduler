@@ -54,5 +54,5 @@ export type DecoratorParams = Partial<{
     shareScreen: boolean;
     logoutUrl: string;
     logoutWarning: boolean;
-    sidecarBase: string;
+    appBase: string;
 }>;
