@@ -61,10 +61,12 @@ Samtlige funksjoner for fetch av dekoratøren tar inn parametre med følgende ty
 
 ```tsx
 type DecoratorNaisEnv =
-    | "prod" // For produksjons-instans av dekoratøren
-    | "dev" // For stabil dev-instans
-    | "beta" // Beta dev-instanser ment for internt test-bruk
-    | "betaTms"; // Disse kan være ustabile i lengre perioder
+    | "prod"        // For produksjons-instans av dekoratøren
+    | "dev"         // For stabil dev-instans
+    | "beta"        // Beta dev-instanser ment for internt test-bruk
+    | "betaTms"     // Disse kan være ustabile i lengre perioder
+    | "devNext";    // dev-instans av decorator-next
+                    // decorator-next er under utvikling og er ikke klar for generell bruk
 
 type DecoratorEnvProps =
     // Dersom env er satt til localhost, må du selv sette url for dekoratøren.
