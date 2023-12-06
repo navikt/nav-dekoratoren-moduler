@@ -66,6 +66,7 @@ type DecoratorNaisEnv =
     | "beta"        // Beta dev-instanser ment for internt test-bruk
     | "betaTms"     // Disse kan være ustabile i lengre perioder
     | "devNext";    // dev-instans av decorator-next
+    | "prodNext";   // prod-instans av decorator-next
                     // decorator-next er under utvikling og er ikke klar for generell bruk
 
 type DecoratorEnvProps =

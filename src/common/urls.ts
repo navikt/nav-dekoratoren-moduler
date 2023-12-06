@@ -8,6 +8,7 @@ const externalUrls: NaisUrls = {
     beta: "https://dekoratoren-beta.intern.dev.nav.no",
     betaTms: "https://dekoratoren-beta-tms.intern.dev.nav.no",
     devNext: "https://decorator-next.ekstern.dev.nav.no",
+    prodNext: "https://www.nav.no/decorator-next"
 };
 
 const serviceUrls: NaisUrls = {
@@ -16,6 +17,7 @@ const serviceUrls: NaisUrls = {
     beta: "http://nav-dekoratoren-beta.personbruker",
     betaTms: "http://nav-dekoratoren-beta-tms.personbruker",
     devNext: "http://decorator-next.personbruker",
+    prodNext: "http://decorator-next.personbruker"
 };
 
 const naisGcpClusters: Record<string, true> = {
