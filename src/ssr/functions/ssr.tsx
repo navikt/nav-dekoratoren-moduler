@@ -84,14 +84,19 @@ export const fetchDecoratorHtml = async (
 ): Promise<DecoratorElements> => {
     const url = getDecoratorUrl(props);
 
-    const cacheData = cache.get<DecoratorElements>(url);
-    if (cacheData) {
-        return Promise.resolve(cacheData);
+    if (!props.noCache) {
+        const cacheData = cache.get<DecoratorElements>(url);
+
+        if (cacheData) {
+            return Promise.resolve(cacheData);
+        }
     }
 
     return fetchDecorator(url, props)
         .then((decoratorElements) => {
-            cache.set(url, decoratorElements);
+            if (!props.noCache) {
+                cache.set(url, decoratorElements);
+            }
             return decoratorElements;
         })
         .catch((e) => {
