@@ -1,6 +1,6 @@
 # nav-dekoratoren-moduler
 
-> NPM-pakke med hjelpefunksjoner for [nav-dekoratoren](https://github.com/navikt/nav-dekoratoren) (header og footer på nav.no)
+> NPM-pakke med hjelpefunksjoner for [dekoratøren](https://github.com/navikt/decorator-next) (header og footer på nav.no)
 
 ### Breaking changes i versjon 2.0
 
@@ -65,9 +65,9 @@ type DecoratorNaisEnv =
     | "dev"         // For stabil dev-instans
     | "beta"        // Beta dev-instanser ment for internt test-bruk
     | "betaTms"     // Disse kan være ustabile i lengre perioder
-    | "devNext";    // dev-instans av decorator-next
-    | "prodNext";   // prod-instans av decorator-next
-                    // decorator-next er under utvikling og er ikke klar for generell bruk
+    
+    | "devNext";    // Obs: denne er avviklet!
+    | "prodNext";   // Obs: denne blir snart avviklet og bør ikke benyttes!
 
 type DecoratorEnvProps =
     // Dersom env er satt til localhost, må du selv sette url for dekoratøren.
