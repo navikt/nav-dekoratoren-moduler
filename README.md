@@ -66,8 +66,8 @@ type DecoratorNaisEnv =
     | "beta"        // Beta dev-instanser ment for internt test-bruk
     | "betaTms"     // Disse kan være ustabile i lengre perioder
     
-    | "devNext";    // Obs: denne er avviklet!
-    | "prodNext";   // Obs: denne blir snart avviklet og bør ikke benyttes!
+    | "devNext"     // Obs: (dev|prod)Next er avviklet og kan ikke benyttes
+    | "prodNext";   //
 
 type DecoratorEnvProps =
     // Dersom env er satt til localhost, må du selv sette url for dekoratøren.
