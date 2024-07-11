@@ -19,7 +19,7 @@ export type DecoratorBreadcrumb = {
     handleInApp?: boolean;
 };
 
-export type DecoratorNaisEnv = "prod" | "dev" | "beta" | "betaTms" | "devNext" | "prodNext";
+export type DecoratorNaisEnv = "prod" | "dev" | "beta" | "betaTms";
 
 export type DecoratorEnvProps =
     | { env: "localhost"; localUrl: string }
