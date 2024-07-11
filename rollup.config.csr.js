@@ -15,9 +15,6 @@ export default [
             format: "umd",
             sourcemap: true,
             exports: "named",
-            globals: {
-                ["react"]: "React",
-            },
         },
         plugins: [
             typescript({
