@@ -1,31 +1,44 @@
-const typescript = require("rollup-plugin-ts");
-const terser = require("@rollup/plugin-terser");
+import typescript from "@rollup/plugin-typescript";
+import terser from "@rollup/plugin-terser";
+import { dts } from "rollup-plugin-dts";
 
-const pkg = require("./package.json");
-const external = Object.keys(pkg.dependencies);
+import pkg from "./package.json" with { type: "json" };
 
-module.exports = {
-    input: ["src/csr/index.tsx"],
-    output: {
-        name: "csr",
-        file: "csr/index.js",
-        format: "umd",
-        sourcemap: true,
-        exports: "named",
-        globals: {
-            ["react"]: "React",
+const deps = Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies });
+
+export default [
+    {
+        input: "src/csr/index.tsx",
+        output: {
+            name: "csr",
+            file: "csr/index.js",
+            format: "umd",
+            sourcemap: true,
+            exports: "named",
+            globals: {
+                ["react"]: "React",
+            },
         },
-    },
-    plugins: [
-        typescript({
-            tsconfig: (baseConfig) => ({
-                ...baseConfig,
-                outDir: "csr",
-                rootDirs: ["src/csr", "src/common"],
+        plugins: [
+            typescript({
+                compilerOptions: {
+                    declaration: false,
+                    outDir: "csr",
+                    rootDirs: ["src/csr", "src/common"],
+                    rootDir: undefined,
+                },
+                include: ["src/common/**/*.(ts|tsx)", "src/csr/**/*.(ts|tsx)"],
             }),
-            include: ["src/common/**/*.(ts|tsx)", "src/csr/**/*.(ts|tsx)"],
-        }),
-        terser(),
-    ],
-    external: external,
-};
+            terser(),
+        ],
+        external: deps,
+    },
+    {
+        input: "src/csr/index.tsx",
+        output: {
+            name: "csr",
+            file: "csr/index.d.ts",
+        },
+        plugins: [dts()],
+    },
+];
