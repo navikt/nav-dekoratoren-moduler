@@ -25,11 +25,12 @@ export type DecoratorElements = {
 const fetchDecorator = async (
     url: string,
     props: DecoratorFetchProps,
-    retries = 3
+    retries = 3,
 ): Promise<DecoratorElements> =>
     fetch(url)
         .then((res) => {
             if (res.ok) {
+                console.log("Fetched ok!");
                 return res.text();
             }
             throw new Error(`${res.status} - ${res.statusText}`);
@@ -71,7 +72,7 @@ const fetchDecorator = async (
         .catch((e) => {
             if (retries > 0) {
                 console.warn(
-                    `Failed to fetch decorator, retrying ${retries} more times - Url: ${url} - Error: ${e}`
+                    `Failed to fetch decorator, retrying ${retries} more times - Url: ${url} - Error: ${e}`,
                 );
                 return fetchDecorator(url, props, retries - 1);
             }
@@ -80,7 +81,7 @@ const fetchDecorator = async (
         });
 
 export const fetchDecoratorHtml = async (
-    props: DecoratorFetchProps
+    props: DecoratorFetchProps,
 ): Promise<DecoratorElements> => {
     const url = getDecoratorUrl(props);
 
@@ -101,7 +102,7 @@ export const fetchDecoratorHtml = async (
         })
         .catch((e) => {
             console.error(
-                `Failed to fetch decorator, falling back to elements for client-side rendering - Url: ${url} - Error: ${e}`
+                `Failed to fetch decorator, falling back to elements for client-side rendering - Url: ${url} - Error: ${e}`,
             );
 
             const csrElements = getCsrElements(props);
@@ -123,14 +124,14 @@ export type DecoratorComponents = {
 };
 
 export const fetchDecoratorReact = async (
-    props: DecoratorFetchProps
+    props: DecoratorFetchProps,
 ): Promise<DecoratorComponents> => {
     const elements = await fetchDecoratorHtml(props);
     return parseDecoratorHTMLToReact(elements);
 };
 
 export const parseDecoratorHTMLToReact = (
-    elements: DecoratorElements
+    elements: DecoratorElements,
 ): DecoratorComponents => {
     return {
         Styles: () => <>{parse(elements.DECORATOR_STYLES)}</>,

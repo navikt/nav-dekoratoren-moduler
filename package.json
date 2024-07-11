@@ -8,7 +8,6 @@
     "main": "csr/index.js",
     "module": "csr/index.js",
     "source": "src/csr/index.tsx",
-    "type": "module",
     "engines": {
         "node": ">=18"
     },
@@ -16,17 +15,17 @@
         "start": "npm-run-all --parallel start:*",
         "build": "npm-run-all --parallel build:*",
         "test": "jest",
-        "start:csr": "rollup -c rollup.config.csr.js --bundleConfigAsCjs -w",
-        "start:ssr": "rollup -c rollup.config.ssr.js --bundleConfigAsCjs -w",
-        "build:csr": "rollup -c rollup.config.csr.js",
-        "build:ssr": "rollup -c rollup.config.ssr.js",
+        "start:csr": "rollup -c rollup.config.csr.mjs --bundleConfigAsCjs -w",
+        "start:ssr": "rollup -c rollup.config.ssr.mjs --bundleConfigAsCjs -w",
+        "build:csr": "rollup -c rollup.config.csr.mjs",
+        "build:ssr": "rollup -c rollup.config.ssr.mjs",
         "lint": "eslint src/",
         "predeploy": "cd example && npm install && npm run build",
         "publish:beta": "npm run build && npm version prerelease --preid beta && npm publish --access public --tag beta"
     },
     "dependencies": {
         "csp-header": "5.2.1",
-        "html-react-parser": "5.1.10",
+        "html-react-parser": "3.0.16",
         "node-cache": "^5.1.2"
     },
     "comments": {

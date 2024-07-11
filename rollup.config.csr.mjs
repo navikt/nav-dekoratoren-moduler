@@ -8,32 +8,36 @@ const deps = Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies });
 
 export default [
     {
-        input: "src/ssr/index.tsx",
+        input: "src/csr/index.tsx",
         output: {
-            name: "ssr",
-            file: "ssr/index.js",
-            format: "cjs",
+            name: "csr",
+            file: "csr/index.js",
+            format: "umd",
             sourcemap: true,
+            exports: "named",
+            globals: {
+                ["react"]: "React",
+            },
         },
         plugins: [
             typescript({
                 compilerOptions: {
                     declaration: false,
-                    outDir: "ssr",
-                    rootDirs: ["src/ssr", "src/common"],
+                    outDir: "csr",
+                    rootDirs: ["src/csr", "src/common"],
                     rootDir: undefined,
                 },
-                include: ["src/common/**/*.(ts|tsx)", "src/ssr/**/*.(ts|tsx)"],
+                include: ["src/common/**/*.(ts|tsx)", "src/csr/**/*.(ts|tsx)"],
             }),
-            terser(),
+            // terser(),
         ],
-        external: ["fs", ...deps],
+        external: deps,
     },
     {
-        input: "src/ssr/index.tsx",
+        input: "src/csr/index.tsx",
         output: {
-            name: "ssr",
-            file: "ssr/index.d.ts",
+            name: "csr",
+            file: "csr/index.d.ts",
         },
         plugins: [dts()],
     },
