@@ -20,9 +20,18 @@ export type DecoratorElements = {
     DECORATOR_SCRIPTS: string;
     DECORATOR_HEADER: string;
     DECORATOR_FOOTER: string;
+    DECORATOR_HEAD_ASSETS: string;
 };
 
-const fetchDecorator = async (
+export type SsrResponse = {
+    header: string;
+    footer: string;
+    scripts: string;
+    styles: string;
+    headAssets: string;
+}
+
+const fetchDecoratorElements = async (
     url: string,
     props: DecoratorFetchProps,
     retries = 3,
@@ -31,40 +40,39 @@ const fetchDecorator = async (
         .then((res) => {
             if (res.ok) {
                 console.log("Fetched ok!");
-                return res.text();
+                return res.json() as Promise<SsrResponse>;
             }
             throw new Error(`${res.status} - ${res.statusText}`);
         })
         .then((res) => {
-            const { document } = new JSDOM(res).window;
+            const { header, footer, scripts, styles, headAssets } = res;
 
-            const styles = document.getElementById("styles")?.innerHTML;
             if (!styles) {
                 throw new Error("Decorator styles element not found!");
             }
 
-            const scripts = document.getElementById("scripts")?.innerHTML;
             if (!scripts) {
                 throw new Error("Decorator scripts element not found!");
             }
 
-            const header =
-                document.getElementById("header-withmenu")?.innerHTML;
             if (!header) {
                 throw new Error("Decorator header element not found!");
             }
 
-            const footer =
-                document.getElementById("footer-withmenu")?.innerHTML;
             if (!footer) {
                 throw new Error("Decorator footer element not found!");
             }
 
-            const elements = {
-                DECORATOR_STYLES: styles.trim(),
-                DECORATOR_SCRIPTS: scripts.trim(),
-                DECORATOR_HEADER: header.trim(),
-                DECORATOR_FOOTER: footer.trim(),
+            if (!headAssets) {
+                throw new Error("Decorator head assets not found!");
+            }
+
+            const elements: DecoratorElements = {
+                DECORATOR_STYLES: styles,
+                DECORATOR_SCRIPTS: scripts,
+                DECORATOR_HEADER: header,
+                DECORATOR_FOOTER: footer,
+                DECORATOR_HEAD_ASSETS: headAssets,
             };
 
             return elements;
@@ -74,7 +82,7 @@ const fetchDecorator = async (
                 console.warn(
                     `Failed to fetch decorator, retrying ${retries} more times - Url: ${url} - Error: ${e}`,
                 );
-                return fetchDecorator(url, props, retries - 1);
+                return fetchDecoratorElements(url, props, retries - 1);
             }
 
             throw e;
@@ -85,15 +93,15 @@ export const fetchDecoratorHtml = async (
 ): Promise<DecoratorElements> => {
     const url = getDecoratorUrl(props);
 
-    if (!props.noCache) {
-        const cacheData = cache.get<DecoratorElements>(url);
+    // if (!props.noCache) {
+    //     const cacheData = cache.get<DecoratorElements>(url);
+    //
+    //     if (cacheData) {
+    //         return Promise.resolve(cacheData);
+    //     }
+    // }
 
-        if (cacheData) {
-            return Promise.resolve(cacheData);
-        }
-    }
-
-    return fetchDecorator(url, props)
+    return fetchDecoratorElements(url, props)
         .then((decoratorElements) => {
             if (!props.noCache) {
                 cache.set(url, decoratorElements);
@@ -112,6 +120,7 @@ export const fetchDecoratorHtml = async (
                 DECORATOR_SCRIPTS: `${csrElements.env}${csrElements.scripts}`,
                 DECORATOR_HEADER: csrElements.header,
                 DECORATOR_FOOTER: csrElements.footer,
+                DECORATOR_HEAD_ASSETS: ""
             };
         });
 };
@@ -121,6 +130,7 @@ export type DecoratorComponents = {
     Scripts: FunctionComponent;
     Header: FunctionComponent;
     Footer: FunctionComponent;
+    HeadAssets: FunctionComponent;
 };
 
 export const fetchDecoratorReact = async (
@@ -138,6 +148,7 @@ export const parseDecoratorHTMLToReact = (
         Scripts: () => <>{parse(elements.DECORATOR_SCRIPTS)}</>,
         Header: () => <>{parse(elements.DECORATOR_HEADER)}</>,
         Footer: () => <>{parse(elements.DECORATOR_FOOTER)}</>,
+        HeadAssets: () => <>{parse(elements.DECORATOR_HEAD_ASSETS)}</>
     };
 };
 

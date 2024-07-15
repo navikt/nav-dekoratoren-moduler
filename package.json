@@ -5,8 +5,8 @@
     "author": "NAVIKT",
     "license": "MIT",
     "repository": "navikt/nav-dekoratoren-moduler",
-    "main": "csr/index.js",
-    "module": "csr/index.js",
+    "main": "ssr/index.js",
+    "module": "ssr/index.js",
     "source": "src/csr/index.tsx",
     "engines": {
         "node": ">=18"
@@ -15,8 +15,8 @@
         "start": "npm-run-all --parallel start:*",
         "build": "npm-run-all --parallel build:*",
         "test": "jest",
-        "start:csr": "rollup -c rollup.config.csr.mjs --bundleConfigAsCjs -w",
-        "start:ssr": "rollup -c rollup.config.ssr.mjs --bundleConfigAsCjs -w",
+        "start:csr": "rollup -c rollup.config.csr.mjs -w",
+        "start:ssr": "rollup -c rollup.config.ssr.mjs -w",
         "build:csr": "rollup -c rollup.config.csr.mjs",
         "build:ssr": "rollup -c rollup.config.ssr.mjs",
         "lint": "eslint src/",

@@ -7,19 +7,19 @@ const externalUrls: NaisUrls = {
     dev: "https://dekoratoren.ekstern.dev.nav.no",
     beta: "https://dekoratoren-beta.intern.dev.nav.no",
     betaTms: "https://dekoratoren-beta-tms.intern.dev.nav.no",
-};
+} as const;
 
 const serviceUrls: NaisUrls = {
     prod: "http://nav-dekoratoren.personbruker",
     dev: "http://nav-dekoratoren.personbruker",
     beta: "http://nav-dekoratoren-beta.personbruker",
     betaTms: "http://nav-dekoratoren-beta-tms.personbruker",
-};
+} as const;
 
 const naisGcpClusters: Record<string, true> = {
     "dev-gcp": true,
     "prod-gcp": true,
-};
+} as const;
 
 const objectToQueryString = (params: Record<string, any>) =>
     params
@@ -63,5 +63,5 @@ export const getDecoratorUrl = (props: DecoratorUrlProps) => {
         return baseUrl;
     }
 
-    return `${baseUrl}/${csr ? "env" : ""}${objectToQueryString(params)}`;
+    return `${baseUrl}/${csr ? "env" : "ssr"}${objectToQueryString(params)}`;
 };

@@ -1,5 +1,4 @@
 import typescript from "@rollup/plugin-typescript";
-import terser from "@rollup/plugin-terser";
 import { dts } from "rollup-plugin-dts";
 
 import pkg from "./package.json" with { type: "json" };
@@ -25,7 +24,6 @@ export default [
                 },
                 include: ["src/common/**/*.(ts|tsx)", "src/ssr/**/*.(ts|tsx)"],
             }),
-            // terser(),
         ],
         external: ["fs", ...deps],
     },
