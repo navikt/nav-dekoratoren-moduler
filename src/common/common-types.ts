@@ -51,7 +51,6 @@ export type DecoratorParams = Partial<{
     feedback: boolean;
     chatbot: boolean;
     chatbotVisible: boolean;
-    urlLookupTable: boolean;
     shareScreen: boolean;
     logoutUrl: string;
     logoutWarning: boolean;
