@@ -27,10 +27,10 @@ const objectToQueryString = (params: Record<string, any>) =>
               (acc, [k, v], i) =>
                   v !== undefined
                       ? `${acc}${i ? "&" : "?"}${k}=${encodeURIComponent(
-                            typeof v === "object" ? JSON.stringify(v) : v
+                            typeof v === "object" ? JSON.stringify(v) : v,
                         )}`
                       : acc,
-              ""
+              "",
           )
         : "";
 
@@ -42,7 +42,7 @@ const isNaisApp = () =>
 const getNaisUrl = (
     env: DecoratorNaisEnv,
     csr = false,
-    serviceDiscovery = true
+    serviceDiscovery = true,
 ) => {
     const shouldUseServiceDiscovery = serviceDiscovery && !csr && isNaisApp();
 
@@ -52,12 +52,15 @@ const getNaisUrl = (
     );
 };
 
+export const getDecoratorBaseUrl = (props: DecoratorUrlProps) => {
+    return props.env === "localhost"
+        ? props.localUrl
+        : getNaisUrl(props.env, props.csr, props.serviceDiscovery);
+};
+
 export const getDecoratorUrl = (props: DecoratorUrlProps) => {
-    const { env, params, csr } = props;
-    const baseUrl =
-        env === "localhost"
-            ? props.localUrl
-            : getNaisUrl(env, csr, props.serviceDiscovery);
+    const { params, csr } = props;
+    const baseUrl = getDecoratorBaseUrl(props);
 
     if (!params) {
         return baseUrl;

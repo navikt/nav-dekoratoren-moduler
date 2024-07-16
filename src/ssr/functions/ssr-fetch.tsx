@@ -1,6 +1,7 @@
 import { getDecoratorUrl } from "../../common/urls";
 import { DecoratorFetchProps } from "../../common/common-types";
 import { getCsrElements } from "../../common/csr-elements";
+import { decoratorCache } from "./cache";
 
 export type DecoratorElements = {
     DECORATOR_STYLES: string;
@@ -10,17 +11,22 @@ export type DecoratorElements = {
     DECORATOR_HEAD_ASSETS: string;
 };
 
-export type SsrResponse = {
-    header: string;
-    footer: string;
-    scripts: string;
-    styles: string;
-    headAssets: string;
+export type SsrFragments = Record<(typeof fragmentKeys)[number], string>;
+
+export type SsrResponse = SsrFragments & {
+    versionId: string;
 };
 
-const fetchDecoratorFragments = async (
+const fragmentKeys = [
+    "header",
+    "footer",
+    "scripts",
+    "styles",
+    "headAssets",
+] as const;
+
+const fetchDecoratorElements = async (
     url: string,
-    props: DecoratorFetchProps,
     retries = 3,
 ): Promise<DecoratorElements> =>
     fetch(url)
@@ -29,47 +35,35 @@ const fetchDecoratorFragments = async (
                 console.log("Fetched ok!");
                 return res.json() as Promise<SsrResponse>;
             }
-            throw new Error(`${res.status} - ${res.statusText}`);
+            throw new Error(
+                `Error fetching decorator: ${res.status} - ${res.statusText}`,
+            );
         })
-        .then((res) => {
-            const { header, footer, scripts, styles, headAssets } = res;
+        .then((res): DecoratorElements => {
+            const missingFragments: string[] = fragmentKeys.filter(
+                (key) => !res[key],
+            );
 
-            if (!styles) {
-                throw new Error("Decorator styles element not found!");
+            if (missingFragments.length > 0) {
+                throw new Error(
+                    `Elements missing from decorator response: ${missingFragments.join(", ")}`,
+                );
             }
 
-            if (!scripts) {
-                throw new Error("Decorator scripts element not found!");
-            }
-
-            if (!header) {
-                throw new Error("Decorator header element not found!");
-            }
-
-            if (!footer) {
-                throw new Error("Decorator footer element not found!");
-            }
-
-            if (!headAssets) {
-                throw new Error("Decorator head assets not found!");
-            }
-
-            const elements: DecoratorElements = {
-                DECORATOR_STYLES: styles,
-                DECORATOR_SCRIPTS: scripts,
-                DECORATOR_HEADER: header,
-                DECORATOR_FOOTER: footer,
-                DECORATOR_HEAD_ASSETS: headAssets,
+            return {
+                DECORATOR_HEADER: res.header,
+                DECORATOR_FOOTER: res.footer,
+                DECORATOR_SCRIPTS: res.scripts,
+                DECORATOR_STYLES: res.styles,
+                DECORATOR_HEAD_ASSETS: res.headAssets,
             };
-
-            return elements;
         })
         .catch((e) => {
             if (retries > 0) {
                 console.warn(
                     `Failed to fetch decorator, retrying ${retries} more times - Url: ${url} - Error: ${e}`,
                 );
-                return fetchDecoratorFragments(url, props, retries - 1);
+                return fetchDecoratorElements(url, retries - 1);
             }
 
             throw e;
@@ -78,21 +72,36 @@ const fetchDecoratorFragments = async (
 export const fetchDecoratorHtml = async (
     props: DecoratorFetchProps,
 ): Promise<DecoratorElements> => {
+    const { env, noCache } = props;
     const url = getDecoratorUrl(props);
 
-    return fetchDecoratorFragments(url, props).catch((e) => {
-        console.error(
-            `Failed to fetch decorator, falling back to elements for client-side rendering - Url: ${url} - Error: ${e}`,
-        );
+    if (!noCache) {
+        const fromCache = decoratorCache.get(url, env);
+        if (fromCache) {
+            return fromCache;
+        }
+    }
 
-        const csrElements = getCsrElements(props);
+    return fetchDecoratorElements(url)
+        .then((elements) => {
+            if (!noCache) {
+                decoratorCache.set(url, env, elements);
+            }
+            return elements;
+        })
+        .catch((e) => {
+            console.error(
+                `Failed to fetch decorator, falling back to elements for client-side rendering - Url: ${url} - Error: ${e}`,
+            );
 
-        return {
-            DECORATOR_STYLES: csrElements.styles,
-            DECORATOR_SCRIPTS: `${csrElements.env}${csrElements.scripts}`,
-            DECORATOR_HEADER: csrElements.header,
-            DECORATOR_FOOTER: csrElements.footer,
-            DECORATOR_HEAD_ASSETS: "",
-        };
-    });
+            const csrElements = getCsrElements(props);
+
+            return {
+                DECORATOR_STYLES: csrElements.styles,
+                DECORATOR_SCRIPTS: `${csrElements.env}${csrElements.scripts}`,
+                DECORATOR_HEADER: csrElements.header,
+                DECORATOR_FOOTER: csrElements.footer,
+                DECORATOR_HEAD_ASSETS: "",
+            };
+        });
 };

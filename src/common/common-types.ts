@@ -21,6 +21,8 @@ export type DecoratorBreadcrumb = {
 
 export type DecoratorNaisEnv = "prod" | "dev" | "beta" | "betaTms";
 
+export type DecoratorEnv = DecoratorNaisEnv | "localhost";
+
 export type DecoratorEnvProps =
     | { env: "localhost"; localUrl: string }
     | { env: DecoratorNaisEnv; serviceDiscovery?: boolean };
