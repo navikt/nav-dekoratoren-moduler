@@ -14,6 +14,10 @@ import {
     injectDecoratorServerSide,
     injectDecoratorServerSideDom,
 } from "./functions/ssr-dom-injection";
+import {
+    addDecoratorUpdateListener,
+    removeDecoratorUpdateListener,
+} from "./functions/update-events";
 
 export {
     injectDecoratorServerSide,
@@ -21,6 +25,8 @@ export {
     fetchDecoratorReact,
     fetchDecoratorHtml,
     buildCspHeader,
+    addDecoratorUpdateListener,
+    removeDecoratorUpdateListener,
 };
 
 export type {

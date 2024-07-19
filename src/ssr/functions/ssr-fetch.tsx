@@ -72,11 +72,11 @@ const fetchDecoratorElements = async (
 export const fetchDecoratorHtml = async (
     props: DecoratorFetchProps,
 ): Promise<DecoratorElements> => {
-    const { env, noCache } = props;
+    const { noCache } = props;
     const url = getDecoratorUrl(props);
 
     if (!noCache) {
-        const fromCache = decoratorCache.get(url, env);
+        const fromCache = decoratorCache(props).get(url);
         if (fromCache) {
             return fromCache;
         }
@@ -85,7 +85,7 @@ export const fetchDecoratorHtml = async (
     return fetchDecoratorElements(url)
         .then((elements) => {
             if (!noCache) {
-                decoratorCache.set(url, env, elements);
+                decoratorCache(props).set(url, elements);
             }
             return elements;
         })

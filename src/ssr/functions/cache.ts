@@ -1,38 +1,45 @@
 import NodeCache from "node-cache";
 import { DecoratorElements } from "./ssr-fetch";
-import { DecoratorEnv } from "../../common/common-types";
-import { decoratorUpdateListeners } from "./update-events";
-
-type CachesPerEnv = { [key in DecoratorEnv]?: NodeCache };
-
-const ONE_DAY = 24 * 3600;
+import { DecoratorEnv, DecoratorEnvProps } from "../../common/common-types";
+import { addDecoratorUpdateListener } from "./update-events";
 
 class DecoratorCache {
-    private cachesPerEnv: CachesPerEnv = {};
+    private readonly cache: NodeCache;
+    private readonly envProps: DecoratorEnvProps;
 
-    public get(url: string, env: DecoratorEnv) {
-        return this.cache(env).get<DecoratorElements>(url);
+    constructor(envProps: DecoratorEnvProps, ttl: number) {
+        this.envProps = envProps;
+        this.cache = new NodeCache({
+            stdTTL: ttl,
+        });
+
+        addDecoratorUpdateListener(envProps, this.clear);
     }
 
-    public set(url: string, env: DecoratorEnv, elements: DecoratorElements) {
-        return this.cache(env).set<DecoratorElements>(url, elements);
+    public get(url: string) {
+        return this.cache.get<DecoratorElements>(url);
     }
 
-    public clear = (env: DecoratorEnv) => {
-        console.log(`Clearing cache for env ${env}`);
-        this.cachesPerEnv[env]?.flushAll();
+    public set(url: string, elements: DecoratorElements) {
+        return this.cache.set<DecoratorElements>(url, elements);
+    }
+
+    public clear = () => {
+        console.log(`Clearing cache for env: ${JSON.stringify(this.envProps)}`);
+        this.cache.flushAll();
     };
-
-    private cache(env: DecoratorEnv): NodeCache {
-        if (!this.cachesPerEnv[env]) {
-            this.cachesPerEnv[env] = new NodeCache({
-                stdTTL: ONE_DAY,
-            });
-            decoratorUpdateListeners.addListener(() => this.clear(env), env);
-        }
-
-        return this.cachesPerEnv[env];
-    }
 }
 
-export const decoratorCache = new DecoratorCache();
+const caches: { [key in DecoratorEnv]?: DecoratorCache } = {};
+
+export const decoratorCache = (
+    envProps: DecoratorEnvProps,
+    ttl = 3600,
+): DecoratorCache => {
+    const { env } = envProps;
+    if (!caches[env]) {
+        caches[env] = new DecoratorCache(envProps, ttl);
+    }
+
+    return caches[env];
+};

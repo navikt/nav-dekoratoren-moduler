@@ -15,9 +15,10 @@ export const injectDecoratorServerSide = async ({
     filePath,
     ...props
 }: InjectWithFile): Promise<string> => {
-    const file = fs.readFileSync(filePath).toString();
-    const dom = new JSDOM(file);
-    return injectDecoratorServerSideDom({ dom, ...props });
+    // const file = fs.readFileSync(filePath).toString();
+    // const dom = new JSDOM(file);
+    // return injectDecoratorServerSideDom({ dom, ...props });
+    return "";
 };
 
 export const injectDecoratorServerSideDom = async ({

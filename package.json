@@ -5,8 +5,8 @@
     "author": "NAVIKT",
     "license": "MIT",
     "repository": "navikt/nav-dekoratoren-moduler",
-    "main": "ssr/index.js",
-    "module": "ssr/index.js",
+    "main": "csr/index.js",
+    "module": "csr/index.js",
     "source": "src/csr/index.tsx",
     "engines": {
         "node": ">=18"

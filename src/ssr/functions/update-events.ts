@@ -1,87 +1,78 @@
-import { DecoratorEnv } from "../../common/common-types";
+import { DecoratorEnv, DecoratorEnvProps } from "../../common/common-types";
 import { getDecoratorBaseUrl } from "../../common/urls";
 
 type DecoratorUpdateCallback = (versionId: string) => unknown;
-type CallbacksSet = Set<DecoratorUpdateCallback>;
-
-type ListenerData = {
-    callbacks: CallbacksSet;
-    updateTimer: NodeJS.Timeout;
-    versionId: string;
-};
 
 type VersionApiResponse = {
     localVersion: string;
     authoritativeVersion: string;
 };
 
-const UPDATE_RATE_MS = 5000;
+const UPDATE_RATE_MS = 10000;
 
-class DecoratorUpdateListeners {
-    private listenersPerEnv: { [key in DecoratorEnv]?: ListenerData } = {};
+// Keep this record at file scope to prevent multiple timers running per environment
+// in the event that the DecoratorUpdateListener is instantiated multiple times
+const updateTimers: { [key in DecoratorEnv]?: NodeJS.Timeout } = {};
 
-    public addListener(callback: DecoratorUpdateCallback, env: DecoratorEnv) {
-        this.callbacks(env).add(callback);
+class DecoratorUpdateListener {
+    private readonly callbacks = new Set<DecoratorUpdateCallback>();
+    private readonly versionApiUrl: string;
+    private readonly envProps: DecoratorEnvProps;
+
+    private versionId: string = "";
+
+    constructor(envProps: DecoratorEnvProps) {
+        this.envProps = envProps;
+
+        const baseUrl = getDecoratorBaseUrl(envProps);
+        this.versionApiUrl = `${baseUrl}/api/version`;
     }
 
-    public removeListener(
-        callback: DecoratorUpdateCallback,
-        env: DecoratorEnv,
-    ) {
-        const callbacks = this.callbacks(env);
-        callbacks.delete(callback);
-    }
-
-    private callbacks(env: DecoratorEnv): CallbacksSet {
-        return this.listeners(env).callbacks;
-    }
-
-    private listeners(env: DecoratorEnv) {
-        if (!this.listenersPerEnv[env]) {
-            this.initListener(env);
+    public async init() {
+        const latestVersionId = await this.fetchLatestVersionId();
+        if (latestVersionId) {
+            this.versionId = latestVersionId;
         }
 
-        return this.listenersPerEnv[env]!;
+        const { env } = this.envProps;
+
+        if (updateTimers[env]) {
+            clearInterval(updateTimers[env]);
+        }
+
+        updateTimers[env] = setInterval(this.refresh, UPDATE_RATE_MS);
+
+        return this;
     }
 
-    private initListener(env: DecoratorEnv) {
-        const baseUrl = getDecoratorBaseUrl({
-            env,
-            serviceDiscovery: true,
-            localUrl: "",
+    public addCallback = (callback: DecoratorUpdateCallback) => {
+        this.callbacks.add(callback);
+    };
+
+    public removeCallback = (callback: DecoratorUpdateCallback) => {
+        this.callbacks.delete(callback);
+    };
+
+    private refresh = async () => {
+        this.fetchLatestVersionId().then((freshVersionId) => {
+            if (!freshVersionId) {
+                return;
+            }
+
+            if (this.versionId === freshVersionId) {
+                console.log(`${freshVersionId} was same as current`);
+                return;
+            }
+
+            console.log(`Setting new version id to ${freshVersionId}`);
+
+            this.versionId = freshVersionId;
+            this.callbacks.forEach((callback) => callback(freshVersionId));
         });
+    };
 
-        const versionApiUrl = `${baseUrl}/api/version`;
-
-        const updateTimer = setInterval(
-            () =>
-                this.fetchVersion(versionApiUrl).then((freshVersionId) => {
-                    if (!freshVersionId) {
-                        return;
-                    }
-
-                    if (listenerData.versionId === freshVersionId) {
-                        return;
-                    }
-
-                    listenerData.versionId = freshVersionId;
-                    listenerData.callbacks.forEach((callback) =>
-                        callback(freshVersionId),
-                    );
-                }),
-            UPDATE_RATE_MS,
-        );
-
-        const listenerData: ListenerData = {
-            callbacks: new Set(),
-            updateTimer,
-            versionId: "",
-        };
-
-        this.listenersPerEnv[env] = listenerData;
-    }
-    private fetchVersion = async (url: string) => {
-        return fetch(url)
+    private fetchLatestVersionId = async () => {
+        return fetch(this.versionApiUrl)
             .then((res) => {
                 if (res.ok) {
                     return res.json() as Promise<VersionApiResponse>;
@@ -96,16 +87,37 @@ class DecoratorUpdateListeners {
                 return null;
             });
     };
-
-    private deleteListener(env: DecoratorEnv) {
-        const listener = this.listenersPerEnv[env];
-        if (!listener) {
-            return;
-        }
-
-        clearInterval(listener.updateTimer);
-        delete this.listenersPerEnv[env];
-    }
 }
 
-export const decoratorUpdateListeners = new DecoratorUpdateListeners();
+const updateListeners: { [key in DecoratorEnv]?: DecoratorUpdateListener } = {};
+
+const getDecoratorUpdateListener = async (
+    envProps: DecoratorEnvProps,
+): Promise<DecoratorUpdateListener> => {
+    const { env } = envProps;
+    if (!updateListeners[env]) {
+        updateListeners[env] = await new DecoratorUpdateListener(
+            envProps,
+        ).init();
+    }
+
+    return updateListeners[env];
+};
+
+export const addDecoratorUpdateListener = (
+    envProps: DecoratorEnvProps,
+    callback: DecoratorUpdateCallback,
+) => {
+    getDecoratorUpdateListener(envProps).then((listener) =>
+        listener.addCallback(callback),
+    );
+};
+
+export const removeDecoratorUpdateListener = (
+    envProps: DecoratorEnvProps,
+    callback: DecoratorUpdateCallback,
+) => {
+    getDecoratorUpdateListener(envProps).then((listener) =>
+        listener.removeCallback(callback),
+    );
+};
