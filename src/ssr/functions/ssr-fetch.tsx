@@ -32,7 +32,6 @@ const fetchDecoratorElements = async (
     fetch(url)
         .then((res) => {
             if (res.ok) {
-                console.log("Fetched ok!");
                 return res.json() as Promise<SsrResponse>;
             }
             throw new Error(

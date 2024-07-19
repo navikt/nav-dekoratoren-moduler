@@ -11,7 +11,8 @@ type VersionApiResponse = {
 const UPDATE_RATE_MS = 10000;
 
 // Keep this record at file scope to prevent multiple timers running per environment
-// in the event that the DecoratorUpdateListener is instantiated multiple times
+// in the event that the DecoratorUpdateListener is instantiated multiple times for
+// the same environment
 const updateTimers: { [key in DecoratorEnv]?: NodeJS.Timeout } = {};
 
 class DecoratorUpdateListener {
@@ -37,6 +38,9 @@ class DecoratorUpdateListener {
         const { env } = this.envProps;
 
         if (updateTimers[env]) {
+            console.warn(
+                `Listener was already initiated for env ${env} - recreating`,
+            );
             clearInterval(updateTimers[env]);
         }
 
@@ -60,11 +64,12 @@ class DecoratorUpdateListener {
             }
 
             if (this.versionId === freshVersionId) {
-                console.log(`${freshVersionId} was same as current`);
                 return;
             }
 
-            console.log(`Setting new version id to ${freshVersionId}`);
+            console.log(
+                `Setting new decorator version id to ${freshVersionId}`,
+            );
 
             this.versionId = freshVersionId;
             this.callbacks.forEach((callback) => callback(freshVersionId));
