@@ -26,6 +26,7 @@ export const injectDecoratorServerSideDom = async ({
 }: InjectWithDom): Promise<string> =>
     fetchDecoratorHtml(props).then((elements) => {
         const { head, body } = dom.window.document;
+        head.insertAdjacentHTML("beforeend", elements.DECORATOR_HEAD_ASSETS);
         head.insertAdjacentHTML("beforeend", elements.DECORATOR_STYLES);
         head.insertAdjacentHTML("beforeend", elements.DECORATOR_SCRIPTS);
         body.insertAdjacentHTML("afterbegin", elements.DECORATOR_HEADER);

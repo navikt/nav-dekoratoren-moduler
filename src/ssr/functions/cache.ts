@@ -25,7 +25,7 @@ class DecoratorCache {
     }
 
     public clear = () => {
-        console.log(`Clearing cache for env: ${JSON.stringify(this.envProps)}`);
+        console.log(`Clearing decorator cache for env ${this.envProps.env}`);
         this.cache.flushAll();
     };
 }
