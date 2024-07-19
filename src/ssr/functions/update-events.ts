@@ -57,6 +57,10 @@ class DecoratorUpdateListener {
         this.callbacks.delete(callback);
     };
 
+    public getVersionId() {
+        return this.versionId;
+    }
+
     private refresh = async () => {
         this.fetchLatestVersionId().then((freshVersionId) => {
             if (!freshVersionId) {
@@ -124,5 +128,11 @@ export const removeDecoratorUpdateListener = (
 ) => {
     getDecoratorUpdateListener(envProps).then((listener) =>
         listener.removeCallback(callback),
+    );
+};
+
+export const getDecoratorVersionId = async (envProps: DecoratorEnvProps) => {
+    return getDecoratorUpdateListener(envProps).then((listener) =>
+        listener.getVersionId(),
     );
 };
