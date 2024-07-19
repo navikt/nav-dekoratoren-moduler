@@ -1,6 +1,6 @@
 import { CSPDirectives as CSPDirectivesAll, getCSP } from "csp-header";
 import { DecoratorEnvProps } from "../../common/common-types";
-import { getDecoratorUrl } from "../../common/urls";
+import { getDecoratorBaseUrl } from "../../common/urls";
 
 type CSPDirectives = Partial<CSPDirectivesAll>;
 
@@ -13,9 +13,9 @@ const fallbackDirectives = {
 export const buildCspHeader = async (
     appDirectives: CSPDirectives,
     envProps: DecoratorEnvProps,
-    retries = 3
+    retries = 3,
 ): Promise<string> => {
-    const url = `${getDecoratorUrl(envProps)}${decoratorCspApi}`;
+    const url = `${getDecoratorBaseUrl(envProps)}${decoratorCspApi}`;
 
     return fetch(url)
         .then((res) => {
@@ -36,7 +36,7 @@ export const buildCspHeader = async (
             }
 
             console.error(
-                `Error fetching decorator CSP, using permissive fallback directives! - ${e}`
+                `Error fetching decorator CSP, using permissive fallback directives! - ${e}`,
             );
             return getCSP({ directives: fallbackDirectives });
         });

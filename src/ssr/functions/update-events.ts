@@ -5,7 +5,7 @@ type DecoratorUpdateCallback = (versionId: string) => unknown;
 
 type VersionApiResponse = {
     localVersion: string;
-    authoritativeVersion: string;
+    latestVersion: string;
 };
 
 const UPDATE_RATE_MS = 10000;
@@ -80,7 +80,7 @@ class DecoratorUpdateListener {
                 throw Error(`Bad response: ${res.status} ${res.statusText}`);
             })
             .then((res) => {
-                return res.authoritativeVersion;
+                return res.latestVersion;
             })
             .catch((e) => {
                 console.error(`Error fetching decorator version - ${e}`);

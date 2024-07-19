@@ -21,7 +21,7 @@ const naisGcpClusters: Record<string, true> = {
     "prod-gcp": true,
 } as const;
 
-const objectToQueryString = (params: Record<string, any>) =>
+const objectToQueryString = (params?: Record<string, any>) =>
     params
         ? Object.entries(params).reduce(
               (acc, [k, v], i) =>
@@ -61,10 +61,6 @@ export const getDecoratorBaseUrl = (props: DecoratorUrlProps) => {
 export const getDecoratorUrl = (props: DecoratorUrlProps) => {
     const { params, csr } = props;
     const baseUrl = getDecoratorBaseUrl(props);
-
-    if (!params) {
-        return baseUrl;
-    }
 
     return `${baseUrl}/${csr ? "env" : "ssr"}${objectToQueryString(params)}`;
 };
