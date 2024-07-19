@@ -28,8 +28,8 @@ export const injectDecoratorServerSideDom = async ({
         const { head, body } = dom.window.document;
         head.insertAdjacentHTML("beforeend", elements.DECORATOR_HEAD_ASSETS);
         head.insertAdjacentHTML("beforeend", elements.DECORATOR_STYLES);
-        head.insertAdjacentHTML("beforeend", elements.DECORATOR_SCRIPTS);
         body.insertAdjacentHTML("afterbegin", elements.DECORATOR_HEADER);
         body.insertAdjacentHTML("beforeend", elements.DECORATOR_FOOTER);
+        head.insertAdjacentHTML("beforeend", elements.DECORATOR_SCRIPTS);
         return dom.serialize();
     });
