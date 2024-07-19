@@ -16,6 +16,7 @@ import {
 } from "./functions/ssr-dom-injection";
 import {
     addDecoratorUpdateListener,
+    getDecoratorVersionId,
     removeDecoratorUpdateListener,
 } from "./functions/update-events";
 
@@ -27,6 +28,7 @@ export {
     buildCspHeader,
     addDecoratorUpdateListener,
     removeDecoratorUpdateListener,
+    getDecoratorVersionId,
 };
 
 export type {
