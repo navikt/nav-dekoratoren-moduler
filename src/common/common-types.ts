@@ -19,7 +19,9 @@ export type DecoratorBreadcrumb = {
     handleInApp?: boolean;
 };
 
-export type DecoratorNaisEnv = "prod" | "dev" | "beta" | "betaTms" | "devNext" | "prodNext";
+export type DecoratorNaisEnv = "prod" | "dev" | "beta" | "betaTms";
+
+export type DecoratorEnv = DecoratorNaisEnv | "localhost";
 
 export type DecoratorEnvProps =
     | { env: "localhost"; localUrl: string }
@@ -51,7 +53,6 @@ export type DecoratorParams = Partial<{
     feedback: boolean;
     chatbot: boolean;
     chatbotVisible: boolean;
-    urlLookupTable: boolean;
     shareScreen: boolean;
     logoutUrl: string;
     logoutWarning: boolean;
