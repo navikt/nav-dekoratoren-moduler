@@ -16,13 +16,7 @@ export type SsrResponse = SsrFragments & {
     versionId: string;
 };
 
-const fragmentKeys = [
-    "header",
-    "footer",
-    "scripts",
-    "styles",
-    "headAssets",
-] as const;
+const fragmentKeys = ["header", "footer", "scripts", "headAssets"] as const;
 
 const fetchDecoratorElements = async (
     url: string,
