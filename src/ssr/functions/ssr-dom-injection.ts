@@ -7,7 +7,7 @@ type InjectWithFile = DecoratorFetchProps & {
     filePath: string;
 };
 
-type InjectWithDom = DecoratorFetchProps & {
+type InjectWithDocument = DecoratorFetchProps & {
     document: Document;
 };
 
@@ -18,15 +18,15 @@ export const injectDecoratorIntoFile = async ({
     const file = fs.readFileSync(filePath).toString();
     const dom = new JSDOM(file);
     return injectDecoratorIntoDocument({
-        document: dom.window.document,
         ...props,
+        document: dom.window.document,
     });
 };
 
 export const injectDecoratorIntoDocument = async ({
     document,
     ...props
-}: InjectWithDom): Promise<string> =>
+}: InjectWithDocument): Promise<string> =>
     fetchDecoratorHtml(props).then((elements) => {
         const { head, body } = document;
         head.insertAdjacentHTML("beforeend", elements.DECORATOR_HEAD_ASSETS);

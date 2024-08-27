@@ -25,15 +25,23 @@
     },
     "dependencies": {
         "csp-header": "5.2.1",
-        "html-react-parser": "3.0.16",
         "node-cache": "5.1.2"
     },
-    "comments": {
-        "jsdom": "More recent versions crashes when parsing in some environments (for unknown reasons). Keep 16.x as minimum for now, and consider switching to a different parser."
-    },
     "peerDependencies": {
+        "html-react-parser": "3.x",
         "jsdom": ">=16.x",
         "react": "17.x || 18.x"
+    },
+    "peerDependenciesMeta": {
+        "html-react-parser": {
+            "optional": true
+        },
+        "jsdom": {
+            "optional": true
+        },
+        "react": {
+            "optional": true
+        }
     },
     "devDependencies": {
         "@rollup/plugin-terser": "0.4.4",
