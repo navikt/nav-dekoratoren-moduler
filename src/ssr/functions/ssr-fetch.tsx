@@ -4,7 +4,6 @@ import { getCsrElements } from "../../common/csr-elements";
 import { decoratorCache } from "./cache";
 
 export type DecoratorElements = {
-    DECORATOR_STYLES: string;
     DECORATOR_SCRIPTS: string;
     DECORATOR_HEADER: string;
     DECORATOR_FOOTER: string;
@@ -53,7 +52,6 @@ const fetchDecoratorElements = async (
                 DECORATOR_HEADER: res.header,
                 DECORATOR_FOOTER: res.footer,
                 DECORATOR_SCRIPTS: res.scripts,
-                DECORATOR_STYLES: res.styles,
                 DECORATOR_HEAD_ASSETS: res.headAssets,
             };
         })
@@ -96,11 +94,10 @@ export const fetchDecoratorHtml = async (
             const csrElements = getCsrElements(props);
 
             return {
-                DECORATOR_STYLES: csrElements.styles,
+                DECORATOR_HEAD_ASSETS: csrElements.styles,
                 DECORATOR_SCRIPTS: `${csrElements.env}${csrElements.scripts}`,
                 DECORATOR_HEADER: csrElements.header,
                 DECORATOR_FOOTER: csrElements.footer,
-                DECORATOR_HEAD_ASSETS: "",
             };
         });
 };

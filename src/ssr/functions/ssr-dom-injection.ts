@@ -30,7 +30,6 @@ export const injectDecoratorIntoDocument = async ({
     fetchDecoratorHtml(props).then((elements) => {
         const { head, body } = document;
         head.insertAdjacentHTML("beforeend", elements.DECORATOR_HEAD_ASSETS);
-        head.insertAdjacentHTML("beforeend", elements.DECORATOR_STYLES);
         body.insertAdjacentHTML("afterbegin", elements.DECORATOR_HEADER);
         body.insertAdjacentHTML("beforeend", elements.DECORATOR_FOOTER);
         head.insertAdjacentHTML("beforeend", elements.DECORATOR_SCRIPTS);
