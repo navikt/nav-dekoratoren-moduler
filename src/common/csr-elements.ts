@@ -1,5 +1,5 @@
 import { DecoratorFetchProps, DecoratorUrlProps } from "./common-types";
-import { getDecoratorUrl } from "./urls";
+import { getDecoratorEndpointUrl } from "./urls";
 
 export const getCsrElements = (csrProps: DecoratorFetchProps) => {
     const props: DecoratorUrlProps = {
@@ -7,8 +7,8 @@ export const getCsrElements = (csrProps: DecoratorFetchProps) => {
         csr: true,
     };
 
-    const envUrl = getDecoratorUrl(props);
-    const assetsUrl = getDecoratorUrl({ ...props, params: undefined });
+    const envUrl = getDecoratorEndpointUrl(props);
+    const assetsUrl = getDecoratorEndpointUrl({ ...props, params: undefined });
     const scriptSrc = `${assetsUrl}/client.js`;
 
     return {

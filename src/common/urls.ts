@@ -16,10 +16,7 @@ const serviceUrls: NaisUrls = {
     betaTms: "http://nav-dekoratoren-beta-tms.personbruker",
 } as const;
 
-const naisGcpClusters: Record<string, true> = {
-    "dev-gcp": true,
-    "prod-gcp": true,
-} as const;
+const naisGcpClusters: ReadonlySet<string> = new Set(["dev-gcp", "prod-gcp"]);
 
 const objectToQueryString = (params?: Record<string, any>) =>
     params
@@ -37,7 +34,7 @@ const objectToQueryString = (params?: Record<string, any>) =>
 const isNaisApp = () =>
     typeof process !== "undefined" &&
     process.env.NAIS_CLUSTER_NAME &&
-    naisGcpClusters[process.env.NAIS_CLUSTER_NAME];
+    naisGcpClusters.has(process.env.NAIS_CLUSTER_NAME);
 
 const getNaisUrl = (
     env: DecoratorNaisEnv,
@@ -58,9 +55,9 @@ export const getDecoratorBaseUrl = (props: DecoratorUrlProps) => {
         : getNaisUrl(props.env, props.csr, props.serviceDiscovery);
 };
 
-export const getDecoratorUrl = (props: DecoratorUrlProps) => {
+export const getDecoratorEndpointUrl = (props: DecoratorUrlProps) => {
     const { params, csr } = props;
     const baseUrl = getDecoratorBaseUrl(props);
 
-    return `${baseUrl}/${csr ? "env" : "ssr"}${objectToQueryString(params)}`;
+    return `${baseUrl}/${csr ? "csr" : "ssr"}${objectToQueryString(params)}`;
 };

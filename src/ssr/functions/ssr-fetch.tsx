@@ -1,4 +1,4 @@
-import { getDecoratorUrl } from "../../common/urls";
+import { getDecoratorEndpointUrl } from "../../common/urls";
 import { DecoratorFetchProps } from "../../common/common-types";
 import { getCsrElements } from "../../common/csr-elements";
 import { decoratorCache } from "./cache";
@@ -72,7 +72,7 @@ export const fetchDecoratorHtml = async (
     props: DecoratorFetchProps,
 ): Promise<DecoratorElements> => {
     const { noCache } = props;
-    const url = getDecoratorUrl(props);
+    const url = getDecoratorEndpointUrl(props);
 
     if (!noCache) {
         const fromCache = decoratorCache(props).get(url);

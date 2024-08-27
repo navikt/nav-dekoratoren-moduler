@@ -8,28 +8,31 @@ type InjectWithFile = DecoratorFetchProps & {
 };
 
 type InjectWithDom = DecoratorFetchProps & {
-    dom: JSDOM;
+    document: Document;
 };
 
-export const injectDecoratorServerSide = async ({
+export const injectDecoratorIntoFile = async ({
     filePath,
     ...props
 }: InjectWithFile): Promise<string> => {
     const file = fs.readFileSync(filePath).toString();
     const dom = new JSDOM(file);
-    return injectDecoratorServerSideDom({ dom, ...props });
+    return injectDecoratorIntoDocument({
+        document: dom.window.document,
+        ...props,
+    });
 };
 
-export const injectDecoratorServerSideDom = async ({
-    dom,
+export const injectDecoratorIntoDocument = async ({
+    document,
     ...props
 }: InjectWithDom): Promise<string> =>
     fetchDecoratorHtml(props).then((elements) => {
-        const { head, body } = dom.window.document;
+        const { head, body } = document;
         head.insertAdjacentHTML("beforeend", elements.DECORATOR_HEAD_ASSETS);
         head.insertAdjacentHTML("beforeend", elements.DECORATOR_STYLES);
         body.insertAdjacentHTML("afterbegin", elements.DECORATOR_HEADER);
         body.insertAdjacentHTML("beforeend", elements.DECORATOR_FOOTER);
         head.insertAdjacentHTML("beforeend", elements.DECORATOR_SCRIPTS);
-        return dom.serialize();
+        return document.documentElement.outerHTML;
     });

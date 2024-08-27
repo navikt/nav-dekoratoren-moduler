@@ -3,6 +3,8 @@ import { DecoratorElements } from "./ssr-fetch";
 import { DecoratorEnv, DecoratorEnvProps } from "../../common/common-types";
 import { addDecoratorUpdateListener } from "./update-events";
 
+type CacheEntry = {};
+
 class DecoratorCache {
     private readonly cache: NodeCache;
     private readonly envProps: DecoratorEnvProps;
@@ -11,6 +13,7 @@ class DecoratorCache {
         this.envProps = envProps;
         this.cache = new NodeCache({
             stdTTL: ttl,
+            deleteOnExpire: false,
         });
 
         addDecoratorUpdateListener(envProps, this.clear);

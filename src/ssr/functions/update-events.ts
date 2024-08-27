@@ -4,8 +4,8 @@ import { getDecoratorBaseUrl } from "../../common/urls";
 type DecoratorUpdateCallback = (versionId: string) => unknown;
 
 type VersionApiResponse = {
-    localVersion: string;
-    latestVersion: string;
+    versionId: string;
+    timestamp: string;
 };
 
 const UPDATE_RATE_MS = 10000;
@@ -16,23 +16,25 @@ const UPDATE_RATE_MS = 10000;
 const updateTimers: { [key in DecoratorEnv]?: NodeJS.Timeout } = {};
 
 class DecoratorUpdateListener {
-    private readonly callbacks = new Set<DecoratorUpdateCallback>();
     private readonly versionApiUrl: string;
     private readonly envProps: DecoratorEnvProps;
+    private readonly callbacks = new Set<DecoratorUpdateCallback>();
 
-    private versionId: string = "";
+    private versionInfo: VersionApiResponse;
 
     constructor(envProps: DecoratorEnvProps) {
         this.envProps = envProps;
-
-        const baseUrl = getDecoratorBaseUrl(envProps);
-        this.versionApiUrl = `${baseUrl}/api/version`;
+        this.versionApiUrl = `${getDecoratorBaseUrl(envProps)}/api/version`;
+        this.versionInfo = {
+            versionId: "",
+            timestamp: "",
+        };
     }
 
     public async init() {
-        const latestVersionId = await this.fetchLatestVersionId();
-        if (latestVersionId) {
-            this.versionId = latestVersionId;
+        const versionInfo = await this.fetchVersionInfo();
+        if (versionInfo) {
+            this.versionInfo = versionInfo;
         }
 
         const { env } = this.envProps;
@@ -58,38 +60,40 @@ class DecoratorUpdateListener {
     };
 
     public getVersionId() {
-        return this.versionId;
+        return this.versionInfo.versionId;
     }
 
     private refresh = async () => {
-        this.fetchLatestVersionId().then((freshVersionId) => {
-            if (!freshVersionId) {
+        this.fetchVersionInfo().then((versionInfo) => {
+            if (!versionInfo) {
                 return;
             }
 
-            if (this.versionId === freshVersionId) {
+            if (
+                this.versionInfo.versionId === versionInfo.versionId ||
+                this.versionInfo.timestamp > versionInfo.timestamp
+            ) {
                 return;
             }
 
             console.log(
-                `Setting new decorator version id to ${freshVersionId}`,
+                `Setting new decorator version id to ${versionInfo.versionId} (ts: ${versionInfo.timestamp})`,
             );
 
-            this.versionId = freshVersionId;
-            this.callbacks.forEach((callback) => callback(freshVersionId));
+            this.versionInfo = versionInfo;
+            this.callbacks.forEach((callback) =>
+                callback(versionInfo.versionId),
+            );
         });
     };
 
-    private fetchLatestVersionId = async () => {
+    private fetchVersionInfo = async () => {
         return fetch(this.versionApiUrl)
             .then((res) => {
                 if (res.ok) {
                     return res.json() as Promise<VersionApiResponse>;
                 }
                 throw Error(`Bad response: ${res.status} ${res.statusText}`);
-            })
-            .then((res) => {
-                return res.latestVersion;
             })
             .catch((e) => {
                 console.error(`Error fetching decorator version - ${e}`);

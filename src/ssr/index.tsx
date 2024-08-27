@@ -11,8 +11,8 @@ import {
     fetchDecoratorReact,
 } from "./functions/ssr-react-parser";
 import {
-    injectDecoratorServerSide,
-    injectDecoratorServerSideDom,
+    injectDecoratorIntoFile,
+    injectDecoratorIntoDocument,
 } from "./functions/ssr-dom-injection";
 import {
     addDecoratorUpdateListener,
@@ -21,8 +21,8 @@ import {
 } from "./functions/update-events";
 
 export {
-    injectDecoratorServerSide,
-    injectDecoratorServerSideDom,
+    injectDecoratorIntoFile,
+    injectDecoratorIntoDocument,
     fetchDecoratorReact,
     fetchDecoratorHtml,
     buildCspHeader,
