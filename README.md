@@ -363,8 +363,10 @@ ReactDOM.render(<Wrapper />, document.getElementById("app"));
 
 Parameteret `breadcrumbs` (brødsmulestien) kan endres / settes på klient-siden ved behov.
 
-Obs! Klikk på breadcrumbs logges til analyseverktøy (Amplitude). Dersom title kan inneholde sensitive opplysninger
-som f.eks. navn på bruker, må feltet analyticsTitle også settes. Dette feltet vil da logges istedenfor title.
+Obs! Klikk på breadcrumbs logges til analyseverktøy (Amplitude). Ettersom title i noen apper kan inneholde personopplysninger,
+som f.eks. navn på bruker, så logges dette i utgangspunktet kun som `[redacted]` til Amplitude.
+
+Om ønskelig kan feltet `analyticsTitle` også settes, dersom du ønsker å logge en title. Husk å fjerne eventuelle personopplysninger fra denne!
 
 ```tsx
 // Type
