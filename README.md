@@ -15,7 +15,6 @@
 - (breaking) Fjerner `getUrlFromLookupTable` og tilhørende url-mappinger
 - (breaking) Fjerner `parseDecoratorHTMLToReact`
 - (breaking) Alle dependencies er nå peer dependencies
-- (breaking) Bygger bundles som ES modules (var tidligere CJS for SSR, UMD for CSR)
 
 ## Kom i gang
 
