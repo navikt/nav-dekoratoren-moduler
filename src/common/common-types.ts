@@ -29,7 +29,6 @@ export type DecoratorEnvProps =
 
 export type DecoratorFetchProps = {
     params?: DecoratorParams;
-    noCache?: boolean;
 } & DecoratorEnvProps;
 
 export type DecoratorUrlProps = {
@@ -57,3 +56,10 @@ export type DecoratorParams = Partial<{
     logoutUrl: string;
     logoutWarning: boolean;
 }>;
+
+export type DecoratorElements = {
+    DECORATOR_HEAD_ASSETS: string;
+    DECORATOR_HEADER: string;
+    DECORATOR_FOOTER: string;
+    DECORATOR_SCRIPTS: string;
+};

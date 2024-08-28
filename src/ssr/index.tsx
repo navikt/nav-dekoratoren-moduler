@@ -3,8 +3,9 @@ import {
     DecoratorLocale,
     DecoratorEnvProps,
     DecoratorFetchProps,
+    DecoratorElements,
 } from "../common/common-types";
-import { fetchDecoratorHtml, DecoratorElements } from "./functions/ssr-fetch";
+import { fetchDecoratorHtml } from "./functions/fetch-elements";
 import { buildCspHeader } from "./functions/csp";
 import {
     DecoratorComponents,

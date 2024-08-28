@@ -1,7 +1,10 @@
-import { DecoratorFetchProps } from "../../common/common-types";
+import {
+    DecoratorElements,
+    DecoratorFetchProps,
+} from "../../common/common-types";
 import parse from "html-react-parser";
 import React, { FunctionComponent } from "react";
-import { DecoratorElements, fetchDecoratorHtml } from "./ssr-fetch";
+import { fetchDecoratorHtml } from "./ssr-dom-injection";
 
 export type DecoratorComponents = {
     Scripts: FunctionComponent;

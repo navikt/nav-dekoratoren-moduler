@@ -1,5 +1,6 @@
 import { DecoratorFetchProps, DecoratorUrlProps } from "./common-types";
 import { getDecoratorEndpointUrl } from "./urls";
+import { DecoratorElements } from "../ssr";
 
 export const getCsrElements = (csrProps: DecoratorFetchProps) => {
     const props: DecoratorUrlProps = {
@@ -18,5 +19,18 @@ export const getCsrElements = (csrProps: DecoratorFetchProps) => {
         styles: `<link href="${assetsUrl}/css/client.css" rel="stylesheet" />`,
         scripts: `<script src="${scriptSrc}" async></script>`,
         scriptSrc,
+    };
+};
+
+export const getCsrFallback = (
+    props: DecoratorFetchProps,
+): DecoratorElements => {
+    const csrElements = getCsrElements(props);
+
+    return {
+        DECORATOR_HEAD_ASSETS: csrElements.styles,
+        DECORATOR_SCRIPTS: `${csrElements.env}${csrElements.scripts}`,
+        DECORATOR_HEADER: csrElements.header,
+        DECORATOR_FOOTER: csrElements.footer,
     };
 };
