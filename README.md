@@ -4,7 +4,18 @@
 
 ### Endringer i versjon 3
 
--   (breaking) Fjerner `urlLookupTable`
+- Server-side fetch-funksjoner henter nå ferdige HTML-fragmenter fra `/ssr`-endepunktet, istedenfor å parse hele dekoratørens HTML.
+- (breaking) Alle dekoratørens `<head>`-elementer er nå inkludert i det påkrevde fragmentet `DECORATOR_HEAD_ASSETS`. CSS, favicon, etc.
+- (breaking) Fjerner `DECORATOR_STYLES`/`Styles` fra responsen for `fetchDecoratorHtml`/`fetchDecoratorReact` (see above!).
+- Den innbygde cachen av dekoratørens elementer invalideres nå automatisk når en ny versjon av dekoratøren er tilgjengelig.
+- Nye funksjoner: `addDecoratorUpdateListener`, `removeDecoratorUpdateListener`, `getDecoratorVersionId`. Tiltenkt brukt for cache-invalidering i apper som cacher dekoratøren på andre måter.
+- Fjerner typer for ubrukte parametre `urlLookupTable`, `enforceLogin` og `level`
+- (breaking) Fjerner `<EnforceLoginLoader/>`
+- (breaking) Fjerner `injectDecoratorServerSideDom`. Denne erstattes av `injectDecoratorServerSideDocument`, som tar inn et standard Document DOM-objekt.
+- (breaking) Fjerner `getUrlFromLookupTable` og tilhørende url-mappinger
+- (breaking) Fjerner `parseDecoratorHTMLToReact`
+- (breaking) Alle dependencies er nå peer dependencies
+- (breaking) Bygger bundles som ES modules (var tidligere CJS for SSR, UMD for CSR)
 
 ## Kom i gang
 
@@ -12,7 +23,7 @@
 npm install --save @navikt/nav-dekoratoren-moduler
 ```
 
-Obs! Pakkene publiseres nå kun i GitHub Packages registry'et. For å kunne installere nyere versjoner må pakker fra @navikt-orgen scopes til GitHub Packages.
+Obs! Oppdaterte pakker publiseres kun i GitHub Packages registry'et. For å kunne installere nyere versjoner må pakker fra @navikt-orgen scopes til GitHub Packages.
 
 #### Ved lokal kjøring:
 
@@ -22,7 +33,7 @@ Obs! Pakkene publiseres nå kun i GitHub Packages registry'et. For å kunne inst
 @navikt:registry=https://npm.pkg.github.com
 ```
 
--   Opprett et PAT med `read:packages` scope, og bruk dette som passord ved login.
+-   Opprett et PAT med `read:packages` scope og SSO auth, og bruk dette som passord ved login.
 
 ```
 npm login --registry=https://npm.pkg.github.com --auth-type=legacy
@@ -34,7 +45,7 @@ npm login --registry=https://npm.pkg.github.com --auth-type=legacy
 
 ```
 - name: Setup node.js
-  uses: actions/setup-node@v3
+  uses: actions/setup-node@v4
   with:
     registry-url: 'https://npm.pkg.github.com'
 ```
@@ -58,11 +69,8 @@ Samtlige funksjoner for fetch av dekoratøren tar inn parametre med følgende ty
 type DecoratorNaisEnv =
     | "prod"        // For produksjons-instans av dekoratøren
     | "dev"         // For stabil dev-instans
-    | "beta"        // Beta dev-instanser ment for internt test-bruk
+    | "beta"        // Beta dev-instanser er ment for internt test-bruk
     | "betaTms"     // Disse kan være ustabile i lengre perioder
-    
-    | "devNext"     // Obs: (dev|prod)Next er avviklet og kan ikke benyttes
-    | "prodNext";   //
 
 type DecoratorEnvProps =
     // Dersom env er satt til localhost, må du selv sette url for dekoratøren.
@@ -80,7 +88,7 @@ type DecoratorFetchProps = {
 
 ### Service discovery
 
-Server-side fetch-funksjonene benytter [service discovery](https://docs.nais.io/clusters/service-discovery) som default fra versjon 2.0.
+Server-side fetch-funksjonene benytter [service discovery](https://docs.nais.io/clusters/service-discovery) som default.
 Vær obs på at dette kun fungerer ved kjøring på dev-gcp eller prod-gcp nais-clusterne. Dersom appen ikke kjører i ett av disse clusterne, vil vi falle tilbake til å kalle eksterne ingresser.
 
 Du kan også sette parameteret `serviceDiscovery: false` for å alltid benytte eksterne ingresser.
@@ -98,7 +106,7 @@ fetchDecoratorHtml({
 
 Se [nais doc](https://docs.nais.io/nais-application/access-policy) for oppsett av access policy.
 
-#### Service discovery (default fra versjon 2.0)
+#### Service discovery (default)
 
 Ved bruk av service discovery må følgende regel inkluderes i access policy:
 
@@ -110,7 +118,7 @@ accessPolicy:
               namespace: personbruker
 ```
 
-#### Eksterne ingresser (1.9 eller tidligere)
+#### Eksterne ingresser
 
 Dersom service discovery ikke benyttes, vil dekoratørens eksterne ingresser kalles. Dette gjelder ved bruk av versjon 1.9 eller tidligere, eller dersom `serviceDiscovery: false` er satt.
 
@@ -128,11 +136,9 @@ accessPolicy:
 
 Server-side rendering av dekoratøren anbefales for optimal brukeropplevelse. Dersom kallet feiler (etter 3 retries), faller vi tilbake til statiske placeholder-elementer som client-side rendres.
 
-### injectDecoratorServerSide / injectDecoratorServerSideDom
+### injectDecoratorServerSide
 
-Setter inn dekoratøren i en HTML-fil eller et JSDOM-objekt, og returnerer en HTML-string.
-
-Bruk med HTML-fil:
+Parser en HTML-fil med JSDOM og returnerer en HTML-string som inkluderer dekoratøren.
 
 ```tsx
 import { injectDecoratorServerSide } from "@navikt/nav-dekoratoren-moduler/ssr";
@@ -141,21 +147,24 @@ injectDecoratorServerSide({
     env: "prod",
     filePath: "index.html",
     params: { context: "privatperson", simple: true },
-}).then((html) => {
-    res.send(html);
+}).then((htmlWithDecorator: string) => {
+    res.send(htmlWithDecorator);
 });
 ```
 
-Bruk med JSDOM-objekt:
+### injectDecoratorIntoDocument
+
+Setter inn dekoratøren i et Document DOM-objekt. Objektet i document-parameteret muteres.
 
 ```tsx
-import { injectDecoratorServerSideDom } from "@navikt/nav-dekoratoren-moduler/ssr";
+import { injectDecoratorServerSideDocument } from "@navikt/nav-dekoratoren-moduler/ssr";
 
-injectDecoratorServerSideDom({
+injectDecoratorServerSideDocument({
     env: "prod",
-    dom: myJsDomObject,
+    document: myDocument,
     params: { context: "privatperson", simple: true },
-}).then((html) => {
+}).then((document: Document) => {    
+    const html = document.documentElement.outerHTML;
     res.send(html);
 });
 ```
@@ -175,10 +184,10 @@ const fragments = await fetchDecoratorHtml({
 });
 
 const {
-    DECORATOR_STYLES,
-    DECORATOR_SCRIPTS,
+    DECORATOR_HEAD_ASSETS,
     DECORATOR_HEADER,
     DECORATOR_FOOTER,
+    DECORATOR_SCRIPTS,
 } = fragments;
 
 // Sett inn fragmenter i app-html'en med f.eks. en template engine
@@ -211,7 +220,7 @@ class MyDocument extends Document<DocumentProps> {
         return (
             <Html lang={"no"}>
                 <Head>
-                    <Decorator.Styles />
+                    <Decorator.HeadAssets />
                 </Head>
                 <body>
                     <Decorator.Header />
@@ -228,7 +237,7 @@ class MyDocument extends Document<DocumentProps> {
 
 ## Client-side rendering
 
-CSR vil gi en redusert brukeropplevelse pga layout-shifting/"pop-in" når headeren rendres, og bør unngås om mulig.
+CSR vil gi en redusert brukeropplevelse pga layout-shifting/"pop-in" når headeren rendres, og bør unngås om mulig. Ta gjerne kontakt i #dekoratøren_på_navno for bistand med å sette opp SSR i appen din!
 
 ### injectDecoratorClientSide
 
@@ -258,21 +267,49 @@ Eksempel:
 injectDecoratorServerSide({
     filePath: "index.html",
     env: "localhost",
-    localUrl: "http://localhost:8088/dekoratoren",
+    localUrl: "http://localhost:8089/dekoratoren",
 });
 ```
 
 # Andre hjelpefunksjoner
 
+### addDecoratorUpdateListener / removeDecoratorUpdateListener
+
+Legger til/fjerner en callback-funksjon som kalles når en ny versjon av dekoratøren er deployet til valgt miljø.
+
+Tiltenkt brukt for cache-invalidering i apper som cacher dekoratørens HTML.
+
+```ts
+import { addDecoratorUpdateListener } from '@navikt/nav-dekoratoren-moduler/ssr'
+
+const flushHtmlCache = (versionId: string) => {
+    console.log(`New decorator version: ${versionId} - clearing render cache!`);
+    myHtmlCache.clear();
+}
+
+addDecoratorUpdateListener({ env: "prod" }, flushHtmlCache)
+
+```
+
+### getDecoratorVersionId
+
+Henter nåværende versjons-id for dekoratøren i valgt miljø.
+
+```ts
+import { getDecoratorVersionId } from '@navikt/nav-dekoratoren-moduler/ssr'
+
+const currentVersionId = await getDecoratorVersionId({ env: 'prod' });
+```
+
 ### buildCspHeader
 
-Bygger en Content-Security-Policy header som inkluderer dekoratørens påkrevde direktiver, kombinert med applikasjonens egne direktiver.<br>
+Bygger en Content-Security-Policy header som inkluderer dekoratørens påkrevde direktiver, kombinert med applikasjonens egne direktiver.
 
-Funksjonen gjør et fetch-kall til dekoratøren for å hente gjeldende direktiver.<br>
+Funksjonen gjør et fetch-kall til dekoratøren for å hente gjeldende direktiver.
 
 Eksempel på bruk:
 
-```tsx
+```ts
 import { buildCspHeader } from "@navikt/nav-dekoratoren-moduler/ssr";
 
 // Direktiver appen din benytter
@@ -290,9 +327,9 @@ app.get("*", (req, res) => {
 });
 ```
 
-### logAmplitudeEvent
+### getAmplitudeInstance
 
-Sender events til Amplitude via dekoratørens klient.
+Bygger en logger-instans som sender events til Amplitude via dekoratørens klient.
 
 Eksempel på bruk:
 
@@ -328,38 +365,14 @@ logger("first", {
 });
 ```
 
-### < EnforceLoginLoader / >
-
-Parameteret `enforceLogin` i dekoratøren sender brukeren til loginservice ved for lavt innloggingsnivå.
-Ulempen er at applikasjonen din kan laste før frontend-kallet mot nav-dekoratoren-api er ferdig og dekoratøren sender brukeren til loginservice.
-
-`EnforceLoginLoader` er en wrapper for applikasjonen som viser en spinner mens sjekken pågår. Funksjonen `authCallback` trigges etter vellykket innlogging og benyttes for å hente ut brukerens navn ved behov.
-
-```tsx
-import React, { Component } from "react";
-import { EnforceLoginLoader } from "@navikt/nav-dekoratoren-moduler";
-
-const Wrapper = () => {
-    const authCallback = (auth: Auth) => {
-        console.log(auth);
-    };
-
-    return (
-        <EnforceLoginLoader authCallback={authCallback}>
-            <App />
-        </EnforceLoginLoader>
-    );
-};
-
-ReactDOM.render(<Wrapper />, document.getElementById("app"));
-```
-
 ### setBreadcrumbs
 
 Parameteret `breadcrumbs` (brødsmulestien) kan endres / settes på klient-siden ved behov.
 
-Obs! Klikk på breadcrumbs logges til analyseverktøy (Amplitude). Dersom title kan inneholde sensitive opplysninger
-som f.eks. navn på bruker, må feltet analyticsTitle også settes. Dette feltet vil da logges istedenfor title.
+Obs! Klikk på breadcrumbs logges til analyseverktøy (Amplitude). Ettersom title i noen apper kan inneholde personopplysninger,
+som f.eks. navn på bruker, så logges dette i utgangspunktet kun som `[redacted]` til Amplitude.
+
+Om ønskelig kan feltet `analyticsTitle` også settes, dersom du ønsker å logge en title. Husk å fjerne eventuelle personopplysninger fra denne!
 
 ```tsx
 // Type
@@ -463,7 +476,6 @@ export type DecoratorParams = Partial<{
     simpleFooter: boolean;
     redirectToApp: boolean;
     redirectToUrl: string;
-    level: string;
     language: DecoratorLocale;
     availableLanguages: DecoratorLanguageOption[];
     breadcrumbs: DecoratorBreadcrumb[];
@@ -484,16 +496,6 @@ setParams({
     chatbot: true,
 });
 ```
-
-## Språkstøtte
-
-Grensesnittet (header, meny etc) finnes i tre språkdrakter: norsk bokmål (nb), engelsk (en) og delvis samisk (se).
-
-Du kan angi at språkvelgeren skal støtte flere språk enn dette, som beskrevet i seksjonen ovenfor, men det er kun disse tre språkene som kan vises i selve dekoratør-grensesnittet. For de resterende språkene som språkvelgeren støtter, så vil "nærmeste" relevante språk vises istedet, feks:
-
--   nn => nb
--   pl => en
--   ru => en
 
 ### openChatbot
 

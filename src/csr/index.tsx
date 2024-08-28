@@ -1,4 +1,3 @@
-import EnforceLoginLoader, { Auth } from "./components/EnforceLoginLoader";
 import { setBreadcrumbs, onBreadcrumbClick } from "./functions/breadcrumbs";
 import { setAvailableLanguages, onLanguageSelect } from "./functions/languages";
 import { injectDecoratorClientSide } from "./functions/csr";
@@ -10,15 +9,10 @@ import {
     DecoratorEnvProps,
     DecoratorFetchProps,
 } from "../common/common-types";
-import {
-    AmplitudeParams,
-    getAmplitudeInstance,
-    logAmplitudeEvent,
-} from "./functions/amplitude";
+import { AmplitudeParams, getAmplitudeInstance, logAmplitudeEvent } from "./functions/amplitude";
 import { AmplitudeEvent } from "./events";
 
 export {
-    EnforceLoginLoader,
     setAvailableLanguages,
     onLanguageSelect,
     setBreadcrumbs,
@@ -31,7 +25,6 @@ export {
 };
 
 export type {
-    Auth,
     DecoratorParams,
     DecoratorLocale,
     AmplitudeParams,

@@ -7,7 +7,10 @@ import {
 } from "../common/common-types";
 import { buildCspHeader } from "./functions/csp";
 import { DecoratorComponentsReact, fetchDecoratorReact } from "./functions/ssr-react";
-import { injectDecoratorIntoFile, injectDecoratorIntoDocument } from "./functions/ssr-injection";
+import {
+    injectDecoratorServerSide,
+    injectDecoratorServerSideDocument,
+} from "./functions/ssr-injection";
 import {
     addDecoratorUpdateListener,
     getDecoratorVersionId,
@@ -16,8 +19,8 @@ import {
 import { fetchDecoratorHtml } from "./functions/ssr-html";
 
 export {
-    injectDecoratorIntoFile,
-    injectDecoratorIntoDocument,
+    injectDecoratorServerSide,
+    injectDecoratorServerSideDocument,
     fetchDecoratorReact,
     fetchDecoratorHtml,
     buildCspHeader,
