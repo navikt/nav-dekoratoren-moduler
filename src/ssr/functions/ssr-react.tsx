@@ -1,7 +1,10 @@
 import { DecoratorFetchProps } from "../../common/common-types";
-import parse from "html-react-parser";
+import htmlReactParser from "html-react-parser";
 import React, { FunctionComponent } from "react";
 import { getDecoratorElements } from "./elements-service";
+
+// @ts-expect-error Property 'default' exists on type
+const parse = htmlReactParser.default;
 
 export type DecoratorComponentsReact = {
     Scripts: FunctionComponent;

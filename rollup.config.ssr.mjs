@@ -11,7 +11,7 @@ export default [
         output: {
             name: "ssr",
             file: "ssr/index.js",
-            format: "es",
+            format: "commonjs",
             sourcemap: true,
             exports: "named",
         },
