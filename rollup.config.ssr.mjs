@@ -11,8 +11,9 @@ export default [
         output: {
             name: "ssr",
             file: "ssr/index.js",
-            format: "cjs",
+            format: "es",
             sourcemap: true,
+            exports: "named",
         },
         plugins: [
             typescript({

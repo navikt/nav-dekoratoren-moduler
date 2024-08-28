@@ -11,7 +11,7 @@ export default [
         output: {
             name: "csr",
             file: "csr/index.js",
-            format: "umd",
+            format: "es",
             sourcemap: true,
             exports: "named",
             globals: {

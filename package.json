@@ -23,25 +23,11 @@
         "predeploy": "cd example && npm install && npm run build",
         "publish:beta": "npm run build && npm version prerelease --preid beta && npm publish --access public --tag beta"
     },
-    "dependencies": {
-        "csp-header": "5.2.1",
-        "node-cache": "5.1.2"
-    },
     "peerDependencies": {
-        "html-react-parser": "3.x",
+        "csp-header": ">=5.x",
+        "html-react-parser": ">=5.x",
         "jsdom": ">=16.x",
-        "react": "17.x || 18.x"
-    },
-    "peerDependenciesMeta": {
-        "html-react-parser": {
-            "optional": true
-        },
-        "jsdom": {
-            "optional": true
-        },
-        "react": {
-            "optional": true
-        }
+        "react": ">=17.x"
     },
     "devDependencies": {
         "@rollup/plugin-terser": "0.4.4",
