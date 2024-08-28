@@ -29,6 +29,7 @@ export type DecoratorEnvProps =
 
 export type DecoratorFetchProps = {
     params?: DecoratorParams;
+    noCache?: boolean;
 } & DecoratorEnvProps;
 
 export type DecoratorUrlProps = {

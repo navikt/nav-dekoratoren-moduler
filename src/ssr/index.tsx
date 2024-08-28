@@ -5,21 +5,15 @@ import {
     DecoratorFetchProps,
     DecoratorElements,
 } from "../common/common-types";
-import { fetchDecoratorHtml } from "./functions/fetch-elements";
 import { buildCspHeader } from "./functions/csp";
-import {
-    DecoratorComponents,
-    fetchDecoratorReact,
-} from "./functions/ssr-react-parser";
-import {
-    injectDecoratorIntoFile,
-    injectDecoratorIntoDocument,
-} from "./functions/ssr-dom-injection";
+import { DecoratorComponentsReact, fetchDecoratorReact } from "./functions/ssr-react";
+import { injectDecoratorIntoFile, injectDecoratorIntoDocument } from "./functions/ssr-injection";
 import {
     addDecoratorUpdateListener,
     getDecoratorVersionId,
     removeDecoratorUpdateListener,
 } from "./functions/update-events";
+import { fetchDecoratorHtml } from "./functions/ssr-html";
 
 export {
     injectDecoratorIntoFile,
@@ -34,7 +28,7 @@ export {
 
 export type {
     DecoratorElements,
-    DecoratorComponents,
+    DecoratorComponentsReact,
     DecoratorParams,
     DecoratorLocale,
     DecoratorFetchProps,

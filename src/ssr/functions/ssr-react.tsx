@@ -1,21 +1,16 @@
-import {
-    DecoratorElements,
-    DecoratorFetchProps,
-} from "../../common/common-types";
+import { DecoratorElements, DecoratorFetchProps } from "../../common/common-types";
 import parse from "html-react-parser";
 import React, { FunctionComponent } from "react";
-import { fetchDecoratorHtml } from "./ssr-dom-injection";
+import { getDecoratorElements } from "./elements-service";
 
-export type DecoratorComponents = {
+export type DecoratorComponentsReact = {
     Scripts: FunctionComponent;
     Header: FunctionComponent;
     Footer: FunctionComponent;
     HeadAssets: FunctionComponent;
 };
 
-const parseDecoratorHTMLToReact = (
-    elements: DecoratorElements,
-): DecoratorComponents => {
+const parseDecoratorHTMLToReact = (elements: DecoratorElements): DecoratorComponentsReact => {
     return {
         HeadAssets: () => <>{parse(elements.DECORATOR_HEAD_ASSETS)}</>,
         Scripts: () => <>{parse(elements.DECORATOR_SCRIPTS)}</>,
@@ -26,6 +21,6 @@ const parseDecoratorHTMLToReact = (
 
 export const fetchDecoratorReact = async (
     props: DecoratorFetchProps,
-): Promise<DecoratorComponents> => {
-    return fetchDecoratorHtml(props).then(parseDecoratorHTMLToReact);
+): Promise<DecoratorComponentsReact> => {
+    return getDecoratorElements(props).then(parseDecoratorHTMLToReact);
 };

@@ -13,18 +13,13 @@ type OkResponse = {
 
 const fragmentKeys = ["headAssets", "header", "footer", "scripts"] as const;
 
-export const fetchSsrElements = async (
-    url: string,
-    retries = 3,
-): Promise<OkResponse | null> =>
+export const fetchSsrElements = async (url: string, retries = 3): Promise<OkResponse | null> =>
     fetch(url)
         .then((res) => {
             if (res.ok) {
                 return res.json() as Promise<SsrResponse>;
             }
-            throw new Error(
-                `Error fetching decorator: ${res.status} - ${res.statusText}`,
-            );
+            throw new Error(`Error fetching decorator: ${res.status} - ${res.statusText}`);
         })
         .then((res) => {
             const missingFragments = fragmentKeys.filter((key) => !res[key]);
@@ -53,9 +48,7 @@ export const fetchSsrElements = async (
                 return fetchSsrElements(url, retries - 1);
             }
 
-            console.error(
-                `Failed to fetch decorator elements from ${url} - ${e.toString()}`,
-            );
+            console.error(`Failed to fetch decorator elements from ${url} - ${e.toString()}`);
 
             return null;
         });

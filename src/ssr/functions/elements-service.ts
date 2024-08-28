@@ -23,14 +23,12 @@ type Args = {
 const ONE_HOUR_MS = 3600 * 1000;
 
 class DecoratorElementsService {
-    private readonly cache: Record<string, CacheEntry>;
+    private readonly cache: Map<string, CacheEntry>;
     private readonly cacheTtl: number;
-    private readonly envProps: DecoratorEnvProps;
 
     constructor({ envProps, cacheTtl = ONE_HOUR_MS }: Args) {
-        this.cache = {};
+        this.cache = new Map();
         this.cacheTtl = cacheTtl;
-        this.envProps = envProps;
 
         addDecoratorUpdateListener(envProps, this.invalidate);
     }
@@ -38,41 +36,37 @@ class DecoratorElementsService {
     public async get(props: DecoratorFetchProps): Promise<DecoratorElements> {
         const url = getDecoratorEndpointUrl(props);
 
-        const fromCache = this.cache[url];
+        if (props.noCache) {
+            return fetchSsrElements(url).then((res) => {
+                return res?.elements || this.csrFallback(props);
+            });
+        }
+
+        const fromCache = this.cache.get(url);
         if (fromCache && fromCache.expires < Date.now()) {
             return fromCache.elements;
         }
 
-        const response = await fetchSsrElements(url).catch((e) => {
-            return null;
-        });
+        const ssrResponse = await fetchSsrElements(url);
 
-        if (!response) {
+        if (!ssrResponse) {
             // Try to reuse old cache item if the fetch failed
             return fromCache?.elements || this.csrFallback(props);
         }
 
-        this.cache[url] = {
-            elements: response.elements,
-            versionId: response.versionId,
+        this.cache.set(url, {
+            elements: ssrResponse.elements,
+            versionId: ssrResponse.versionId,
             expires: Date.now() + this.cacheTtl,
-        };
-
-        return response.elements;
-    }
-
-    public async getNoCache(props: DecoratorFetchProps): Promise<DecoratorElements> {
-        const url = getDecoratorEndpointUrl(props);
-
-        return fetchSsrElements(url).then((res) => {
-            return res?.elements || this.csrFallback(props);
         });
+
+        return ssrResponse.elements;
     }
 
     public invalidate = () => {
-        console.log(`Invalidating decorator cache for env ${this.envProps.env}`);
+        console.log(`Invalidating decorator cache`);
 
-        Object.values(this.cache).forEach((cacheEntry) => {
+        this.cache.forEach((cacheEntry) => {
             cacheEntry.expires = 0;
         });
     };
@@ -95,14 +89,11 @@ const servicePerEnv: { [key in DecoratorEnv]?: DecoratorElementsService } = {};
 
 export const getDecoratorElements = async (
     props: DecoratorFetchProps,
-    noCache?: boolean,
 ): Promise<DecoratorElements> => {
     const { env } = props;
     if (!servicePerEnv[env]) {
         servicePerEnv[env] = new DecoratorElementsService({ envProps: props });
     }
 
-    const service = servicePerEnv[env]!;
-
-    return noCache ? service.getNoCache(props) : service.get(props);
+    return servicePerEnv[env]!.get(props);
 };
