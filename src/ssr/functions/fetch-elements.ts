@@ -2,7 +2,7 @@ import { DecoratorElements } from "../../common/common-types";
 
 type SsrFragments = Record<(typeof fragmentKeys)[number], string>;
 
-type SsrResponse = SsrFragments & {
+export type SsrResponse = SsrFragments & {
     versionId: string;
 };
 
