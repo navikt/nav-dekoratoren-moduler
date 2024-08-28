@@ -151,7 +151,7 @@ injectDecoratorServerSide({
 });
 ```
 
-### injectDecoratorIntoDocument
+### injectDecoratorServerSideDocument
 
 Setter inn dekoratøren i et Document DOM-objekt. Objektet i document-parameteret muteres.
 
