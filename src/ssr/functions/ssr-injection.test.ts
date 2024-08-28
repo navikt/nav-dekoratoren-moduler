@@ -2,7 +2,8 @@ import fetchMock, { enableFetchMocks } from "jest-fetch-mock";
 import fsMock from "mock-fs";
 import { SsrResponse } from "./fetch-elements";
 import { JSDOM } from "jsdom";
-import { injectDecoratorServerSide, injectDecoratorServerSideDocument } from "./ssr-injection";
+import { injectDecoratorServerSideDocument } from "./ssr-document-injection";
+import { injectDecoratorServerSide } from "./ssr-file-injection";
 
 const response = {
     headAssets: '<link type="text/css" rel="stylesheet" href="main.css">',
