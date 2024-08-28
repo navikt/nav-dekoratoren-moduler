@@ -6,7 +6,7 @@ type SsrResponse = SsrFragments & {
     versionId: string;
 };
 
-type Response = {
+type OkResponse = {
     elements: DecoratorElements;
     versionId: string;
 };
@@ -16,7 +16,7 @@ const fragmentKeys = ["headAssets", "header", "footer", "scripts"] as const;
 export const fetchSsrElements = async (
     url: string,
     retries = 3,
-): Promise<Response> =>
+): Promise<OkResponse | null> =>
     fetch(url)
         .then((res) => {
             if (res.ok) {
@@ -53,5 +53,9 @@ export const fetchSsrElements = async (
                 return fetchSsrElements(url, retries - 1);
             }
 
-            throw e;
+            console.error(
+                `Failed to fetch decorator elements from ${url} - ${e.toString()}`,
+            );
+
+            return null;
         });

@@ -7,7 +7,7 @@ import {
 import { addDecoratorUpdateListener } from "./update-events";
 import { getDecoratorEndpointUrl } from "../../common/urls";
 import { fetchSsrElements } from "./fetch-elements";
-import { getCsrFallback } from "../../common/csr-elements";
+import { getCsrElements } from "../../common/csr-elements";
 
 type CacheEntry = {
     expires: number;
@@ -15,12 +15,19 @@ type CacheEntry = {
     elements: DecoratorElements;
 };
 
+type Args = {
+    envProps: DecoratorEnvProps;
+    cacheTtl?: number;
+};
+
+const ONE_HOUR_MS = 3600 * 1000;
+
 class DecoratorElementsService {
     private readonly cache: Record<string, CacheEntry>;
     private readonly cacheTtl: number;
     private readonly envProps: DecoratorEnvProps;
 
-    constructor(envProps: DecoratorEnvProps, cacheTtl: number = 3600 * 1000) {
+    constructor({ envProps, cacheTtl = ONE_HOUR_MS }: Args) {
         this.cache = {};
         this.cacheTtl = cacheTtl;
         this.envProps = envProps;
@@ -37,15 +44,12 @@ class DecoratorElementsService {
         }
 
         const response = await fetchSsrElements(url).catch((e) => {
-            console.error(
-                `Failed to fetch decorator elements - ${e.toString()}`,
-            );
             return null;
         });
 
         if (!response) {
-            // Reuse old cache item if the fetch failed
-            return fromCache?.elements || getCsrFallback(props);
+            // Try to reuse old cache item if the fetch failed
+            return fromCache?.elements || this.csrFallback(props);
         }
 
         this.cache[url] = {
@@ -57,25 +61,48 @@ class DecoratorElementsService {
         return response.elements;
     }
 
+    public async getNoCache(props: DecoratorFetchProps): Promise<DecoratorElements> {
+        const url = getDecoratorEndpointUrl(props);
+
+        return fetchSsrElements(url).then((res) => {
+            return res?.elements || this.csrFallback(props);
+        });
+    }
+
     public invalidate = () => {
-        console.log(
-            `Invalidating decorator cache for env ${this.envProps.env}`,
-        );
+        console.log(`Invalidating decorator cache for env ${this.envProps.env}`);
+
         Object.values(this.cache).forEach((cacheEntry) => {
             cacheEntry.expires = 0;
         });
     };
+
+    private csrFallback(props: DecoratorFetchProps): DecoratorElements {
+        console.error("Failed to fetch SSR decorator elements - Falling back to CSR elements");
+
+        const csrElements = getCsrElements(props);
+
+        return {
+            DECORATOR_HEAD_ASSETS: csrElements.styles,
+            DECORATOR_SCRIPTS: `${csrElements.env}${csrElements.scripts}`,
+            DECORATOR_HEADER: csrElements.header,
+            DECORATOR_FOOTER: csrElements.footer,
+        };
+    }
 }
 
 const servicePerEnv: { [key in DecoratorEnv]?: DecoratorElementsService } = {};
 
-export const getDecoratorElements = (
-    envProps: DecoratorEnvProps,
-): DecoratorElementsService => {
-    const { env } = envProps;
+export const getDecoratorElements = async (
+    props: DecoratorFetchProps,
+    noCache?: boolean,
+): Promise<DecoratorElements> => {
+    const { env } = props;
     if (!servicePerEnv[env]) {
-        servicePerEnv[env] = new DecoratorElementsService(envProps);
+        servicePerEnv[env] = new DecoratorElementsService({ envProps: props });
     }
 
-    return servicePerEnv[env];
+    const service = servicePerEnv[env]!;
+
+    return noCache ? service.getNoCache(props) : service.get(props);
 };
