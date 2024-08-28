@@ -41,11 +41,9 @@ export type DecoratorParams = Partial<{
     simple: boolean;
     simpleHeader: boolean;
     simpleFooter: boolean;
-    enforceLogin: boolean;
     redirectToApp: boolean;
     redirectToUrl: string;
     redirectToUrlLogout: string;
-    level: string;
     language: DecoratorLocale;
     availableLanguages: DecoratorLanguageOption[];
     breadcrumbs: DecoratorBreadcrumb[];

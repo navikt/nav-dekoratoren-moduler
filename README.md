@@ -1,15 +1,10 @@
 # nav-dekoratoren-moduler
 
-> NPM-pakke med hjelpefunksjoner for [dekoratøren](https://github.com/navikt/decorator-next) (header og footer på nav.no)
+> NPM-pakke med hjelpefunksjoner for [NAV-dekoratøren](https://github.com/navikt/decorator-next) (header og footer på nav.no)
 
-### Breaking changes i versjon 2.0
+### Endringer i versjon 3
 
--   Node.js v18 eller nyere er påkrevd, ettersom vi ikke lengre benytter node-fetch. (Node 18 har fetch innebygd)
--   Server-side fetch-funksjoner benytter nå [service discovery](#service-discovery) som default. Dette krever visse [access policy](#access-policy) regler.
--   Parametre til fetch-funksjoner er endret, slik at query-parametre til dekoratøren nå er et separat objekt.<br/>
-    Eksempel 1.x -> 2.0: `{ env: "prod", context: "arbeidsgiver", simple: true}` -> `{ env: "prod", params: { context: "arbeidsgiver", simple: true }}`)
--   Ved bruk av `env: "localhost"` må dekoratørens url nå alltid settes med parameteret `localUrl`. Dette erstatter parameterene `port` og `dekoratorenUrl`, og vi har ikke lengre en default localhost url.
--   Flere typer er endret eller har fått mer spesifikke navn (f.eks. `Params` -> `DecoratorParams`)
+-   (breaking) Fjerner `urlLookupTable`
 
 ## Kom i gang
 
@@ -466,7 +461,6 @@ export type DecoratorParams = Partial<{
     simple: boolean;
     simpleHeader: boolean;
     simpleFooter: boolean;
-    enforceLogin: boolean;
     redirectToApp: boolean;
     redirectToUrl: string;
     level: string;
