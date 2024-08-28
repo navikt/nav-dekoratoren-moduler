@@ -32,6 +32,6 @@ export const injectDecoratorServerSideDocument = async ({
         head.insertAdjacentHTML("beforeend", elements.DECORATOR_HEAD_ASSETS);
         body.insertAdjacentHTML("afterbegin", elements.DECORATOR_HEADER);
         body.insertAdjacentHTML("beforeend", elements.DECORATOR_FOOTER);
-        head.insertAdjacentHTML("beforeend", elements.DECORATOR_SCRIPTS);
+        body.insertAdjacentHTML("beforeend", elements.DECORATOR_SCRIPTS);
         return document;
     });
