@@ -47,24 +47,24 @@ class DecoratorElementsService {
             return fromCache.elements;
         }
 
-        const ssrResponse = await fetchSsrElements(url);
+        return fetchSsrElements(url).then((res) => {
+            if (!res) {
+                // Try to reuse old cache item if the fetch failed
+                return fromCache?.elements || this.csrFallback(props);
+            }
 
-        if (!ssrResponse) {
-            // Try to reuse old cache item if the fetch failed
-            return fromCache?.elements || this.csrFallback(props);
-        }
+            this.cache.set(url, {
+                elements: res.elements,
+                versionId: res.versionId,
+                expires: Date.now() + this.cacheTtl,
+            });
 
-        this.cache.set(url, {
-            elements: ssrResponse.elements,
-            versionId: ssrResponse.versionId,
-            expires: Date.now() + this.cacheTtl,
+            return res.elements;
         });
-
-        return ssrResponse.elements;
     }
 
     public invalidate = () => {
-        console.log(`Invalidating decorator cache`);
+        console.log("Invalidating decorator cache");
 
         this.cache.forEach((cacheEntry) => {
             cacheEntry.expires = 0;
@@ -85,6 +85,8 @@ class DecoratorElementsService {
     }
 }
 
+// Separate service instances for each environment, for the unlikely event
+// that the same app instance will request multiple decorator envs :)
 const servicePerEnv: { [key in DecoratorEnv]?: DecoratorElementsService } = {};
 
 export const getDecoratorElements = async (

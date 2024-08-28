@@ -4,8 +4,8 @@ import { getDecoratorBaseUrl } from "../../common/urls";
 type DecoratorUpdateCallback = (versionId: string) => unknown;
 
 type VersionApiResponse = {
-    versionId: string;
-    timestamp: string;
+    localVersion: string;
+    latestVersion: string;
 };
 
 const UPDATE_RATE_MS = 10000;
@@ -15,34 +15,30 @@ const UPDATE_RATE_MS = 10000;
 // the same environment
 const updateTimers: { [key in DecoratorEnv]?: NodeJS.Timeout } = {};
 
-class DecoratorUpdateListener {
+class DecoratorVersionWatcher {
+    private readonly callbacks = new Set<DecoratorUpdateCallback>();
     private readonly versionApiUrl: string;
     private readonly envProps: DecoratorEnvProps;
-    private readonly callbacks = new Set<DecoratorUpdateCallback>();
 
-    private versionInfo: VersionApiResponse;
+    private versionId: string = "";
 
     constructor(envProps: DecoratorEnvProps) {
         this.envProps = envProps;
-        this.versionApiUrl = `${getDecoratorBaseUrl(envProps)}/api/version`;
-        this.versionInfo = {
-            versionId: "",
-            timestamp: "",
-        };
+
+        const baseUrl = getDecoratorBaseUrl(envProps);
+        this.versionApiUrl = `${baseUrl}/api/version`;
     }
 
     public async init() {
-        const versionInfo = await this.fetchVersionInfo();
-        if (versionInfo) {
-            this.versionInfo = versionInfo;
+        const latestVersionId = await this.fetchLatestVersionId();
+        if (latestVersionId) {
+            this.versionId = latestVersionId;
         }
 
         const { env } = this.envProps;
 
         if (updateTimers[env]) {
-            console.warn(
-                `Listener was already initiated for env ${env} - recreating`,
-            );
+            console.warn(`Listener was already initiated for env ${env} - recreating`);
             clearInterval(updateTimers[env]);
         }
 
@@ -60,40 +56,36 @@ class DecoratorUpdateListener {
     };
 
     public getVersionId() {
-        return this.versionInfo.versionId;
+        return this.versionId;
     }
 
     private refresh = async () => {
-        this.fetchVersionInfo().then((versionInfo) => {
-            if (!versionInfo) {
+        this.fetchLatestVersionId().then((freshVersionId) => {
+            if (!freshVersionId) {
                 return;
             }
 
-            if (
-                this.versionInfo.versionId === versionInfo.versionId ||
-                this.versionInfo.timestamp > versionInfo.timestamp
-            ) {
+            if (this.versionId === freshVersionId) {
                 return;
             }
 
-            console.log(
-                `Setting new decorator version id to ${versionInfo.versionId} (ts: ${versionInfo.timestamp})`,
-            );
+            console.log(`Setting new decorator version id to ${freshVersionId}`);
 
-            this.versionInfo = versionInfo;
-            this.callbacks.forEach((callback) =>
-                callback(versionInfo.versionId),
-            );
+            this.versionId = freshVersionId;
+            this.callbacks.forEach((callback) => callback(freshVersionId));
         });
     };
 
-    private fetchVersionInfo = async () => {
+    private fetchLatestVersionId = async () => {
         return fetch(this.versionApiUrl)
             .then((res) => {
                 if (res.ok) {
                     return res.json() as Promise<VersionApiResponse>;
                 }
                 throw Error(`Bad response: ${res.status} ${res.statusText}`);
+            })
+            .then((res) => {
+                return res.latestVersion;
             })
             .catch((e) => {
                 console.error(`Error fetching decorator version - ${e}`);
@@ -102,16 +94,14 @@ class DecoratorUpdateListener {
     };
 }
 
-const updateListeners: { [key in DecoratorEnv]?: DecoratorUpdateListener } = {};
+const updateListeners: { [key in DecoratorEnv]?: DecoratorVersionWatcher } = {};
 
 const getDecoratorUpdateListener = async (
     envProps: DecoratorEnvProps,
-): Promise<DecoratorUpdateListener> => {
+): Promise<DecoratorVersionWatcher> => {
     const { env } = envProps;
     if (!updateListeners[env]) {
-        updateListeners[env] = await new DecoratorUpdateListener(
-            envProps,
-        ).init();
+        updateListeners[env] = await new DecoratorVersionWatcher(envProps).init();
     }
 
     return updateListeners[env];
@@ -121,22 +111,16 @@ export const addDecoratorUpdateListener = (
     envProps: DecoratorEnvProps,
     callback: DecoratorUpdateCallback,
 ) => {
-    getDecoratorUpdateListener(envProps).then((listener) =>
-        listener.addCallback(callback),
-    );
+    getDecoratorUpdateListener(envProps).then((listener) => listener.addCallback(callback));
 };
 
 export const removeDecoratorUpdateListener = (
     envProps: DecoratorEnvProps,
     callback: DecoratorUpdateCallback,
 ) => {
-    getDecoratorUpdateListener(envProps).then((listener) =>
-        listener.removeCallback(callback),
-    );
+    getDecoratorUpdateListener(envProps).then((listener) => listener.removeCallback(callback));
 };
 
 export const getDecoratorVersionId = async (envProps: DecoratorEnvProps) => {
-    return getDecoratorUpdateListener(envProps).then((listener) =>
-        listener.getVersionId(),
-    );
+    return getDecoratorUpdateListener(envProps).then((listener) => listener.getVersionId());
 };
