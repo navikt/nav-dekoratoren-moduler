@@ -32,7 +32,7 @@ describe("SSR injection", () => {
         fetchMock.mockResponse(JSON.stringify(response));
     });
 
-    test("Inject decorator into file", async () => {
+    test("Should inject decorator into file", async () => {
         fsMock({
             "app/index.html": baseHtml,
         });
@@ -49,7 +49,7 @@ describe("SSR injection", () => {
         expect(htmlWithDecorator).toContain(response.scripts);
     });
 
-    test("Inject decorator into document", async () => {
+    test("Should inject decorator into document", async () => {
         const dom = new JSDOM(baseHtml);
 
         const document = await injectDecoratorServerSideDocument({

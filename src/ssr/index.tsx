@@ -15,7 +15,7 @@ import {
     addDecoratorUpdateListener,
     getDecoratorVersionId,
     removeDecoratorUpdateListener,
-} from "./functions/update-events";
+} from "./functions/version-watcher";
 import { fetchDecoratorHtml } from "./functions/ssr-html";
 
 export {

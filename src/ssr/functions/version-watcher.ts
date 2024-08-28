@@ -107,18 +107,20 @@ const getDecoratorVersionWatcher = async (
     return updateListeners[env];
 };
 
-export const addDecoratorUpdateListener = (
+export const addDecoratorUpdateListener = async (
     envProps: DecoratorEnvProps,
     callback: DecoratorUpdateCallback,
 ) => {
-    getDecoratorVersionWatcher(envProps).then((listener) => listener.addCallback(callback));
+    return getDecoratorVersionWatcher(envProps).then((listener) => listener.addCallback(callback));
 };
 
-export const removeDecoratorUpdateListener = (
+export const removeDecoratorUpdateListener = async (
     envProps: DecoratorEnvProps,
     callback: DecoratorUpdateCallback,
 ) => {
-    getDecoratorVersionWatcher(envProps).then((listener) => listener.removeCallback(callback));
+    return getDecoratorVersionWatcher(envProps).then((listener) =>
+        listener.removeCallback(callback),
+    );
 };
 
 export const getDecoratorVersionId = async (envProps: DecoratorEnvProps) => {

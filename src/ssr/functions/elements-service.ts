@@ -4,7 +4,7 @@ import {
     DecoratorEnvProps,
     DecoratorFetchProps,
 } from "../../common/common-types";
-import { addDecoratorUpdateListener } from "./update-events";
+import { addDecoratorUpdateListener } from "./version-watcher";
 import { getDecoratorEndpointUrl } from "../../common/urls";
 import { fetchSsrElements } from "./fetch-elements";
 import { getCsrElements } from "../../common/csr-elements";
