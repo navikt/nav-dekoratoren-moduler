@@ -69,7 +69,7 @@ class DecoratorVersionWatcher {
                 return;
             }
 
-            console.log(`Setting new decorator version id to ${freshVersionId}`);
+            console.log(`New decorator version detected: ${freshVersionId}`);
 
             this.versionId = freshVersionId;
             this.callbacks.forEach((callback) => callback(freshVersionId));
@@ -96,7 +96,7 @@ class DecoratorVersionWatcher {
 
 const updateListeners: { [key in DecoratorEnv]?: DecoratorVersionWatcher } = {};
 
-const getDecoratorUpdateListener = async (
+const getDecoratorVersionWatcher = async (
     envProps: DecoratorEnvProps,
 ): Promise<DecoratorVersionWatcher> => {
     const { env } = envProps;
@@ -111,16 +111,16 @@ export const addDecoratorUpdateListener = (
     envProps: DecoratorEnvProps,
     callback: DecoratorUpdateCallback,
 ) => {
-    getDecoratorUpdateListener(envProps).then((listener) => listener.addCallback(callback));
+    getDecoratorVersionWatcher(envProps).then((listener) => listener.addCallback(callback));
 };
 
 export const removeDecoratorUpdateListener = (
     envProps: DecoratorEnvProps,
     callback: DecoratorUpdateCallback,
 ) => {
-    getDecoratorUpdateListener(envProps).then((listener) => listener.removeCallback(callback));
+    getDecoratorVersionWatcher(envProps).then((listener) => listener.removeCallback(callback));
 };
 
 export const getDecoratorVersionId = async (envProps: DecoratorEnvProps) => {
-    return getDecoratorUpdateListener(envProps).then((listener) => listener.getVersionId());
+    return getDecoratorVersionWatcher(envProps).then((listener) => listener.getVersionId());
 };
