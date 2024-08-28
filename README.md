@@ -14,7 +14,7 @@
 - (breaking) Fjerner `injectDecoratorServerSideDom`. Denne erstattes av `injectDecoratorServerSideDocument`, som tar inn et standard Document DOM-objekt.
 - (breaking) Fjerner `getUrlFromLookupTable` og tilhørende url-mappinger
 - (breaking) Fjerner `parseDecoratorHTMLToReact`
-- (breaking) Alle dependencies er nå peer dependencies
+- (breaking) Alle dependencies er nå optional peer dependencies
 
 ## Kom i gang
 
