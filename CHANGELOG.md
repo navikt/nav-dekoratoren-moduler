@@ -4,7 +4,7 @@
 - (breaking) Fjerner `DECORATOR_STYLES`/`Styles` fra responsen for `fetchDecoratorHtml`/`fetchDecoratorReact` (see above!).
 - Den innbygde cachen av dekoratørens elementer invalideres nå automatisk når en ny versjon av dekoratøren er tilgjengelig.
 - Nye funksjoner: `addDecoratorUpdateListener`, `removeDecoratorUpdateListener`, `getDecoratorVersionId`. Tiltenkt brukt for cache-invalidering i apper som cacher dekoratøren på andre måter.
-- Fjerner typer for ubrukte parametre `urlLookupTable`, `enforceLogin` og `level`
+- Fjerner typer for ubrukte parametre `urlLookupTable` og `enforceLogin`
 - (breaking) Fjerner `<EnforceLoginLoader/>`
 - (breaking) Fjerner `injectDecoratorServerSideDom`. Denne erstattes av `injectDecoratorServerSideDocument`, som tar inn et standard Document DOM-objekt.
 - (breaking) Fjerner `getUrlFromLookupTable` og tilhørende url-mappinger
