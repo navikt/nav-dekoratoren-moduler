@@ -43,7 +43,7 @@ class DecoratorElementsService {
         }
 
         const fromCache = this.cache.get(url);
-        if (fromCache && fromCache.expires < Date.now()) {
+        if (fromCache && fromCache.expires > Date.now()) {
             return fromCache.elements;
         }
 
