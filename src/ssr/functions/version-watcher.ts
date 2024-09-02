@@ -4,7 +4,6 @@ import { getDecoratorBaseUrl } from "../../common/urls";
 type DecoratorUpdateCallback = (versionId: string) => unknown;
 
 type VersionApiResponse = {
-    localVersion: string;
     latestVersion: string;
 };
 
