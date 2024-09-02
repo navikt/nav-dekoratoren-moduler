@@ -92,8 +92,6 @@ type DecoratorFetchProps = {
 } & DecoratorEnvProps;
 ```
 
-<span id="service-discovery"/>
-
 ### Service discovery
 
 Server-side fetch-funksjonene benytter [service discovery](https://docs.nais.io/clusters/service-discovery) som default.
@@ -107,8 +105,6 @@ fetchDecoratorHtml({
     serviceDiscovery: false,
 });
 ```
-
-<span id="access-policy"/>
 
 ### Access policy
 
