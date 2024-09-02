@@ -1,5 +1,5 @@
 import fetchMock, { enableFetchMocks } from "jest-fetch-mock";
-import { addDecoratorUpdateListener } from "./version-watcher";
+import { addDecoratorUpdateListener } from "./decorator-version-watcher";
 
 describe("Version watcher", () => {
     enableFetchMocks();

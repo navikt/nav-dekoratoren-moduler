@@ -12,7 +12,7 @@ import {
     addDecoratorUpdateListener,
     getDecoratorVersionId,
     removeDecoratorUpdateListener,
-} from "./functions/version-watcher";
+} from "./functions/decorator-version-watcher";
 import { fetchDecoratorHtml } from "./functions/ssr-html";
 import { injectDecoratorServerSide } from "./functions/ssr-file-injection";
 

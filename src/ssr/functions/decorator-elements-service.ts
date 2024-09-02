@@ -4,9 +4,9 @@ import {
     DecoratorEnvProps,
     DecoratorFetchProps,
 } from "../../common/common-types";
-import { addDecoratorUpdateListener } from "./version-watcher";
+import { addDecoratorUpdateListener } from "./decorator-version-watcher";
 import { getDecoratorEndpointUrl } from "../../common/urls";
-import { fetchSsrElements } from "./fetch-elements";
+import { fetchSsrElements } from "./fetch-decorator-elements";
 import { getCsrElements } from "../../common/csr-elements";
 
 type CacheEntry = {

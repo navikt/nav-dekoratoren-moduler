@@ -1,8 +1,8 @@
 import fetchMock, { enableFetchMocks } from "jest-fetch-mock";
-import { SsrResponse } from "./fetch-elements";
-import { getDecoratorElements } from "./elements-service";
+import { SsrResponse } from "./fetch-decorator-elements";
+import { getDecoratorElements } from "./decorator-elements-service";
 import { getCsrElements } from "../../common/csr-elements";
-import { addDecoratorUpdateListener } from "./version-watcher";
+import { addDecoratorUpdateListener } from "./decorator-version-watcher";
 
 const validResponse = {
     headAssets: '<link type="text/css" rel="stylesheet" href="main.css">',
