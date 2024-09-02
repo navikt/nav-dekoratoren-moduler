@@ -19,7 +19,9 @@ export type DecoratorBreadcrumb = {
     handleInApp?: boolean;
 };
 
-export type DecoratorNaisEnv = "prod" | "dev" | "beta" | "betaTms" | "devNext" | "prodNext";
+export type DecoratorNaisEnv = "prod" | "dev" | "beta" | "betaTms";
+
+export type DecoratorEnv = DecoratorNaisEnv | "localhost";
 
 export type DecoratorEnvProps =
     | { env: "localhost"; localUrl: string }
@@ -39,7 +41,6 @@ export type DecoratorParams = Partial<{
     simple: boolean;
     simpleHeader: boolean;
     simpleFooter: boolean;
-    enforceLogin: boolean;
     redirectToApp: boolean;
     redirectToUrl: string;
     redirectToUrlLogout: string;
@@ -51,8 +52,14 @@ export type DecoratorParams = Partial<{
     feedback: boolean;
     chatbot: boolean;
     chatbotVisible: boolean;
-    urlLookupTable: boolean;
     shareScreen: boolean;
     logoutUrl: string;
     logoutWarning: boolean;
 }>;
+
+export type DecoratorElements = {
+    DECORATOR_HEAD_ASSETS: string;
+    DECORATOR_HEADER: string;
+    DECORATOR_FOOTER: string;
+    DECORATOR_SCRIPTS: string;
+};

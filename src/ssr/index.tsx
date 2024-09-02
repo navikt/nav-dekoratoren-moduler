@@ -3,30 +3,33 @@ import {
     DecoratorLocale,
     DecoratorEnvProps,
     DecoratorFetchProps,
-} from "../common/common-types";
-import {
-    fetchDecoratorReact,
-    fetchDecoratorHtml,
-    parseDecoratorHTMLToReact,
-    injectDecoratorServerSideDom,
-    injectDecoratorServerSide,
-    DecoratorComponents,
     DecoratorElements,
-} from "./functions/ssr";
+} from "../common/common-types";
 import { buildCspHeader } from "./functions/csp";
+import { DecoratorComponentsReact, fetchDecoratorReact } from "./functions/ssr-react-components";
+import { injectDecoratorServerSideDocument } from "./functions/ssr-document-injection";
+import {
+    addDecoratorUpdateListener,
+    getDecoratorVersionId,
+    removeDecoratorUpdateListener,
+} from "./functions/decorator-version-watcher";
+import { fetchDecoratorHtml } from "./functions/ssr-html";
+import { injectDecoratorServerSide } from "./functions/ssr-file-injection";
 
 export {
     injectDecoratorServerSide,
-    injectDecoratorServerSideDom,
+    injectDecoratorServerSideDocument,
     fetchDecoratorReact,
     fetchDecoratorHtml,
-    parseDecoratorHTMLToReact,
     buildCspHeader,
+    addDecoratorUpdateListener,
+    removeDecoratorUpdateListener,
+    getDecoratorVersionId,
 };
 
 export type {
     DecoratorElements,
-    DecoratorComponents,
+    DecoratorComponentsReact,
     DecoratorParams,
     DecoratorLocale,
     DecoratorFetchProps,
