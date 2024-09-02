@@ -99,3 +99,9 @@ export const getDecoratorElements = async (
 
     return servicePerEnv[env]!.get(props);
 };
+
+export const clearDecoratorElementsState = () => {
+    Object.keys(servicePerEnv).forEach((env) => {
+        delete servicePerEnv[env as DecoratorEnv];
+    });
+};

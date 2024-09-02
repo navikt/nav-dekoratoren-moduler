@@ -4,6 +4,7 @@ import { SsrResponse } from "./fetch-decorator-elements";
 import { JSDOM } from "jsdom";
 import { injectDecoratorServerSideDocument } from "./ssr-document-injection";
 import { injectDecoratorServerSide } from "./ssr-file-injection";
+import { clearDecoratorElementsState } from "./decorator-elements-service";
 
 const response = {
     headAssets: '<link type="text/css" rel="stylesheet" href="main.css">',
@@ -29,6 +30,7 @@ describe("SSR injection", () => {
     enableFetchMocks();
 
     beforeEach(() => {
+        clearDecoratorElementsState();
         fetchMock.resetMocks();
         fetchMock.mockResponse(JSON.stringify(response));
     });

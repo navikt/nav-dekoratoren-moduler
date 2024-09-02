@@ -1,8 +1,11 @@
 import fetchMock, { enableFetchMocks } from "jest-fetch-mock";
 import { SsrResponse } from "./fetch-decorator-elements";
-import { getDecoratorElements } from "./decorator-elements-service";
+import { clearDecoratorElementsState, getDecoratorElements } from "./decorator-elements-service";
 import { getCsrElements } from "../../common/csr-elements";
-import { addDecoratorUpdateListener } from "./decorator-version-watcher";
+import {
+    addDecoratorUpdateListener,
+    clearDecoratorWatcherState,
+} from "./decorator-version-watcher";
 
 const validResponse = {
     headAssets: '<link type="text/css" rel="stylesheet" href="main.css">',
@@ -24,6 +27,8 @@ describe("Get decorator elements", () => {
     enableFetchMocks();
 
     beforeEach(() => {
+        clearDecoratorElementsState();
+        clearDecoratorWatcherState();
         fetchMock.resetMocks();
         jest.useRealTimers();
     });
@@ -71,6 +76,8 @@ describe("Get decorator elements", () => {
 
         await getDecoratorElements({ env: "prod" });
         await getDecoratorElements({ env: "prod" });
+
+        console.log(fetchMock.mock.calls);
 
         const numSsrCalls = fetchMock.mock.calls
             .flat()

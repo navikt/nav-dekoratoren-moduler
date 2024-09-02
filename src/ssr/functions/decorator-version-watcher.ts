@@ -125,3 +125,9 @@ export const removeDecoratorUpdateListener = async (
 export const getDecoratorVersionId = async (envProps: DecoratorEnvProps) => {
     return getDecoratorVersionWatcher(envProps).then((listener) => listener.getVersionId());
 };
+
+export const clearDecoratorWatcherState = () => {
+    Object.keys(updateListeners).forEach((env) => {
+        delete updateListeners[env as DecoratorEnv];
+    });
+};

@@ -1,5 +1,8 @@
 import fetchMock, { enableFetchMocks } from "jest-fetch-mock";
-import { addDecoratorUpdateListener } from "./decorator-version-watcher";
+import {
+    addDecoratorUpdateListener,
+    clearDecoratorWatcherState,
+} from "./decorator-version-watcher";
 
 describe("Version watcher", () => {
     enableFetchMocks();
@@ -7,6 +10,7 @@ describe("Version watcher", () => {
 
     beforeEach(() => {
         fetchMock.resetMocks();
+        clearDecoratorWatcherState();
     });
 
     test("Should get a callback on new decorator version", (done) => {
