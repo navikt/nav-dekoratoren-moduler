@@ -2,11 +2,11 @@
 
 > NPM-pakke med hjelpefunksjoner for [NAV-dekoratøren](https://github.com/navikt/decorator-next) (header og footer på nav.no)
 
-### Endringer i versjon 3
+### Endringer i versjon 3.0
 
 - Server-side fetch-funksjoner henter nå ferdige HTML-fragmenter fra `/ssr`-endepunktet, istedenfor å parse hele dekoratørens HTML.
 - (breaking) Alle dekoratørens `<head>`-elementer er nå inkludert i det påkrevde fragmentet `DECORATOR_HEAD_ASSETS`. CSS, favicon, etc.
-- (breaking) Fjerner `DECORATOR_STYLES`/`Styles` fra responsen for `fetchDecoratorHtml`/`fetchDecoratorReact` (see above!).
+- (breaking) Fjerner `DECORATOR_STYLES`/`Styles` fra responsen for `fetchDecoratorHtml`/`fetchDecoratorReact` (erstattes av `DECORATOR_HEAD_ASSETS`).
 - Den innbygde cachen av dekoratørens elementer invalideres nå automatisk når en ny versjon av dekoratøren er tilgjengelig.
 - Nye funksjoner: `addDecoratorUpdateListener`, `removeDecoratorUpdateListener`, `getDecoratorVersionId`. Tiltenkt brukt for cache-invalidering i apper som cacher dekoratøren på andre måter.
 - Fjerner typer for ubrukte parametre `urlLookupTable` og `enforceLogin`
@@ -15,6 +15,15 @@
 - (breaking) Fjerner `getUrlFromLookupTable` og tilhørende url-mappinger
 - (breaking) Fjerner `parseDecoratorHTMLToReact`
 - (breaking) Alle dependencies er nå optional peer dependencies
+
+### Breaking changes i versjon 2.0
+
+-   Node.js v18 eller nyere er påkrevd, ettersom vi ikke lengre benytter node-fetch. (Node 18 har fetch innebygd)
+-   Server-side fetch-funksjoner benytter nå [service discovery](#service-discovery) som default. Dette krever visse [access policy](#access-policy) regler.
+-   Parametre til fetch-funksjoner er endret, slik at query-parametre til dekoratøren nå er et separat objekt.<br/>
+    Eksempel 1.x -> 2.0: `{ env: "prod", context: "arbeidsgiver", simple: true}` -> `{ env: "prod", params: { context: "arbeidsgiver", simple: true }}`)
+-   Ved bruk av `env: "localhost"` må dekoratørens url nå alltid settes med parameteret `localUrl`. Dette erstatter parameterene `port` og `dekoratorenUrl`, og vi har ikke lengre en default localhost url.
+-   Flere typer er endret eller har fått mer spesifikke navn (f.eks. `Params` -> `DecoratorParams`)
 
 ## Kom i gang
 
@@ -137,7 +146,7 @@ Server-side rendering av dekoratøren anbefales for optimal brukeropplevelse. De
 
 ### injectDecoratorServerSide
 
-Parser en HTML-fil med JSDOM og returnerer en HTML-string som inkluderer dekoratøren.
+Parser en HTML-fil med JSDOM og returnerer en HTML-string som inkluderer dekoratøren. Krever at `jsdom >=16.x` er installert.
 
 ```tsx
 import { injectDecoratorServerSide } from "@navikt/nav-dekoratoren-moduler/ssr";
@@ -194,7 +203,7 @@ const {
 
 ### fetchDecoratorReact
 
-Henter dekoratøren som React-komponenter. Kan benyttes med React rammeverk som støtter server-side rendering.
+Henter dekoratøren som React-komponenter. Kan benyttes med React rammeverk som støtter server-side rendering. Krever at `react >=17.x` og `html-react-parser >=5.x` er installert.
 
 Eksempel på bruk med next.js (settes inn i en custom \_document page):
 
@@ -302,7 +311,7 @@ const currentVersionId = await getDecoratorVersionId({ env: 'prod' });
 
 ### buildCspHeader
 
-Bygger en Content-Security-Policy header som inkluderer dekoratørens påkrevde direktiver, kombinert med applikasjonens egne direktiver.
+Bygger en Content-Security-Policy header som inkluderer dekoratørens påkrevde direktiver, kombinert med applikasjonens egne direktiver. Krever at `csp-header >=5.x` er installert.
 
 Funksjonen gjør et fetch-kall til dekoratøren for å hente gjeldende direktiver.
 

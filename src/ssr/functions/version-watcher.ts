@@ -68,7 +68,7 @@ class DecoratorVersionWatcher {
                 return;
             }
 
-            console.log(`New decorator version detected: ${freshVersionId}`);
+            console.log(`New decorator version: ${freshVersionId}`);
 
             this.versionId = freshVersionId;
             this.callbacks.forEach((callback) => callback(freshVersionId));
