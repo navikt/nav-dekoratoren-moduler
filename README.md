@@ -204,9 +204,12 @@ const {
 
 Henter dekoratøren som React-komponenter. Kan benyttes med React rammeverk som støtter server-side rendering. Krever at `react >=17.x` og `html-react-parser >=5.x` er installert.
 
-Ved behov kan det settes en custom loader prop for `<script>`-elementer (nødvendig ved bruk av next.js app-router).
+Ved behov kan det benyttes en custom loader komponent for `<Decorator.Scripts>`. Denne vil erstatte standard `<script>`-tags i parser'en. Ved bruk av next.js app-router må `next/script` benyttes her, se eksempel #2.
 
-Eksempel på bruk med next.js page router (settes inn i en custom \_document page):
+<br/>
+
+#### Med next.js page router
+Settes inn i `pages/_document.tsx`:
 
 ```tsx
 import { fetchDecoratorReact } from "@navikt/nav-dekoratoren-moduler/ssr";
@@ -219,7 +222,7 @@ class MyDocument extends Document<DocumentProps> {
             env: "prod",
             params: { language: "no", context: "arbeidsgiver" },
         });
-
+        
         return { ...initialProps, Decorator };
     }
 
@@ -243,10 +246,13 @@ class MyDocument extends Document<DocumentProps> {
     }
 }
 ```
+<br/>
 
-Eksempel på bruk med next.js app-router, med `next/script` loader (settes inn i root layout):
+#### Med next.js app-router
+Settes inn i root layout med `next/script` loader:
 
 ```tsx
+import { fetchDecoratorReact } from "@navikt/nav-dekoratoren-moduler/ssr";
 import Script from "next/script";
 
 const RootLayout = async ({ children }: Readonly<{ children: React.ReactNode }>) => {
@@ -268,6 +274,8 @@ const RootLayout = async ({ children }: Readonly<{ children: React.ReactNode }>)
         </html>
     );
 };
+
+export default RootLayout;
 ```
 
 
