@@ -1,11 +1,8 @@
-import { DecoratorElements, HtmlElementProps } from "../../common/common-types";
+import { DecoratorElements } from "../../common/common-types";
 
-export type SsrResponse = {
-    headAssets: string;
-    header: string;
-    footer: string;
-    scripts: string;
-    scriptsProps: HtmlElementProps[];
+type SsrFragments = Record<(typeof fragmentKeys)[number], string>;
+
+export type SsrResponse = SsrFragments & {
     versionId: string;
 };
 
@@ -14,7 +11,7 @@ type OkResponse = {
     versionId: string;
 };
 
-const fragmentKeys = ["headAssets", "header", "footer", "scripts", "scriptsProps"] as const;
+const fragmentKeys = ["headAssets", "header", "footer", "scripts"] as const;
 
 export const fetchSsrElements = async (url: string, retries = 3): Promise<OkResponse | null> =>
     fetch(url)
@@ -39,7 +36,6 @@ export const fetchSsrElements = async (url: string, retries = 3): Promise<OkResp
                     DECORATOR_HEADER: res.header,
                     DECORATOR_FOOTER: res.footer,
                     DECORATOR_SCRIPTS: res.scripts,
-                    DECORATOR_SCRIPTS_PROPS: res.scriptsProps,
                 },
                 versionId: res.versionId,
             };

@@ -2,8 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { fetchDecoratorHtml } from "@navikt/nav-dekoratoren-moduler/ssr";
-import parse from "html-react-parser";
+import { fetchDecoratorReact } from "@navikt/nav-dekoratoren-moduler/ssr";
 import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -18,46 +17,20 @@ const RootLayout = async ({
 }: Readonly<{
     children: React.ReactNode;
 }>) => {
-    const {
-        DECORATOR_HEADER,
-        DECORATOR_FOOTER,
-        DECORATOR_SCRIPTS,
-        DECORATOR_HEAD_ASSETS,
-        DECORATOR_SCRIPTS_PROPS,
-    } = await fetchDecoratorHtml({
-        env: "localhost",
-        localUrl: "http://localhost:8089",
-        noCache: true,
+    const Decorator = await fetchDecoratorReact({
+        env: "prod",
     });
 
     return (
         <html lang="no">
-            <head>{parse(DECORATOR_HEAD_ASSETS)}</head>
+            <head>
+                <Decorator.HeadAssets />
+            </head>
             <body className={inter.className}>
-                {parse(DECORATOR_HEADER)}
+                <Decorator.Header />
                 {children}
-                {parse(DECORATOR_FOOTER)}
-                {DECORATOR_SCRIPTS_PROPS.map(({ body, attribs }, index) => (
-                    <Script {...attribs} key={index}>
-                        {body}
-                    </Script>
-                ))}
-                {/*<Script*/}
-                {/*    src={"http://localhost:8100/public/assets/main-Dqmkb4Dn.js"}*/}
-                {/*    type={"module"}*/}
-                {/*/>*/}
-                {/*<Script type={"application/json"} id={"__DECORATOR_DATA__"}>*/}
-                {/*    {*/}
-                {/*        '{"texts":{"breadcrumbs":"Du er her","loading_preview":"Laster forhåndsvisning","important_info":"Viktig informasjon: ","loading":"Laster","open_chat":"Åpne chat"},"params":{"context":"privatperson","simple":false,"simpleHeader":false,"redirectToApp":false,"level":"Level3","language":"nb","availableLanguages":[],"breadcrumbs":[],"utilsBackground":"transparent","feedback":false,"chatbot":true,"chatbotVisible":false,"shareScreen":true,"maskHotjar":true,"logoutWarning":true},"features":{"dekoratoren.skjermdeling":true,"dekoratoren.chatbotscript":true},"env":{"APP_URL":"http://localhost:8100","CDN_URL":"http://localhost:8100/public","BOOST_ENV":"navtest","LOGIN_SESSION_API_URL":"http://localhost:8100/api/oauth2/session","LOGOUT_URL":"http://localhost:8100/oauth2/logout","MIN_SIDE_ARBEIDSGIVER_URL":"https://arbeidsgiver.nav.no/min-side-arbeidsgiver","MIN_SIDE_URL":"https://www.nav.no/minside","PUZZEL_CUSTOMER_ID":"C1302192-8BEC-4EA2-84AB-F4EDE8AC6230","VERSION_ID":"asdf","XP_BASE_URL":"http://localhost:3000"}}'*/}
-                {/*    }*/}
-                {/*</Script>*/}
-                {/*<Script id={"decorator-data"}>*/}
-                {/*    {*/}
-                {/*        'window.__DECORATOR_DATA__ = JSON.parse(document.getElementById("__DECORATOR_DATA__")?.innerHTML ?? "", );'*/}
-                {/*    }*/}
-                {/*</Script>*/}
-                {/*<Scripts />*/}
-                {/*<div dangerouslySetInnerHTML={{ __html: DECORATOR_SCRIPTS }} />*/}
+                <Decorator.Footer />
+                <Decorator.Scripts loader={Script} />
             </body>
         </html>
     );
