@@ -62,4 +62,11 @@ export type DecoratorElements = {
     DECORATOR_HEADER: string;
     DECORATOR_FOOTER: string;
     DECORATOR_SCRIPTS: string;
+    DECORATOR_SCRIPTS_PROPS: HtmlElementProps[];
+};
+
+export type HtmlElementProps = {
+    tag: string;
+    attribs: Record<string, string>;
+    body?: string;
 };
