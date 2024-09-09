@@ -2,7 +2,13 @@
 
 > NPM-pakke med hjelpefunksjoner for [NAV-dekoratøren](https://github.com/navikt/decorator-next) (header og footer på nav.no)
 
-### Endringer i versjon 3.0
+## Changelog
+
+### 3.1
+- Legger til prop for egendefinert komponent for `script`-elementer fra `fetchDecoratorReact`. Skal nå støtte bruk i next.js app-router layouts, se [fetchDecoratorReact](#fetchdecoratorreact).
+- Peer dependencies er ikke lengre optional (med unntak av React).
+
+### 3.0
 
 - Server-side fetch-funksjoner henter nå ferdige HTML-fragmenter fra `/ssr`-endepunktet, istedenfor å parse hele dekoratørens HTML.
 - (breaking) Alle dekoratørens `<head>`-elementer er nå inkludert i det påkrevde fragmentet `DECORATOR_HEAD_ASSETS`. CSS, favicon, etc.
@@ -16,13 +22,13 @@
 - (breaking) Fjerner `parseDecoratorHTMLToReact`
 - (breaking) Alle dependencies er nå optional peer dependencies
 
-### Breaking changes i versjon 2.0
+### 2.0
 
--   Node.js v18 eller nyere er påkrevd, ettersom vi ikke lengre benytter node-fetch. (Node 18 har fetch innebygd)
--   Server-side fetch-funksjoner benytter nå [service discovery](#service-discovery) som default. Dette krever visse [access policy](#access-policy) regler.
--   Parametre til fetch-funksjoner er endret, slik at query-parametre til dekoratøren nå er et separat objekt.<br/>
+-   (breaking) Node.js v18 eller nyere er påkrevd, ettersom vi ikke lengre benytter node-fetch. (Node 18 har fetch innebygd)
+-   (breaking) Server-side fetch-funksjoner benytter nå [service discovery](#service-discovery) som default. Dette krever visse [access policy](#access-policy) regler.
+-   (breaking) Parametre til fetch-funksjoner er endret, slik at query-parametre til dekoratøren nå er et separat objekt.<br/>
     Eksempel 1.x -> 2.0: `{ env: "prod", context: "arbeidsgiver", simple: true}` -> `{ env: "prod", params: { context: "arbeidsgiver", simple: true }}`)
--   Ved bruk av `env: "localhost"` må dekoratørens url nå alltid settes med parameteret `localUrl`. Dette erstatter parameterene `port` og `dekoratorenUrl`, og vi har ikke lengre en default localhost url.
+-   (breaking) Ved bruk av `env: "localhost"` må dekoratørens url nå alltid settes med parameteret `localUrl`. Dette erstatter parameterene `port` og `dekoratorenUrl`, og vi har ikke lengre en default localhost url.
 -   Flere typer er endret eller har fått mer spesifikke navn (f.eks. `Params` -> `DecoratorParams`)
 
 ## Kom i gang
@@ -201,7 +207,12 @@ const {
 
 Henter dekoratøren som React-komponenter. Kan benyttes med React rammeverk som støtter server-side rendering. Krever at `react >=17.x` og `html-react-parser >=5.x` er installert.
 
-Eksempel på bruk med next.js (settes inn i en custom \_document page):
+Ved behov kan det settes en egendefinert komponent for `<script>`-elementer i `<Decorator.Scripts>`. Denne vil erstatte standard `<script>`-tags i parser'en. Ved bruk av next.js app-router kan `next/script` benyttes her, se eksempel #2.
+
+<br/>
+
+#### Med next.js page router
+Settes inn i `pages/_document.tsx`:
 
 ```tsx
 import { fetchDecoratorReact } from "@navikt/nav-dekoratoren-moduler/ssr";
@@ -214,7 +225,7 @@ class MyDocument extends Document<DocumentProps> {
             env: "prod",
             params: { language: "no", context: "arbeidsgiver" },
         });
-
+        
         return { ...initialProps, Decorator };
     }
 
@@ -238,6 +249,39 @@ class MyDocument extends Document<DocumentProps> {
     }
 }
 ```
+<br/>
+
+#### Med next.js app router
+Settes inn i root layout med `next/script` loader:
+
+```tsx
+import { fetchDecoratorReact } from "@navikt/nav-dekoratoren-moduler/ssr";
+import Script from "next/script";
+
+const RootLayout = async ({ children }: Readonly<{ children: React.ReactNode }>) => {
+    const Decorator = await fetchDecoratorReact({
+        env: "prod"
+    });
+
+    return (
+        <html lang="no">
+            <head>
+                <Decorator.HeadAssets />
+            </head>
+            <body>
+                <Decorator.Header />
+                {children}
+                <Decorator.Footer />
+                <Decorator.Scripts loader={Script} />
+            </body>
+        </html>
+    );
+};
+
+export default RootLayout;
+```
+
+
 
 ## Client-side rendering
 

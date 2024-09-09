@@ -1,0 +1,26 @@
+{
+  "name": "next-app-router",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 4400",
+    "build": "next build",
+    "start": "next start --port 4400",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@navikt/nav-dekoratoren-moduler": "file:../../",
+    "html-react-parser": "5.1.15",
+    "next": "14.2.8",
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.7"
+  }
+}
