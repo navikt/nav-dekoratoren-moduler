@@ -30,15 +30,6 @@
         "react": ">=17.x"
     },
     "peerDependenciesMeta": {
-        "csp-header": {
-            "optional": true
-        },
-        "html-react-parser": {
-            "optional": true
-        },
-        "jsdom": {
-            "optional": true
-        },
         "react": {
             "optional": true
         }

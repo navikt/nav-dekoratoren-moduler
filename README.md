@@ -2,10 +2,13 @@
 
 > NPM-pakke med hjelpefunksjoner for [NAV-dekoratøren](https://github.com/navikt/decorator-next) (header og footer på nav.no)
 
-### Versjon 3.1
-- Legger til prop for overstyring av `script` elementer fra `fetchDecoratorReact`. Støtter bruk med next.js app-router RSC layouts, se [fetchDecoratorReact](#fetchdecoratorreact).
+## Changelog
 
-### Versjon 3.0
+### 3.1
+- Legger til prop for egendefinert komponent for `script`-elementer fra `fetchDecoratorReact`. Skal nå støtte bruk i next.js app-router root layouts, se [fetchDecoratorReact](#fetchdecoratorreact).
+- Peer dependencies er ikke lengre optional, med unntak av React.
+
+### 3.0
 
 - Server-side fetch-funksjoner henter nå ferdige HTML-fragmenter fra `/ssr`-endepunktet, istedenfor å parse hele dekoratørens HTML.
 - (breaking) Alle dekoratørens `<head>`-elementer er nå inkludert i det påkrevde fragmentet `DECORATOR_HEAD_ASSETS`. CSS, favicon, etc.
@@ -19,13 +22,13 @@
 - (breaking) Fjerner `parseDecoratorHTMLToReact`
 - (breaking) Alle dependencies er nå optional peer dependencies
 
-### Versjon 2.0
+### 2.0
 
--   Node.js v18 eller nyere er påkrevd, ettersom vi ikke lengre benytter node-fetch. (Node 18 har fetch innebygd)
--   Server-side fetch-funksjoner benytter nå [service discovery](#service-discovery) som default. Dette krever visse [access policy](#access-policy) regler.
--   Parametre til fetch-funksjoner er endret, slik at query-parametre til dekoratøren nå er et separat objekt.<br/>
+-   (breaking) Node.js v18 eller nyere er påkrevd, ettersom vi ikke lengre benytter node-fetch. (Node 18 har fetch innebygd)
+-   (breaking) Server-side fetch-funksjoner benytter nå [service discovery](#service-discovery) som default. Dette krever visse [access policy](#access-policy) regler.
+-   (breaking) Parametre til fetch-funksjoner er endret, slik at query-parametre til dekoratøren nå er et separat objekt.<br/>
     Eksempel 1.x -> 2.0: `{ env: "prod", context: "arbeidsgiver", simple: true}` -> `{ env: "prod", params: { context: "arbeidsgiver", simple: true }}`)
--   Ved bruk av `env: "localhost"` må dekoratørens url nå alltid settes med parameteret `localUrl`. Dette erstatter parameterene `port` og `dekoratorenUrl`, og vi har ikke lengre en default localhost url.
+-   (breaking) Ved bruk av `env: "localhost"` må dekoratørens url nå alltid settes med parameteret `localUrl`. Dette erstatter parameterene `port` og `dekoratorenUrl`, og vi har ikke lengre en default localhost url.
 -   Flere typer er endret eller har fått mer spesifikke navn (f.eks. `Params` -> `DecoratorParams`)
 
 ## Kom i gang
@@ -248,7 +251,7 @@ class MyDocument extends Document<DocumentProps> {
 ```
 <br/>
 
-#### Med next.js app-router
+#### Med next.js app router
 Settes inn i root layout med `next/script` loader:
 
 ```tsx
@@ -265,7 +268,7 @@ const RootLayout = async ({ children }: Readonly<{ children: React.ReactNode }>)
             <head>
                 <Decorator.HeadAssets />
             </head>
-            <body className={inter.className}>
+            <body>
                 <Decorator.Header />
                 {children}
                 <Decorator.Footer />
