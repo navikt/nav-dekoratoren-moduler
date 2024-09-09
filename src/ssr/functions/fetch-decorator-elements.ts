@@ -32,10 +32,10 @@ export const fetchSsrElements = async (url: string, retries = 3): Promise<OkResp
 
             return {
                 elements: {
-                    DECORATOR_HEAD_ASSETS: res.headAssets,
-                    DECORATOR_HEADER: res.header,
-                    DECORATOR_FOOTER: res.footer,
-                    DECORATOR_SCRIPTS: res.scripts,
+                    DECORATOR_HEAD_ASSETS: res.headAssets.trim(),
+                    DECORATOR_HEADER: res.header.trim(),
+                    DECORATOR_FOOTER: res.footer.trim(),
+                    DECORATOR_SCRIPTS: res.scripts.trim(),
                 },
                 versionId: res.versionId,
             };
