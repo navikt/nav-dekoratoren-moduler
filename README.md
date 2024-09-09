@@ -207,7 +207,7 @@ const {
 
 Henter dekoratøren som React-komponenter. Kan benyttes med React rammeverk som støtter server-side rendering. Krever at `react >=17.x` og `html-react-parser >=5.x` er installert.
 
-Ved behov kan det benyttes en custom loader komponent for `<Decorator.Scripts>`. Denne vil erstatte standard `<script>`-tags i parser'en. Ved bruk av next.js app-router må `next/script` benyttes her, se eksempel #2.
+Ved behov kan det settes en egendefinert komponent for `<script>`-elementer i `<Decorator.Scripts>`. Denne vil erstatte standard `<script>`-tags i parser'en. Ved bruk av next.js app-router kan `next/script` benyttes her, se eksempel #2.
 
 <br/>
 
