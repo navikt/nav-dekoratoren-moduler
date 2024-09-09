@@ -5,8 +5,8 @@
 ## Changelog
 
 ### 3.1
-- Legger til prop for egendefinert komponent for `script`-elementer fra `fetchDecoratorReact`. Skal nå støtte bruk i next.js app-router root layouts, se [fetchDecoratorReact](#fetchdecoratorreact).
-- Peer dependencies er ikke lengre optional, med unntak av React.
+- Legger til prop for egendefinert komponent for `script`-elementer fra `fetchDecoratorReact`. Skal nå støtte bruk i next.js app-router layouts, se [fetchDecoratorReact](#fetchdecoratorreact).
+- Peer dependencies er ikke lengre optional (med unntak av React).
 
 ### 3.0
 
