@@ -1,26 +1,27 @@
 # nav-dekoratoren-moduler
 
-> NPM-pakke med hjelpefunksjoner for [NAV-dekoratøren](https://github.com/navikt/decorator-next) (header og footer på nav.no)
+> NPM-pakke med hjelpefunksjoner for [Nav-dekoratøren](https://github.com/navikt/decorator-next) (header og footer på nav.no)
 
 ## Changelog
 
 ### 3.1
-- Legger til prop for egendefinert komponent for `script`-elementer fra `fetchDecoratorReact`. Skal nå støtte bruk i next.js app-router layouts, se [fetchDecoratorReact](#fetchdecoratorreact).
-- Peer dependencies er ikke lengre optional (med unntak av React).
+
+-   Legger til prop for egendefinert komponent for `script`-elementer fra `fetchDecoratorReact`. Skal nå støtte bruk i next.js app-router layouts, se [fetchDecoratorReact](#fetchdecoratorreact).
+-   Peer dependencies er ikke lengre optional (med unntak av React).
 
 ### 3.0
 
-- Server-side fetch-funksjoner henter nå ferdige HTML-fragmenter fra `/ssr`-endepunktet, istedenfor å parse hele dekoratørens HTML.
-- (breaking) Alle dekoratørens `<head>`-elementer er nå inkludert i det påkrevde fragmentet `DECORATOR_HEAD_ASSETS`. CSS, favicon, etc.
-- (breaking) Fjerner `DECORATOR_STYLES`/`Styles` fra responsen for `fetchDecoratorHtml`/`fetchDecoratorReact` (erstattes av `DECORATOR_HEAD_ASSETS`).
-- Den innbygde cachen av dekoratørens elementer invalideres nå automatisk når en ny versjon av dekoratøren er tilgjengelig.
-- Nye funksjoner: `addDecoratorUpdateListener`, `removeDecoratorUpdateListener`, `getDecoratorVersionId`. Tiltenkt brukt for cache-invalidering i apper som cacher dekoratøren på andre måter.
-- Fjerner typer for ubrukte parametre `urlLookupTable` og `enforceLogin`
-- (breaking) Fjerner `<EnforceLoginLoader/>`
-- (breaking) Fjerner `injectDecoratorServerSideDom`. Denne erstattes av `injectDecoratorServerSideDocument`, som tar inn et standard Document DOM-objekt.
-- (breaking) Fjerner `getUrlFromLookupTable` og tilhørende url-mappinger
-- (breaking) Fjerner `parseDecoratorHTMLToReact`
-- (breaking) Alle dependencies er nå optional peer dependencies
+-   Server-side fetch-funksjoner henter nå ferdige HTML-fragmenter fra `/ssr`-endepunktet, istedenfor å parse hele dekoratørens HTML.
+-   (breaking) Alle dekoratørens `<head>`-elementer er nå inkludert i det påkrevde fragmentet `DECORATOR_HEAD_ASSETS`. CSS, favicon, etc.
+-   (breaking) Fjerner `DECORATOR_STYLES`/`Styles` fra responsen for `fetchDecoratorHtml`/`fetchDecoratorReact` (erstattes av `DECORATOR_HEAD_ASSETS`).
+-   Den innbygde cachen av dekoratørens elementer invalideres nå automatisk når en ny versjon av dekoratøren er tilgjengelig.
+-   Nye funksjoner: `addDecoratorUpdateListener`, `removeDecoratorUpdateListener`, `getDecoratorVersionId`. Tiltenkt brukt for cache-invalidering i apper som cacher dekoratøren på andre måter.
+-   Fjerner typer for ubrukte parametre `urlLookupTable` og `enforceLogin`
+-   (breaking) Fjerner `<EnforceLoginLoader/>`
+-   (breaking) Fjerner `injectDecoratorServerSideDom`. Denne erstattes av `injectDecoratorServerSideDocument`, som tar inn et standard Document DOM-objekt.
+-   (breaking) Fjerner `getUrlFromLookupTable` og tilhørende url-mappinger
+-   (breaking) Fjerner `parseDecoratorHTMLToReact`
+-   (breaking) Alle dependencies er nå optional peer dependencies
 
 ### 2.0
 
@@ -81,10 +82,10 @@ Samtlige funksjoner for fetch av dekoratøren tar inn parametre med følgende ty
 
 ```tsx
 type DecoratorNaisEnv =
-    | "prod"        // For produksjons-instans av dekoratøren
-    | "dev"         // For stabil dev-instans
-    | "beta"        // Beta dev-instanser er ment for internt test-bruk
-    | "betaTms"     // Disse kan være ustabile i lengre perioder
+    | "prod" // For produksjons-instans av dekoratøren
+    | "dev" // For stabil dev-instans
+    | "beta" // Beta dev-instanser er ment for internt test-bruk
+    | "betaTms"; // Disse kan være ustabile i lengre perioder
 
 type DecoratorEnvProps =
     // Dersom env er satt til localhost, må du selv sette url for dekoratøren.
@@ -173,7 +174,7 @@ injectDecoratorServerSideDocument({
     env: "prod",
     document: myDocument,
     params: { context: "privatperson", simple: true },
-}).then((document: Document) => {    
+}).then((document: Document) => {
     const html = document.documentElement.outerHTML;
     res.send(html);
 });
@@ -193,12 +194,7 @@ const fragments = await fetchDecoratorHtml({
     params: { context: "privatperson" },
 });
 
-const {
-    DECORATOR_HEAD_ASSETS,
-    DECORATOR_HEADER,
-    DECORATOR_FOOTER,
-    DECORATOR_SCRIPTS,
-} = fragments;
+const { DECORATOR_HEAD_ASSETS, DECORATOR_HEADER, DECORATOR_FOOTER, DECORATOR_SCRIPTS } = fragments;
 
 // Sett inn fragmenter i app-html'en med f.eks. en template engine
 ```
@@ -212,6 +208,7 @@ Ved behov kan det settes en egendefinert komponent for `<script>`-elementer i `<
 <br/>
 
 #### Med next.js page router
+
 Settes inn i `pages/_document.tsx`:
 
 ```tsx
@@ -225,7 +222,7 @@ class MyDocument extends Document<DocumentProps> {
             env: "prod",
             params: { language: "no", context: "arbeidsgiver" },
         });
-        
+
         return { ...initialProps, Decorator };
     }
 
@@ -249,9 +246,11 @@ class MyDocument extends Document<DocumentProps> {
     }
 }
 ```
+
 <br/>
 
 #### Med next.js app router
+
 Settes inn i root layout med `next/script` loader:
 
 ```tsx
@@ -260,7 +259,7 @@ import Script from "next/script";
 
 const RootLayout = async ({ children }: Readonly<{ children: React.ReactNode }>) => {
     const Decorator = await fetchDecoratorReact({
-        env: "prod"
+        env: "prod",
     });
 
     return (
@@ -280,8 +279,6 @@ const RootLayout = async ({ children }: Readonly<{ children: React.ReactNode }>)
 
 export default RootLayout;
 ```
-
-
 
 ## Client-side rendering
 
@@ -328,15 +325,14 @@ Legger til/fjerner en callback-funksjon som kalles når en ny versjon av dekorat
 Tiltenkt brukt for cache-invalidering i apper som cacher dekoratørens HTML.
 
 ```ts
-import { addDecoratorUpdateListener } from '@navikt/nav-dekoratoren-moduler/ssr'
+import { addDecoratorUpdateListener } from "@navikt/nav-dekoratoren-moduler/ssr";
 
 const flushHtmlCache = (versionId: string) => {
     console.log(`New decorator version: ${versionId} - clearing render cache!`);
     myHtmlCache.clear();
-}
+};
 
-addDecoratorUpdateListener({ env: "prod" }, flushHtmlCache)
-
+addDecoratorUpdateListener({ env: "prod" }, flushHtmlCache);
 ```
 
 ### getDecoratorVersionId
@@ -344,9 +340,9 @@ addDecoratorUpdateListener({ env: "prod" }, flushHtmlCache)
 Henter nåværende versjons-id for dekoratøren i valgt miljø.
 
 ```ts
-import { getDecoratorVersionId } from '@navikt/nav-dekoratoren-moduler/ssr'
+import { getDecoratorVersionId } from "@navikt/nav-dekoratoren-moduler/ssr";
 
-const currentVersionId = await getDecoratorVersionId({ env: 'prod' });
+const currentVersionId = await getDecoratorVersionId({ env: "prod" });
 ```
 
 ### buildCspHeader
@@ -397,10 +393,7 @@ Du kan også utvide taxonomien som er definert for å tilpasse ditt bruk. Det ha
 Eksempel på å definere events:
 
 ```ts
-import {
-    AmplitudeEvent,
-    getAmplitudeInstance,
-} from "@navikt/nav-dekoratoren-moduler";
+import { AmplitudeEvent, getAmplitudeInstance } from "@navikt/nav-dekoratoren-moduler";
 
 type SampleCustomEvents =
     | AmplitudeEvent<"first", { hei: string }>
@@ -434,7 +427,7 @@ export type DecoratorBreadcrumb = {
 // Bruk
 import { setBreadcrumbs } from "@navikt/nav-dekoratoren-moduler";
 setBreadcrumbs([
-    { title: "Ditt NAV", url: "https://www.nav.no/person/dittnav" }, // Sender brukeren til definert url
+    { title: "Ditt Nav", url: "https://www.nav.no/person/dittnav" }, // Sender brukeren til definert url
     {
         title: "Kontakt oss",
         url: "https://www.nav.no/person/kontakt-oss/nb/",
@@ -444,7 +437,7 @@ setBreadcrumbs([
 
 // Bruk med analyticsTitle
 setBreadcrumbs([
-    { title: "Ditt NAV", url: "https://www.nav.no/person/dittnav" }, // Sender brukeren til definert url
+    { title: "Ditt Nav", url: "https://www.nav.no/person/dittnav" }, // Sender brukeren til definert url
     {
         title: "Opplysninger for Ola Nordmann",
         analyticsTitle: "Opplysninger for <Navn>",
