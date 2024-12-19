@@ -4,7 +4,7 @@
 
 ## Changelog
 
-### 3.1.2
+### 3.1.3
 -   Legger til `pageType` i params. Kan brukes til å logge sidetype til Analytics/Amplitude
 ### 3.1.1 
 -   Legger til `redirectOnUserChange` i params
