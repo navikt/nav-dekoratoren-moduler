@@ -4,13 +4,15 @@
 
 ## Changelog
 
+### 3.1.2
+-   Legger til `pageType` i params. Kan brukes til å logge sidetype til Analytics/Amplitude
+### 3.1.1 
+-   Legger til `redirectOnUserChange` i params
 ### 3.1
-
 -   Legger til prop for egendefinert komponent for `script`-elementer fra `fetchDecoratorReact`. Skal nå støtte bruk i next.js app-router layouts, se [fetchDecoratorReact](#fetchdecoratorreact).
 -   Peer dependencies er ikke lengre optional (med unntak av React).
 
 ### 3.0
-
 -   Server-side fetch-funksjoner henter nå ferdige HTML-fragmenter fra `/ssr`-endepunktet, istedenfor å parse hele dekoratørens HTML.
 -   (breaking) Alle dekoratørens `<head>`-elementer er nå inkludert i det påkrevde fragmentet `DECORATOR_HEAD_ASSETS`. CSS, favicon, etc.
 -   (breaking) Fjerner `DECORATOR_STYLES`/`Styles` fra responsen for `fetchDecoratorHtml`/`fetchDecoratorReact` (erstattes av `DECORATOR_HEAD_ASSETS`).
@@ -374,6 +376,8 @@ app.get("*", (req, res) => {
 ### getAmplitudeInstance
 
 Bygger en logger-instans som sender events til Amplitude via dekoratørens klient.
+Det er sterkt anbefalt å følge Navs taksonomi for analyseverktøy:
+https://github.com/navikt/analytics-taxonomy
 
 Eksempel på bruk:
 
@@ -399,7 +403,7 @@ type SampleCustomEvents =
     | AmplitudeEvent<"first", { hei: string }>
     | AmplitudeEvent<"second", { hei: string }>;
 
-const logger = getAmplitudeInstance<SampleCustomEvents>("dekoatoren");
+const logger = getAmplitudeInstance<SampleCustomEvents>("dekoratoren");
 
 logger("first", {
     hei: "hei",
@@ -528,6 +532,7 @@ export type DecoratorParams = Partial<{
     logoutUrl: string;
     logoutWarning: boolean;
     redirectOnUserChange: boolean;
+    pageType: string;
 }>;
 
 // Bruk
