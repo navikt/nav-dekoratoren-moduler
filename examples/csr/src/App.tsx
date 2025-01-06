@@ -1,9 +1,10 @@
 // @ts-ignore
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { onLanguageSelect } from "@navikt/nav-dekoratoren-moduler";
 import { onBreadcrumbClick } from "@navikt/nav-dekoratoren-moduler";
 import { setParams } from "@navikt/nav-dekoratoren-moduler";
+import { setNavCookie } from "@navikt/nav-dekoratoren-moduler";
 
 const App = () => {
     const initalParams = { simple: true };
@@ -25,11 +26,15 @@ const App = () => {
         try {
             const params = JSON.parse(localParams);
             setParams(params);
-        } catch (error) {
+        } catch (error:any) {
             console.log(error.message);
             setError(error);
         }
     };
+
+    useEffect(() => {
+        setNavCookie("test", "test");
+    }, [])
 
     return (
         <div className={"testapp__container"}>
