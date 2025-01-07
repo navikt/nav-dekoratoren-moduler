@@ -3,6 +3,7 @@ import { setAvailableLanguages, onLanguageSelect } from "./functions/languages";
 import { injectDecoratorClientSide } from "./functions/csr";
 import { setParams } from "./functions/params";
 import { openChatbot } from "./functions/chatbot";
+import { setNavCookie, getNavCookie } from "./functions/storage";
 import {
     DecoratorParams,
     DecoratorLocale,
@@ -22,6 +23,8 @@ export {
     openChatbot,
     logAmplitudeEvent,
     getAmplitudeInstance,
+    setNavCookie,
+    getNavCookie,
 };
 
 export type {
