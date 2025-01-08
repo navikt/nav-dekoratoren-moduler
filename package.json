@@ -38,6 +38,7 @@
         "@rollup/plugin-terser": "0.4.4",
         "@rollup/plugin-typescript": "12.1.2",
         "@types/jest": "29.5.14",
+        "@types/js-cookie": "^3.0.6",
         "@types/jsdom": "21.1.7",
         "@types/mock-fs": "4.13.4",
         "@types/node": "22.10.2",
@@ -68,5 +69,8 @@
     },
     "publishConfig": {
         "registry": "https://npm.pkg.github.com"
+    },
+    "dependencies": {
+        "js-cookie": "^3.0.5"
     }
 }
