@@ -9,6 +9,7 @@ declare global {
             eventName: string;
             eventData?: Record<string, any>;
         }) => Promise<any>;
+        __DECORATOR_DATA__: any;
     }
 }
 

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { onLanguageSelect } from "@navikt/nav-dekoratoren-moduler";
 import { onBreadcrumbClick } from "@navikt/nav-dekoratoren-moduler";
 import { setParams } from "@navikt/nav-dekoratoren-moduler";
-import { setNavCookie } from "@navikt/nav-dekoratoren-moduler";
+import { isStorageKeyAllowed, getAllowedStorage } from "@navikt/nav-dekoratoren-moduler";
 
 const App = () => {
     const initalParams = { simple: true };
@@ -26,15 +26,20 @@ const App = () => {
         try {
             const params = JSON.parse(localParams);
             setParams(params);
-        } catch (error:any) {
+        } catch (error: any) {
             console.log(error.message);
             setError(error);
         }
     };
 
     useEffect(() => {
-        setNavCookie("test", "test");
-    }, [])
+        const checkAllowed = async () => {
+            const isAllowed = await isStorageKeyAllowed("usertest-43873d838");
+            console.log(isAllowed);
+        };
+        checkAllowed();
+        // console.log(getAllowedStorage());
+    }, []);
 
     return (
         <div className={"testapp__container"}>

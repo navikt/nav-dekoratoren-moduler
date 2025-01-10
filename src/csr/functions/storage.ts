@@ -1,10 +1,8 @@
 import Cookies from "js-cookie";
 
-export type StorageConfig = {
+export type PublicStorageItem = {
     name: string;
-    type: ("cookie" | "localstorage" | "sessionstorage")[];
-    service: string;
-    description: string;
+    type: "cookie" | "localstorage" | "sessionstorage";
     optional: boolean;
 };
 
@@ -16,126 +14,41 @@ export type CookieConfig = {
     sameSite?: "strict" | "Strict" | "lax" | "Lax" | "none" | "None" | undefined;
 };
 
-const storageDictionary: Set<StorageConfig> = new Set([
-    {
-        name: "BIGipServerpool_pr_gcp_navno_lb_https",
-        type: ["cookie"],
-        service: "BigIP",
-        description: "Brukes for effektiv kommunikasjon mellom nettleseren og nav.no.",
-        optional: false,
-    },
-    {
-        name: "com.grafana.faro*",
-        type: ["sessionstorage"],
-        service: "Grafana",
-        description: "Overvåker teknisk status på nav.no og relaterte tjenester.",
-        optional: false,
-    },
-    {
-        name: "decorator-*",
-        type: ["cookie"],
-        service: "Dekoratøren",
-        description: "Husker brukerens kontekst og valgt språk.",
-        optional: false,
-    },
-    {
-        name: "nav-chatbot",
-        type: ["cookie"],
-        service: "Nav chatbot",
-        description: "Husker brukerens chatbot-samtale for å fortsette på tvers av sider.",
-        optional: false,
-    },
-    {
-        name: "__next_scroll*",
-        type: ["sessionstorage"],
-        service: "Nav.no (Next)",
-        description: "Husker rulleposisjon mellom sider.",
-        optional: false,
-    },
-    {
-        name: "psCurrentState",
-        type: ["cookie"],
-        service: "Vergic",
-        description: "Deling av skjerm med veileder.",
-        optional: false,
-    },
-    {
-        name: "selvbetjening-idtoken",
-        type: ["cookie"],
-        service: "Innlogging",
-        description: "Husker innlogging på nav.no.",
-        optional: false,
-    },
-    {
-        name: "sso-nav.no",
-        type: ["cookie"],
-        service: "Innlogging",
-        description: "Husker innlogging på nav.no.",
-        optional: false,
-    },
-    {
-        name: "vngage.*",
-        type: ["cookie", "sessionstorage", "localstorage"],
-        service: "Vergic",
-        description: "Deling av skjerm med veileder, kun for autoriserte personer.",
-        optional: false,
-    },
-    {
-        name: "navno-consent-*",
-        type: ["cookie", "sessionstorage", "localstorage"],
-        service: "Dekoratøren",
-        description: "Husker brukerens samtykke for cookies.",
-        optional: false,
-    },
-    {
-        name: "_hjSession*",
-        type: ["cookie"],
-        service: "HotJar",
-        description: "Husker invitasjoner til brukerundersøkelser.",
-        optional: true,
-    },
-    {
-        name: "_tajs03412",
-        type: ["sessionstorage"],
-        service: "Task Analytics",
-        description: "Husker hvilke undersøkelser brukeren har takket ja til.",
-        optional: true,
-    },
-    {
-        name: "AMP_*",
-        type: ["localstorage"],
-        service: "Amplitude",
-        description: "Brukes til anonym statistikk og analyse av nav.no.",
-        optional: true,
-    },
-    {
-        name: "AMP_*",
-        type: ["cookie"],
-        service: "Amplitude",
-        description: "Brukes til anonym statistikk og analyse av nav.no.",
-        optional: true,
-    },
-    {
-        name: "ta-dekoratoren-*",
-        type: ["cookie"],
-        service: "Task Analytics",
-        description: "Husker om en bruker har sett en invitasjon til undersøkelse.",
-        optional: true,
-    },
-    {
-        name: "usertest-*",
-        type: ["cookie"],
-        service: "Nav.no (Next)",
-        description: "Husker hvilken variasjon av brukerundersøkelse som vises til brukeren.",
-        optional: true,
-    },
-]);
+const DECORATOR_DATA_TIMEOUT = 5000;
 
-const isStorageKeyAllowed = (key: string) => {
-    return Array.from(storageDictionary).some((config) => config.name === key);
+const getStorageDictionaryFromEnv = (): Promise<PublicStorageItem[]> => {
+    return new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => {
+            reject(
+                new Error(
+                    `Timed out after ${DECORATOR_DATA_TIMEOUT}ms waiting for __DECORATOR_DATA__ to be set. Please check that the decorator is infact loading.`,
+                ),
+            );
+        }, DECORATOR_DATA_TIMEOUT);
+
+        const checkForDecoratorData = () => {
+            if (window.__DECORATOR_DATA__) {
+                clearTimeout(timeout); // Clear the timeout if the data is set
+                resolve(window.__DECORATOR_DATA__.allowedStorage || []);
+            } else {
+                setTimeout(checkForDecoratorData, 50); // Check every 50ms
+            }
+        };
+
+        checkForDecoratorData(); // Start checking
+    });
 };
 
-export const getAllowedStorage = () => {
+export const isStorageKeyAllowed = async (key: string) => {
+    const storageDictionary = await getStorageDictionaryFromEnv();
+    return Array.from(storageDictionary).some((item) => {
+        const startOfName = item.name.split("*")[0];
+        return key.startsWith(startOfName);
+    });
+};
+
+export const getAllowedStorage = async () => {
+    const storageDictionary = await getStorageDictionaryFromEnv();
     return Array.from(storageDictionary);
 };
 
