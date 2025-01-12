@@ -1,10 +1,13 @@
 // @ts-ignore
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { onLanguageSelect } from "@navikt/nav-dekoratoren-moduler";
+import {
+    onLanguageSelect,
+    navLocalStorage,
+    awaitDecoratorData,
+} from "@navikt/nav-dekoratoren-moduler";
 import { onBreadcrumbClick } from "@navikt/nav-dekoratoren-moduler";
 import { setParams } from "@navikt/nav-dekoratoren-moduler";
-import { isStorageKeyAllowed, getAllowedStorage } from "@navikt/nav-dekoratoren-moduler";
 
 const App = () => {
     const initalParams = { simple: true };
@@ -31,15 +34,6 @@ const App = () => {
             setError(error);
         }
     };
-
-    useEffect(() => {
-        const checkAllowed = async () => {
-            const isAllowed = await isStorageKeyAllowed("usertest-43873d838");
-            console.log(isAllowed);
-        };
-        checkAllowed();
-        // console.log(getAllowedStorage());
-    }, []);
 
     return (
         <div className={"testapp__container"}>

@@ -16,7 +16,16 @@ export type CookieConfig = {
 
 const DECORATOR_DATA_TIMEOUT = 5000;
 
-const getStorageDictionaryFromEnv = (): Promise<PublicStorageItem[]> => {
+const getStorageDictionaryFromEnv = (): PublicStorageItem[] => {
+    if (!window.__DECORATOR_DATA__) {
+        throw new Error(
+            "Decorator data not available. Use the async 'isDecoratorDataAvailable' function to await for the data is available.",
+        );
+    }
+    return window.__DECORATOR_DATA__.allowedStorage || [];
+};
+
+export const awaitDecoratorData = async () => {
     return new Promise((resolve, reject) => {
         const timeout = setTimeout(() => {
             reject(
@@ -29,7 +38,7 @@ const getStorageDictionaryFromEnv = (): Promise<PublicStorageItem[]> => {
         const checkForDecoratorData = () => {
             if (window.__DECORATOR_DATA__) {
                 clearTimeout(timeout); // Clear the timeout if the data is set
-                resolve(window.__DECORATOR_DATA__.allowedStorage || []);
+                resolve(true);
             } else {
                 setTimeout(checkForDecoratorData, 50); // Check every 50ms
             }
@@ -39,29 +48,17 @@ const getStorageDictionaryFromEnv = (): Promise<PublicStorageItem[]> => {
     });
 };
 
-export const isStorageKeyAllowed = async (key: string) => {
-    const storageDictionary = await getStorageDictionaryFromEnv();
-    return Array.from(storageDictionary).some((item) => {
-        const startOfName = item.name.split("*")[0];
-        return key.startsWith(startOfName);
+export const isStorageKeyAllowed = (key: string) => {
+    const storageDictionary = getStorageDictionaryFromEnv();
+    const isAllowed = storageDictionary.some((allowedItem) => {
+        const baseName = key.split(/[-*]/)[0];
+        return allowedItem.name.startsWith(baseName);
     });
+
+    return isAllowed;
 };
 
-export const getAllowedStorage = async () => {
-    const storageDictionary = await getStorageDictionaryFromEnv();
+export const getAllowedStorage = () => {
+    const storageDictionary = getStorageDictionaryFromEnv();
     return Array.from(storageDictionary);
-};
-
-export const setNavCookie = (name: string, value: string, options?: CookieConfig) => {
-    if (!isStorageKeyAllowed(name)) {
-        throw new Error(
-            `Storage key ${name} is not in the decorator white list and can not be set.`,
-        );
-    }
-
-    Cookies.set(name, value, options);
-};
-
-export const getNavCookie = (name: string) => {
-    return Cookies.get(name);
 };

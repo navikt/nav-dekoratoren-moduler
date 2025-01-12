@@ -4,11 +4,16 @@ import { injectDecoratorClientSide } from "./functions/csr";
 import { setParams } from "./functions/params";
 import { openChatbot } from "./functions/chatbot";
 import {
-    setNavCookie,
-    getNavCookie,
     isStorageKeyAllowed,
     getAllowedStorage,
-} from "./functions/storage";
+    awaitDecoratorData,
+} from "./functions/storage/storageHelpers";
+import {
+    setNavCookie,
+    getNavCookie,
+    navLocalStorage,
+    navSessionStorage,
+} from "./functions/storage/storageAPI";
 import {
     DecoratorParams,
     DecoratorLocale,
@@ -28,10 +33,13 @@ export {
     openChatbot,
     logAmplitudeEvent,
     getAmplitudeInstance,
-    setNavCookie,
-    getNavCookie,
+    awaitDecoratorData,
     isStorageKeyAllowed,
     getAllowedStorage,
+    setNavCookie,
+    getNavCookie,
+    navSessionStorage,
+    navLocalStorage,
 };
 
 export type {
