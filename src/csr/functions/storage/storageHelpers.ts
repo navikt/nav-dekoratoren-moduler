@@ -14,6 +14,18 @@ export type CookieConfig = {
     sameSite?: "strict" | "Strict" | "lax" | "Lax" | "none" | "None" | undefined;
 };
 
+export type Consent = {
+    consent: {
+        analytics: boolean;
+        surveys: boolean;
+    };
+    userActionTaken: boolean;
+    meta: {
+        createdAt: string;
+        updatedAt: string;
+    };
+};
+
 const DECORATOR_DATA_TIMEOUT = 5000;
 
 const getStorageDictionaryFromEnv = (): PublicStorageItem[] => {
@@ -63,10 +75,12 @@ export const getAllowedStorage = () => {
     return Array.from(storageDictionary);
 };
 
-export const getCurrentConsent = () => {
+export const getCurrentConsent = (): Consent | null => {
     const allCookies = document.cookie.split("; ");
-    const consentCookies = allCookies
+
+    const consentCookieNames = allCookies
         .filter((cookie) => cookie.startsWith("navno-consent"))
+        .map((cookie) => cookie.split("=")[0])
         .sort((a, b) => {
             if (typeof a !== "string" || typeof b !== "string") {
                 return 0;
@@ -76,11 +90,8 @@ export const getCurrentConsent = () => {
             return numB - numA;
         });
 
-    const currentCookieId = consentCookies.length > 0 ? consentCookies[0] : null;
+    const currentCookieName = consentCookieNames.length > 0 ? consentCookieNames[0] : null;
+    const currentCookie = currentCookieName ? Cookies.get(currentCookieName) : null;
 
-    if (!currentCookieId) {
-        return null;
-    }
-
-    return Cookies.get(currentCookieId);
+    return currentCookie ? JSON.parse(currentCookie) : null;
 };
