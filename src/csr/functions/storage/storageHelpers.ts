@@ -76,7 +76,11 @@ export const getCurrentConsent = () => {
             return numB - numA;
         });
 
-    const currentConsentString = consentCookies.length > 0 ? consentCookies[0] : null;
+    const currentCookieId = consentCookies.length > 0 ? consentCookies[0] : null;
 
-    return currentConsentString ? decodeURIComponent(JSON.parse(currentConsentString)) : null;
+    if (!currentCookieId) {
+        return null;
+    }
+
+    return Cookies.get(currentCookieId);
 };
