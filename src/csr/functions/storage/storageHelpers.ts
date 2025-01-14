@@ -75,5 +75,8 @@ export const getCurrentConsent = () => {
             const numB = parseInt(b.split("-")[2]);
             return numB - numA;
         });
-    return consentCookies.length > 0 ? consentCookies[0] : null;
+
+    const currentConsentString = consentCookies.length > 0 ? consentCookies[0] : null;
+
+    return currentConsentString ? JSON.parse(currentConsentString) : null;
 };
