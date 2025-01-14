@@ -77,7 +77,7 @@ export const getAllowedStorage = () => {
 };
 
 export const getCurrentConsent = (): Consent | null => {
-    const getCurrentConsent = Cookies.get("navno-consent");
+    const currentConsent = Cookies.get("navno-consent");
 
-    return getCurrentConsent ? JSON.parse(getCurrentConsent) : null;
+    return currentConsent ? JSON.parse(currentConsent) : null;
 };
