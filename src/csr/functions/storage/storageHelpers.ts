@@ -23,6 +23,7 @@ export type Consent = {
     meta: {
         createdAt: string;
         updatedAt: string;
+        version: number;
     };
 };
 
@@ -76,22 +77,7 @@ export const getAllowedStorage = () => {
 };
 
 export const getCurrentConsent = (): Consent | null => {
-    const allCookies = document.cookie.split("; ");
+    const getCurrentConsent = Cookies.get("navno-consent");
 
-    const consentCookieNames = allCookies
-        .filter((cookie) => cookie.startsWith("navno-consent"))
-        .map((cookie) => cookie.split("=")[0])
-        .sort((a, b) => {
-            if (typeof a !== "string" || typeof b !== "string") {
-                return 0;
-            }
-            const numA = parseInt(a.split("-")[2]);
-            const numB = parseInt(b.split("-")[2]);
-            return numB - numA;
-        });
-
-    const currentCookieName = consentCookieNames.length > 0 ? consentCookieNames[0] : null;
-    const currentCookie = currentCookieName ? Cookies.get(currentCookieName) : null;
-
-    return currentCookie ? JSON.parse(currentCookie) : null;
+    return getCurrentConsent ? JSON.parse(getCurrentConsent) : null;
 };
