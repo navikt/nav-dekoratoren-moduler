@@ -62,3 +62,18 @@ export const getAllowedStorage = () => {
     const storageDictionary = getStorageDictionaryFromEnv();
     return Array.from(storageDictionary);
 };
+
+export const getCurrentConsent = () => {
+    const allCookies = document.cookie.split("; ");
+    const consentCookies = allCookies
+        .filter((cookie) => cookie.startsWith("navno-consent"))
+        .sort((a, b) => {
+            if (typeof a !== "string" || typeof b !== "string") {
+                return 0;
+            }
+            const numA = parseInt(a.split("-")[2]);
+            const numB = parseInt(b.split("-")[2]);
+            return numB - numA;
+        });
+    return consentCookies.length > 0 ? consentCookies[0] : null;
+};

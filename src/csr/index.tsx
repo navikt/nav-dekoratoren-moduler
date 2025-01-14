@@ -7,6 +7,7 @@ import {
     isStorageKeyAllowed,
     getAllowedStorage,
     awaitDecoratorData,
+    getCurrentConsent,
 } from "./functions/storage/storageHelpers";
 import {
     setNavCookie,
@@ -35,6 +36,7 @@ export {
     getAmplitudeInstance,
     awaitDecoratorData,
     isStorageKeyAllowed,
+    getCurrentConsent,
     getAllowedStorage,
     setNavCookie,
     getNavCookie,
