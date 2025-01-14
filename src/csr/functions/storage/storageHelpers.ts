@@ -78,5 +78,5 @@ export const getCurrentConsent = () => {
 
     const currentConsentString = consentCookies.length > 0 ? consentCookies[0] : null;
 
-    return currentConsentString ? JSON.parse(currentConsentString) : null;
+    return currentConsentString ? decodeURIComponent(JSON.parse(currentConsentString)) : null;
 };
