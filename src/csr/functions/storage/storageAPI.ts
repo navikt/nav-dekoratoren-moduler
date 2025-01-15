@@ -66,5 +66,5 @@ const createStorage = (storage: Storage): StorageAPI => ({
 });
 
 // Creating augmented versions for sessionStorage and localStorage
-export const navSessionStorage = createStorage(sessionStorage);
-export const navLocalStorage = createStorage(localStorage);
+export const navSessionStorage = createStorage(window.sessionStorage);
+export const navLocalStorage = createStorage(window.localStorage);
