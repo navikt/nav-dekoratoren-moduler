@@ -5,15 +5,18 @@ import { CookieConfig, isStorageKeyAllowed } from "./storageHelpers";
 // ------------------------------
 export const setNavCookie = (name: string, value: string, options?: CookieConfig) => {
     if (!isStorageKeyAllowed(name)) {
-        throw new Error(
-            `Storage key ${name} is not in the decorator white list and can not be set.`,
-        );
+        console.warn(`The key ${name} is not in the allow list.`);
+        return null;
     }
 
-    Cookies.set(name, value, options);
+    return Cookies.set(name, value, options);
 };
 
 export const getNavCookie = (name: string) => {
+    if (!isStorageKeyAllowed(name)) {
+        console.warn(`The key ${name} is not in the allow list.`);
+        return null;
+    }
     return Cookies.get(name);
 };
 
@@ -31,24 +34,27 @@ interface StorageAPI {
 
 const createStorage = (storage: Storage): StorageAPI => ({
     getItem(key: string): string | null {
+        if (!isStorageKeyAllowed(key)) {
+            console.warn(`The key ${key} is not in the allow list.`);
+            return null;
+        }
         return storage.getItem(key);
     },
 
-    setItem(key: string, value: string): void {
-        const isAllowed = isStorageKeyAllowed(key);
-        if (!isAllowed) {
-            console.log("not allowed");
-            throw new Error(
-                `Storage key ${key} is not in the decorator storage white list and can not be set.`,
-            );
+    setItem(key: string, value: string): string | null {
+        if (!isStorageKeyAllowed(key)) {
+            console.warn(`The key ${key} is not in the allow list.`);
+            return null;
         }
-        console.log(
-            `Setting item ${key} to ${value} storagekeyallowed: ${isStorageKeyAllowed(key)}`,
-        );
         storage.setItem(key, value);
+        return value;
     },
 
-    removeItem(key: string): void {
+    removeItem(key: string): void | null {
+        if (!isStorageKeyAllowed(key)) {
+            console.warn(`The key ${key} is not in the allow list.`);
+            return null;
+        }
         storage.removeItem(key);
     },
 
@@ -65,6 +71,19 @@ const createStorage = (storage: Storage): StorageAPI => ({
     },
 });
 
+export const createLocalStorage = () => {
+    if (typeof window === "undefined") {
+        return null;
+    }
+    return createStorage(window.localStorage);
+};
+
+export const createSessionStorage = () => {
+    if (typeof window === "undefined") {
+        return null;
+    }
+    return createStorage(window.sessionStorage);
+};
 // Creating augmented versions for sessionStorage and localStorage
-export const navSessionStorage = createStorage(window.sessionStorage);
-export const navLocalStorage = createStorage(window.localStorage);
+export const navSessionStorage = createSessionStorage();
+export const navLocalStorage = createLocalStorage();

@@ -6,7 +6,7 @@ import { openChatbot } from "./functions/chatbot";
 import {
     isStorageKeyAllowed,
     getAllowedStorage,
-    awaitDecoratorData,
+    awaitNavWebStorage,
     getCurrentConsent,
 } from "./functions/storage/storageHelpers";
 import {
@@ -34,7 +34,7 @@ export {
     openChatbot,
     logAmplitudeEvent,
     getAmplitudeInstance,
-    awaitDecoratorData,
+    awaitNavWebStorage as awaitDecoratorData,
     isStorageKeyAllowed,
     getCurrentConsent,
     getAllowedStorage,
