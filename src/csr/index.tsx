@@ -10,7 +10,8 @@ import {
     DecoratorFetchProps,
 } from "../common/common-types";
 import { AmplitudeParams, getAmplitudeInstance, logAmplitudeEvent } from "./functions/amplitude";
-import { AmplitudeEvent } from "./events";
+import { AmplitudeEvent, AnalyticsEvent } from "./events";
+import { AnalyticsParams, logAnalyticsEvent } from "./functions/analytics";
 
 export {
     setAvailableLanguages,
@@ -21,6 +22,7 @@ export {
     injectDecoratorClientSide,
     openChatbot,
     logAmplitudeEvent,
+    logAnalyticsEvent,
     getAmplitudeInstance,
 };
 
@@ -31,4 +33,6 @@ export type {
     DecoratorEnvProps,
     DecoratorFetchProps,
     AmplitudeEvent,
+    AnalyticsEvent,
+    AnalyticsParams,
 };
