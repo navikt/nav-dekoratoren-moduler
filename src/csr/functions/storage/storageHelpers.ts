@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 
-export type PublicStorageItem = {
+export type Storage = {
     name: string;
     type: "cookie" | "localstorage" | "sessionstorage";
     optional: boolean;
@@ -29,16 +29,7 @@ export type Consent = {
 
 const DECORATOR_DATA_TIMEOUT = 5000;
 
-const getStorageDictionaryFromEnv = (): PublicStorageItem[] => {
-    if (!window.__DECORATOR_DATA__) {
-        throw new Error(
-            "Decorator data not available. Use the async 'isDecoratorDataAvailable' function to await for the data is available.",
-        );
-    }
-    return window.__DECORATOR_DATA__.allowedStorage || [];
-};
-
-export const awaitDecoratorData = async () => {
+export const awaitNavWebStorage = async () => {
     return new Promise((resolve, reject) => {
         const timeout = setTimeout(() => {
             reject(
@@ -49,35 +40,26 @@ export const awaitDecoratorData = async () => {
         }, DECORATOR_DATA_TIMEOUT);
 
         const checkForDecoratorData = () => {
-            if (window.__DECORATOR_DATA__) {
-                clearTimeout(timeout); // Clear the timeout if the data is set
+            if (window.__DECORATOR_DATA__ && window.webStorageController) {
+                clearTimeout(timeout);
                 resolve(true);
             } else {
-                setTimeout(checkForDecoratorData, 50); // Check every 50ms
+                setTimeout(checkForDecoratorData, 50);
             }
         };
 
-        checkForDecoratorData(); // Start checking
+        checkForDecoratorData();
     });
 };
 
-export const isStorageKeyAllowed = (key: string) => {
-    const storageDictionary = getStorageDictionaryFromEnv();
-    const isAllowed = storageDictionary.some((allowedItem) => {
-        const baseName = key.split(/[-*]/)[0];
-        return allowedItem.name.startsWith(baseName);
-    });
-
-    return isAllowed;
+export const isStorageKeyAllowed = (key: string): boolean => {
+    return window.webStorageController?.isStorageKeyAllowed(key);
 };
 
-export const getAllowedStorage = () => {
-    const storageDictionary = getStorageDictionaryFromEnv();
-    return Array.from(storageDictionary);
+export const getAllowedStorage = (): Storage[] => {
+    return window.webStorageController?.getAllowedStorage();
 };
 
-export const getCurrentConsent = (): Consent | null => {
-    const currentConsent = Cookies.get("navno-consent");
-
-    return currentConsent ? JSON.parse(currentConsent) : null;
+export const getCurrentConsent = (): Consent => {
+    return window.webStorageController?.getCurrentConsent();
 };

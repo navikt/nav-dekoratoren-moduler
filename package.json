@@ -1,6 +1,10 @@
 {
     "name": "@navikt/nav-dekoratoren-moduler",
+<<<<<<< HEAD
     "version": "3.1.4-beta.9",
+=======
+    "version": "3.1.4-beta.10",
+>>>>>>> cb9b399 (Fjerner logikk for cookie-sjekking og kobler direkte mot funksjoner i dekoratøren)
     "description": "Moduler til nav-dekoratoren",
     "author": "NAVIKT",
     "license": "MIT",
