@@ -5,7 +5,7 @@ import { CookieConfig, isStorageKeyAllowed } from "./storageHelpers";
 // ------------------------------
 export const setNavCookie = (name: string, value: string, options?: CookieConfig) => {
     if (!isStorageKeyAllowed(name)) {
-        console.warn(`The key ${name} is not in the allow list.`);
+        console.warn(`The key ${name} is not in the allow list or user has not given consent.`);
         return null;
     }
 
@@ -14,7 +14,7 @@ export const setNavCookie = (name: string, value: string, options?: CookieConfig
 
 export const getNavCookie = (name: string) => {
     if (!isStorageKeyAllowed(name)) {
-        console.warn(`The key ${name} is not in the allow list.`);
+        console.warn(`The key ${name} is not in the allow list or user has not given consent.`);
         return null;
     }
     return Cookies.get(name);
@@ -35,7 +35,7 @@ interface StorageAPI {
 const createStorage = (storage: Storage): StorageAPI => ({
     getItem(key: string): string | null {
         if (!isStorageKeyAllowed(key)) {
-            console.warn(`The key ${key} is not in the allow list.`);
+            console.warn(`The key ${key} is not in the allow list or user has not given consent.`);
             return null;
         }
         return storage.getItem(key);
@@ -43,7 +43,7 @@ const createStorage = (storage: Storage): StorageAPI => ({
 
     setItem(key: string, value: string): string | null {
         if (!isStorageKeyAllowed(key)) {
-            console.warn(`The key ${key} is not in the allow list.`);
+            console.warn(`The key ${key} is not in the allow list or user has not given consent.`);
             return null;
         }
         storage.setItem(key, value);
@@ -52,7 +52,7 @@ const createStorage = (storage: Storage): StorageAPI => ({
 
     removeItem(key: string): void | null {
         if (!isStorageKeyAllowed(key)) {
-            console.warn(`The key ${key} is not in the allow list.`);
+            console.warn(`The key ${key} is not in the allow list or user has not given consent.`);
             return null;
         }
         storage.removeItem(key);

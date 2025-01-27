@@ -1,11 +1,7 @@
 // @ts-ignore
-import React, { useEffect } from "react";
+import React from "react";
 import { useState } from "react";
-import {
-    onLanguageSelect,
-    navLocalStorage,
-    awaitDecoratorData,
-} from "@navikt/nav-dekoratoren-moduler";
+import { onLanguageSelect } from "@navikt/nav-dekoratoren-moduler";
 import { onBreadcrumbClick } from "@navikt/nav-dekoratoren-moduler";
 import { setParams } from "@navikt/nav-dekoratoren-moduler";
 
