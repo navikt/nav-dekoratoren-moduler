@@ -567,3 +567,72 @@ import { openChatbot } from "@navikt/nav-dekoratoren-moduler";
 
 openChatbot();
 ```
+
+## Plakat for samtykke ("cookie-banner")
+
+Etter at en strengere Lov om elektronisk kommunikasjon (ekomloven) ble gjort gjeldende fra 1. januar 2025, har Nav måttet innhente samtykke før verktøy for analyse, statistikk etc kunne bli tatt i bruk. Du kan lese mer i Dekoratøren om bakgrunn og hvordan prinsippene og det juridiske ved samtykke fungerer.
+
+For nav-dekoratoren-moduler har vi laget en rekke hjelpefunksjoner som et ment å bidra til at teamene etterlever den nye ekomloven.
+
+Disse funksjonene er et forslag til hva vi tror teamene vil kunne trenge, så vi håper at team som ønsker seg andre funksjoner melder ifra på #dekoratøren_på_navno på Slack slik at vi kan utvide nav-dekoratoren-moduler og fortsatt gjøre den nyttig for teamene.
+
+### awaitDecoratorData()
+
+Dersom du trenger å lese/skrive cookies som en del av oppstarten i applikasjonen, kan det hende at du må vente til dekoratøren har lastet inn dataene.
+
+```ts
+const initMyApp = async () => {
+    await awaitDecoratorData();
+    doMyAppStuff();
+};
+```
+
+### isStorageKeyAllowed(key: string)
+
+Sjekker om en nøkkel er tillatt å sette:
+
+1. er den i tillatt-listen
+2. hvis nøkkelen er markert som frivillig (og dermed krever samtykke): har bruker samtykket til denne type lagring
+
+Funksjonene for å lese og skrive (cookies, localstorage etc) sjekker dette selv automatisk, så denne funksjonen er laget for å gi team en mulighet til å sjekke skrivbarhet uten å faktisk skrive.
+
+Kan brukes for både cookies, localStorage og sessionStorage.
+
+```ts
+import { isStorageKeyAllowed } from '@navikt/nav-dekoratoren-moduler'
+
+// Returnerer false fordi 'jabberwocky' ikke er i tillatt-listen.
+const isJabberwocky = isStorageKeyAllowed('jabberwocky'):
+
+// Selv om 'usertest' er i tillatt-listen har ikke bruker gitt sitt samtykke i dette tenkte eksempelet, så funksjonen returnerer false.
+const isUsertestAllowed = isStorageKeyAllowed('usertest-229843829')
+
+```
+
+### getAllowedStorage()
+
+Denne returnerer en liste over alle ting som er lov å sette, enten cookies, localStorage etc. Vi tilbyr denne til team som vil lage sine egne løsninger eller som trenger funksjonalitet som ikke finnes i nav-dekoratoren-moduler. I hovedsak tenker vi at isStorageKeyAllowed ovenfor vil fungere best i de fleste tilfeller.
+
+Retunerer tillatt lagring for både cookies, localStorage og sessionStorage.
+
+### setNavCookie / getNavCookie
+
+Denne kan brukes for å sette cookies og være sikker på at det er tillatt å sette de. Funksjonen sjekker på om (1) cookien er i tillatt-listen og (2) brukeren har gitt nødvendige samtykker hvis cookien er frivillig.
+
+Dersom det for eksempel er en cookie som er team har definert som nødvendig kan den settes uansett så lenge den ligger i listen over tillatte cookies.
+
+Dersom cookien er regnet som frivillig vil den ikke kunne settes dersom bruker ikke har gitt samtykke til at Nav kan lagre alle frivillige cookies.
+
+```ts
+import { setNavCookie, getNavCookie } from "@navikt/nav-dekoratoren-moduler";
+
+// Tillatt fordi tillatt-listen har registrert 'usertest-*' som tillatt cookie.
+setNavCookie("usertest-382738");
+
+// Returnerer null fordi 'foobar' ikke er i tillatt-listen.
+const foo = getNavCookie("foobar");
+```
+
+### navSessionStorage og navLocalStorage
+
+Utvider sessionStorage og localStorage og eksponerer de samme funksjonene. Forskjellen er at nav\*Storage først sjekker om en nøkkel er tillatt å sette basert på tillattlisten og status på eksisterende samtykke.
