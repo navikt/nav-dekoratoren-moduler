@@ -1,5 +1,3 @@
-import Cookies from "js-cookie";
-
 export type Storage = {
     name: string;
     type: "cookie" | "localstorage" | "sessionstorage";
