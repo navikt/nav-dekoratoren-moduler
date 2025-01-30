@@ -39,7 +39,7 @@ export async function logAmplitudeEvent<TName extends AmplitudeEventName>(params
 
     if (!window.dekoratorenAmplitude) {
         return Promise.reject(
-            "Amplitude not instanciated. Please check users consent for analytics",
+            "Amplitude not instantiated. Please check users consent for analytics",
         );
     }
 
