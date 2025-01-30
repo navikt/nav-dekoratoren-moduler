@@ -5,7 +5,7 @@ import "./index.css";
 
 document.body.innerHTML = document.body.innerHTML.replace(
     "{{{STYLES}}}",
-    `<link href=http://localhost:8088/css/client.css rel="stylesheet" />`
+    `<link href=http://localhost:8089/css/client.css rel="stylesheet" />`
 );
 document.body.innerHTML = document.body.innerHTML.replace(
     "{{{HEADER}}}",
@@ -17,13 +17,13 @@ document.body.innerHTML = document.body.innerHTML.replace(
 );
 document.body.innerHTML = document.body.innerHTML.replace(
     "{{{SCRIPTS}}}",
-    `<div id="decorator-env" data-src="http://localhost:8088/env?enforceLogin=true&level=Level4"></div>`
+    `<div id="decorator-env" data-src="http://localhost:8089/env"></div>`
 );
 
 const rootElement = document.getElementById("app") as HTMLElement;
 
 const script = document.createElement("script");
-script.src = "http://localhost:8088/client.js";
+script.src = "http://localhost:8089/client.js";
 
 document.body.appendChild(script);
 

@@ -25,7 +25,7 @@ const App = () => {
         try {
             const params = JSON.parse(localParams);
             setParams(params);
-        } catch (error) {
+        } catch (error: any) {
             console.log(error.message);
             setError(error);
         }

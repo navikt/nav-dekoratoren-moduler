@@ -6,8 +6,7 @@ export type AmplitudeParams = {
     eventData?: Record<string, any>;
 };
 
-const waitForRetry = async () =>
-    new Promise((resolve) => setTimeout(resolve, 500));
+const waitForRetry = async () => new Promise((resolve) => setTimeout(resolve, 500));
 
 const validateAmplitudeFunction = async (retries = 5): Promise<boolean> => {
     if (typeof window.dekoratorenAmplitude === "function") {
@@ -27,9 +26,7 @@ export type AutocompleteString = string & {};
 export type AmplitudeEventName = AmplitudeEvents["name"];
 export type AutocompleteEventName = AmplitudeEventName | AutocompleteString;
 
-export async function logAmplitudeEvent<
-    TName extends AmplitudeEventName
->(params: {
+export async function logAmplitudeEvent<TName extends AmplitudeEventName>(params: {
     eventName: TName | AutocompleteString;
     eventData?: TName extends AmplitudeEventName
         ? Extract<AmplitudeEvents, { name: TName }>["properties"]
@@ -40,32 +37,36 @@ export async function logAmplitudeEvent<
         return Promise.reject("Amplitude is only available in the browser");
     }
 
+    if (!window.dekoratorenAmplitude) {
+        return Promise.reject(
+            "Amplitude not instantiated. Please check users consent for analytics",
+        );
+    }
+
     const isValid = await validateAmplitudeFunction();
 
     if (!isValid) {
-        return Promise.reject(
-            "Amplitude instance not found, it may not have been initialized yet"
-        );
+        return Promise.reject("Amplitude instance not found, it may not have been initialized yet");
     }
 
     return window.dekoratorenAmplitude(params);
 }
 
 export function getAmplitudeInstance<
-    TCustomEvents extends AmplitudeEvent<string, Record<string, unknown>> = any
+    TCustomEvents extends AmplitudeEvent<string, Record<string, unknown>> = any,
 >(origin: string) {
     return <TName extends AutocompleteEventName>(
         // Can be set to never if we want to be more strict
         eventName: TName extends AmplitudeEventName
             ? TName
             : TName extends TCustomEvents["name"]
-            ? TName
-            : TName,
+              ? TName
+              : TName,
         eventData?: TName extends AmplitudeEventName
             ? Extract<AmplitudeEvents, { name: TName }>["properties"]
             : TName extends TCustomEvents["name"]
-            ? Extract<TCustomEvents, { name: TName }>["properties"]
-            : Record<string, any>
+              ? Extract<TCustomEvents, { name: TName }>["properties"]
+              : Record<string, any>,
     ) => {
         return logAmplitudeEvent({
             eventName,

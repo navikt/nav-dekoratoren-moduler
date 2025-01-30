@@ -4,13 +4,13 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "dev": "vite",
+        "dev": "vite --force",
         "build": "tsc && vite build",
         "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
         "preview": "vite preview"
     },
     "dependencies": {
-        "@navikt/nav-dekoratoren-moduler": "file:..",
+        "@navikt/nav-dekoratoren-moduler": "file:../../",
         "react": "^18.2.0",
         "react-dom": "^18.2.0"
     },
@@ -23,7 +23,7 @@
         "eslint": "^8.38.0",
         "eslint-plugin-react-hooks": "^4.6.0",
         "eslint-plugin-react-refresh": "^0.3.4",
-        "typescript": "file:../node_modules/typescript",
+        "typescript": "file:../../node_modules/typescript",
         "vite": "^4.3.9"
     }
 }
