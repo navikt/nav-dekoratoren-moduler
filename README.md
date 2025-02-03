@@ -4,35 +4,49 @@
 
 ## Changelog
 
+### 3.2.0
+
+- Ny funksjonalitet for å sette cookies, localStorage og sessionStorage basert på tillatte lagring. Se egen seksjon for mer info.
+
 ### 3.1.3
--   Legger til `pageType` i params. Kan brukes til å logge sidetype til Analytics/Amplitude
-### 3.1.1 
--   Legger til `redirectOnUserChange` i params
+
+- Oppdaterer avhengigheter, kun patch.
+
+### 3.1.2
+
+- Legger til `pageType` i params. Kan brukes til å logge sidetype til Analytics/Amplitude
+
+### 3.1.1
+
+- Legger til `redirectOnUserChange` i params
+
 ### 3.1
--   Legger til prop for egendefinert komponent for `script`-elementer fra `fetchDecoratorReact`. Skal nå støtte bruk i next.js app-router layouts, se [fetchDecoratorReact](#fetchdecoratorreact).
--   Peer dependencies er ikke lengre optional (med unntak av React).
+
+- Legger til prop for egendefinert komponent for `script`-elementer fra `fetchDecoratorReact`. Skal nå støtte bruk i next.js app-router layouts, se [fetchDecoratorReact](#fetchdecoratorreact).
+- Peer dependencies er ikke lengre optional (med unntak av React).
 
 ### 3.0
--   Server-side fetch-funksjoner henter nå ferdige HTML-fragmenter fra `/ssr`-endepunktet, istedenfor å parse hele dekoratørens HTML.
--   (breaking) Alle dekoratørens `<head>`-elementer er nå inkludert i det påkrevde fragmentet `DECORATOR_HEAD_ASSETS`. CSS, favicon, etc.
--   (breaking) Fjerner `DECORATOR_STYLES`/`Styles` fra responsen for `fetchDecoratorHtml`/`fetchDecoratorReact` (erstattes av `DECORATOR_HEAD_ASSETS`).
--   Den innbygde cachen av dekoratørens elementer invalideres nå automatisk når en ny versjon av dekoratøren er tilgjengelig.
--   Nye funksjoner: `addDecoratorUpdateListener`, `removeDecoratorUpdateListener`, `getDecoratorVersionId`. Tiltenkt brukt for cache-invalidering i apper som cacher dekoratøren på andre måter.
--   Fjerner typer for ubrukte parametre `urlLookupTable` og `enforceLogin`
--   (breaking) Fjerner `<EnforceLoginLoader/>`
--   (breaking) Fjerner `injectDecoratorServerSideDom`. Denne erstattes av `injectDecoratorServerSideDocument`, som tar inn et standard Document DOM-objekt.
--   (breaking) Fjerner `getUrlFromLookupTable` og tilhørende url-mappinger
--   (breaking) Fjerner `parseDecoratorHTMLToReact`
--   (breaking) Alle dependencies er nå optional peer dependencies
+
+- Server-side fetch-funksjoner henter nå ferdige HTML-fragmenter fra `/ssr`-endepunktet, istedenfor å parse hele dekoratørens HTML.
+- (breaking) Alle dekoratørens `<head>`-elementer er nå inkludert i det påkrevde fragmentet `DECORATOR_HEAD_ASSETS`. CSS, favicon, etc.
+- (breaking) Fjerner `DECORATOR_STYLES`/`Styles` fra responsen for `fetchDecoratorHtml`/`fetchDecoratorReact` (erstattes av `DECORATOR_HEAD_ASSETS`).
+- Den innbygde cachen av dekoratørens elementer invalideres nå automatisk når en ny versjon av dekoratøren er tilgjengelig.
+- Nye funksjoner: `addDecoratorUpdateListener`, `removeDecoratorUpdateListener`, `getDecoratorVersionId`. Tiltenkt brukt for cache-invalidering i apper som cacher dekoratøren på andre måter.
+- Fjerner typer for ubrukte parametre `urlLookupTable` og `enforceLogin`
+- (breaking) Fjerner `<EnforceLoginLoader/>`
+- (breaking) Fjerner `injectDecoratorServerSideDom`. Denne erstattes av `injectDecoratorServerSideDocument`, som tar inn et standard Document DOM-objekt.
+- (breaking) Fjerner `getUrlFromLookupTable` og tilhørende url-mappinger
+- (breaking) Fjerner `parseDecoratorHTMLToReact`
+- (breaking) Alle dependencies er nå optional peer dependencies
 
 ### 2.0
 
--   (breaking) Node.js v18 eller nyere er påkrevd, ettersom vi ikke lengre benytter node-fetch. (Node 18 har fetch innebygd)
--   (breaking) Server-side fetch-funksjoner benytter nå [service discovery](#service-discovery) som default. Dette krever visse [access policy](#access-policy) regler.
--   (breaking) Parametre til fetch-funksjoner er endret, slik at query-parametre til dekoratøren nå er et separat objekt.<br/>
-    Eksempel 1.x -> 2.0: `{ env: "prod", context: "arbeidsgiver", simple: true}` -> `{ env: "prod", params: { context: "arbeidsgiver", simple: true }}`)
--   (breaking) Ved bruk av `env: "localhost"` må dekoratørens url nå alltid settes med parameteret `localUrl`. Dette erstatter parameterene `port` og `dekoratorenUrl`, og vi har ikke lengre en default localhost url.
--   Flere typer er endret eller har fått mer spesifikke navn (f.eks. `Params` -> `DecoratorParams`)
+- (breaking) Node.js v18 eller nyere er påkrevd, ettersom vi ikke lengre benytter node-fetch. (Node 18 har fetch innebygd)
+- (breaking) Server-side fetch-funksjoner benytter nå [service discovery](#service-discovery) som default. Dette krever visse [access policy](#access-policy) regler.
+- (breaking) Parametre til fetch-funksjoner er endret, slik at query-parametre til dekoratøren nå er et separat objekt.<br/>
+  Eksempel 1.x -> 2.0: `{ env: "prod", context: "arbeidsgiver", simple: true}` -> `{ env: "prod", params: { context: "arbeidsgiver", simple: true }}`)
+- (breaking) Ved bruk av `env: "localhost"` må dekoratørens url nå alltid settes med parameteret `localUrl`. Dette erstatter parameterene `port` og `dekoratorenUrl`, og vi har ikke lengre en default localhost url.
+- Flere typer er endret eller har fått mer spesifikke navn (f.eks. `Params` -> `DecoratorParams`)
 
 ## Kom i gang
 
@@ -44,13 +58,13 @@ Obs! Oppdaterte pakker publiseres kun i GitHub Packages registry'et. For å kunn
 
 #### Ved lokal kjøring:
 
--   Legg til dette i `.npmrc`-fila for prosjektet. Opprett fila på rot i prosjektet hvis den ikke finnes.
+- Legg til dette i `.npmrc`-fila for prosjektet. Opprett fila på rot i prosjektet hvis den ikke finnes.
 
 ```
 @navikt:registry=https://npm.pkg.github.com
 ```
 
--   Opprett et PAT med `read:packages` scope og SSO auth, og bruk dette som passord ved login.
+- Opprett et PAT med `read:packages` scope og SSO auth, og bruk dette som passord ved login.
 
 ```
 npm login --registry=https://npm.pkg.github.com --auth-type=legacy
@@ -58,7 +72,7 @@ npm login --registry=https://npm.pkg.github.com --auth-type=legacy
 
 #### Ved bygg på Github Actions:
 
--   Sett registry url med f.eks. `actions/setup-node`:
+- Sett registry url med f.eks. `actions/setup-node`:
 
 ```
 - name: Setup node.js
@@ -67,7 +81,7 @@ npm login --registry=https://npm.pkg.github.com --auth-type=legacy
     registry-url: 'https://npm.pkg.github.com'
 ```
 
--   Sett `NODE_AUTH_TOKEN` på `npm ci`. `READER_TOKEN` er en navikt org-wide secret til dette formålet.
+- Sett `NODE_AUTH_TOKEN` på `npm ci`. `READER_TOKEN` er en navikt org-wide secret til dette formålet.
 
 ```
 - name: Install dependencies
@@ -553,3 +567,72 @@ import { openChatbot } from "@navikt/nav-dekoratoren-moduler";
 
 openChatbot();
 ```
+
+## Plakat for samtykke ("cookie-banner")
+
+Etter at en strengere Lov om elektronisk kommunikasjon (ekomloven) ble gjort gjeldende fra 1. januar 2025, har Nav måttet innhente samtykke før verktøy for analyse, statistikk etc kunne bli tatt i bruk. Du kan lese mer i Dekoratøren om bakgrunn og hvordan prinsippene og det juridiske ved samtykke fungerer.
+
+For nav-dekoratoren-moduler har vi laget en rekke hjelpefunksjoner som et ment å bidra til at teamene etterlever den nye ekomloven.
+
+Disse funksjonene er et forslag til hva vi tror teamene vil kunne trenge, så vi håper at team som ønsker seg andre funksjoner melder ifra på #dekoratøren_på_navno på Slack slik at vi kan utvide nav-dekoratoren-moduler og fortsatt gjøre den nyttig for teamene.
+
+### awaitDecoratorData()
+
+Dersom du trenger å lese/skrive cookies som en del av oppstarten i applikasjonen, kan det hende at du må vente til dekoratøren har lastet inn dataene.
+
+```ts
+const initMyApp = async () => {
+    await awaitDecoratorData();
+    doMyAppStuff();
+};
+```
+
+### isStorageKeyAllowed(key: string)
+
+Sjekker om en nøkkel er tillatt å sette:
+
+1. er den i tillatt-listen
+2. hvis nøkkelen er markert som frivillig (og dermed krever samtykke): har bruker samtykket til denne type lagring
+
+Funksjonene for å lese og skrive (cookies, localstorage etc) sjekker dette selv automatisk, så denne funksjonen er laget for å gi team en mulighet til å sjekke skrivbarhet uten å faktisk skrive.
+
+Kan brukes for både cookies, localStorage og sessionStorage.
+
+```ts
+import { isStorageKeyAllowed } from '@navikt/nav-dekoratoren-moduler'
+
+// Returnerer false fordi 'jabberwocky' ikke er i tillatt-listen.
+const isJabberwocky = isStorageKeyAllowed('jabberwocky'):
+
+// Selv om 'usertest' er i tillatt-listen har ikke bruker gitt sitt samtykke i dette tenkte eksempelet, så funksjonen returnerer false.
+const isUsertestAllowed = isStorageKeyAllowed('usertest-229843829')
+
+```
+
+### getAllowedStorage()
+
+Denne returnerer en liste over alle ting som er lov å sette, enten cookies, localStorage etc. Vi tilbyr denne til team som vil lage sine egne løsninger eller som trenger funksjonalitet som ikke finnes i nav-dekoratoren-moduler. I hovedsak tenker vi at isStorageKeyAllowed ovenfor vil fungere best i de fleste tilfeller.
+
+Retunerer tillatt lagring for både cookies, localStorage og sessionStorage.
+
+### setNavCookie / getNavCookie
+
+Denne kan brukes for å sette cookies og være sikker på at det er tillatt å sette de. Funksjonen sjekker på om (1) cookien er i tillatt-listen og (2) brukeren har gitt nødvendige samtykker hvis cookien er frivillig.
+
+Dersom det for eksempel er en cookie som er team har definert som nødvendig kan den settes uansett så lenge den ligger i listen over tillatte cookies.
+
+Dersom cookien er regnet som frivillig vil den ikke kunne settes dersom bruker ikke har gitt samtykke til at Nav kan lagre alle frivillige cookies.
+
+```ts
+import { setNavCookie, getNavCookie } from "@navikt/nav-dekoratoren-moduler";
+
+// Tillatt fordi tillatt-listen har registrert 'usertest-*' som tillatt cookie.
+setNavCookie("usertest-382738");
+
+// Returnerer null fordi 'foobar' ikke er i tillatt-listen.
+const foo = getNavCookie("foobar");
+```
+
+### navSessionStorage og navLocalStorage
+
+Utvider sessionStorage og localStorage og eksponerer de samme funksjonene. Forskjellen er at nav\*Storage først sjekker om en nøkkel er tillatt å sette basert på tillattlisten og status på eksisterende samtykke.
