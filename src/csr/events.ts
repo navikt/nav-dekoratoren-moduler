@@ -9,9 +9,17 @@ export type AmplitudeEvent<TName extends string, TProperties> = {
 };
 
 /**
+ * En genrealisert analics type helper for å definere analytics eventer. Skal overta for den over
+ */
+export type AnalyticsEvent<TName extends string, TProperties> = {
+    name: TName;
+    properties: MakeExtendable<TProperties>;
+};
+
+/**
  * En bruker åpnet en accordion
  */
-export type AccordionÅpnet = AmplitudeEvent<
+export type AccordionÅpnet = AnalyticsEvent<
     "accordion åpnet",
     {
         /**
@@ -24,7 +32,7 @@ export type AccordionÅpnet = AmplitudeEvent<
 /**
  * En bruker lukket en accordion
  */
-type AccordionLukket = AmplitudeEvent<
+type AccordionLukket = AnalyticsEvent<
     "accordion lukket",
     {
         /**
@@ -37,7 +45,7 @@ type AccordionLukket = AmplitudeEvent<
 /**
  * En bruker får vist en alert komponent fra designsystemet
  */
-type AlertVist = AmplitudeEvent<
+type AlertVist = AnalyticsEvent<
     "alert vist",
     {
         /**
@@ -56,7 +64,7 @@ type AlertVist = AmplitudeEvent<
  * Denne event-typen følger med dekoratøren så team som bruker dekoratøren trenger ikke logge denne hendelsen i sin app.
  * I Amplitude proxy berikes denne event-typen med URL og sidetittelen brukeren er på når besøk logges.
  */
-type Besøk = AmplitudeEvent<
+type Besøk = AnalyticsEvent<
     "besøk",
     {
         /**
@@ -73,7 +81,7 @@ type Besøk = AmplitudeEvent<
 /**
  * Brukeren avslutter chatten med oss
  */
-type ChatAvsluttet = AmplitudeEvent<
+type ChatAvsluttet = AnalyticsEvent<
     "chat avsluttet",
     {
         komponent: string;
@@ -83,7 +91,7 @@ type ChatAvsluttet = AmplitudeEvent<
 /**
  * Brukeren starter en chat dialog med oss
  */
-type ChatStartet = AmplitudeEvent<
+type ChatStartet = AnalyticsEvent<
     "chat startet",
     {
         komponent: string;
@@ -93,7 +101,7 @@ type ChatStartet = AmplitudeEvent<
 /**
  * En bruker filtrerer visning av informasjon
  */
-type FilterValg = AmplitudeEvent<
+type FilterValg = AnalyticsEvent<
     "filter valg",
     {
         /**
@@ -110,7 +118,7 @@ type FilterValg = AmplitudeEvent<
 /**
  * En bruker får vist en guidepanel komponent fra designsystemet
  */
-type GuidePanelVist = AmplitudeEvent<
+type GuidePanelVist = AnalyticsEvent<
     "guidepanel vist",
     {
         /**
@@ -127,7 +135,7 @@ type GuidePanelVist = AmplitudeEvent<
 /**
  * En innbygger laster ned noe. Et dokument fra sin innboks for eksempel, eller en excelfil med statistikk.
  */
-type LastNed = AmplitudeEvent<
+type LastNed = AnalyticsEvent<
     "last ned",
     {
         /**
@@ -148,7 +156,7 @@ type LastNed = AmplitudeEvent<
 /**
  * En bruker lukket en modal
  */
-type ModalLukket = AmplitudeEvent<
+type ModalLukket = AnalyticsEvent<
     "modal lukket",
     {
         /**
@@ -161,7 +169,7 @@ type ModalLukket = AmplitudeEvent<
 /**
  * En bruker åpnet en modal
  */
-type ModalÅpnet = AmplitudeEvent<
+type ModalÅpnet = AnalyticsEvent<
     "modal åpnet",
     {
         /**
@@ -186,7 +194,7 @@ type ModalÅpnet = AmplitudeEvent<
  * Dette lar teamene se hvor brukeren var og hvor de gikk, og har historikk på hva som stod i lenketeksten.
  * Dette er nyttig når man eksperimenterer med ulike formuleringer for å gjøre det lettere for brukeren å finne frem og forstå innholdet.
  */
-type Navigere = AmplitudeEvent<
+type Navigere = AnalyticsEvent<
     "navigere",
     {
         /**
@@ -214,21 +222,18 @@ type Skjema = {
 /**
  * En bruker har sendt inn et skjema.
  */
-type SkjemaFullført = AmplitudeEvent<"skjema fullført", Skjema>;
+type SkjemaFullført = AnalyticsEvent<"skjema fullført", Skjema>;
 
 /**
  * En bruker prøvde å sende inn et skjema og noe gikk galt.
  * For eksempel når vår server er nede eller noe ikke kan svare tidsnok for å sende inn et skjema.
  */
-type SkjemaInnsendingFeilet = AmplitudeEvent<
-    "skjema innsending feilet",
-    Skjema
->;
+type SkjemaInnsendingFeilet = AnalyticsEvent<"skjema innsending feilet", Skjema>;
 
 /**
  * En bruker har besvart et spørsmål i et skjema.
  */
-type SkjemaSpørsmålBesvart = AmplitudeEvent<
+type SkjemaSpørsmålBesvart = AnalyticsEvent<
     "skjema spørsmål besvart",
     Skjema & {
         /**
@@ -245,13 +250,13 @@ type SkjemaSpørsmålBesvart = AmplitudeEvent<
 /**
  * En bruker har startet å fylle ut et skjema.
  */
-type SkjemaStartet = AmplitudeEvent<"skjema startet", Skjema>;
+type SkjemaStartet = AnalyticsEvent<"skjema startet", Skjema>;
 
 /**
  * En bruker har fullført et steg i utfylling i et skjema.
  * Kan brukes når et skjema består av flere steg, for eksempel mange spørsmål.
  */
-type SkjemaStegFullført = AmplitudeEvent<
+type SkjemaStegFullført = AnalyticsEvent<
     "skjema steg fullført",
     Skjema & {
         /**
@@ -265,20 +270,17 @@ type SkjemaStegFullført = AmplitudeEvent<
  * En bruker har fullført et steg i utfylling i et skjema.
  * Kan brukes når et skjema består av flere steg, for eksempel mange spørsmål.
  */
-type SkjemaValideringFeilet = AmplitudeEvent<
-    "skjema validering feilet",
-    Skjema
->;
+type SkjemaValideringFeilet = AnalyticsEvent<"skjema validering feilet", Skjema>;
 
 /**
  * En bruker åpnet et skjema
  */
-type SkjemaÅpnet = AmplitudeEvent<"skjema åpnet", Skjema>;
+type SkjemaÅpnet = AnalyticsEvent<"skjema åpnet", Skjema>;
 
 /**
  * Et søk er sendt inn
  */
-type Søk = AmplitudeEvent<
+type Søk = AnalyticsEvent<
     "søk",
     {
         /**
@@ -317,3 +319,5 @@ export type AmplitudeEvents =
     | SkjemaValideringFeilet
     | SkjemaÅpnet
     | Søk;
+
+export type AnalyticsEvents = AmplitudeEvents;
