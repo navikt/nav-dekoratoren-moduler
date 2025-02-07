@@ -389,7 +389,7 @@ app.get("*", (req, res) => {
 
 ### getAmplitudeInstance
 
-Bygger en logger-instans som sender events til Amplitude via dekoratørens klient.
+Bygger en logger-instans som sender events til Amplitude via dekoratørens klient. Tar i mot et parameter `origin` slik at man kan filtrere events som kommer fra egen app.
 Det er sterkt anbefalt å følge Navs taksonomi for analyseverktøy:
 https://github.com/navikt/analytics-taxonomy
 
@@ -398,7 +398,7 @@ Eksempel på bruk:
 ```ts
 import { getAmplitudeInstance } from "@navikt/nav-dekoratoren-moduler";
 
-const logger = getAmplitudeInstance("dekoratoren");
+const logger = getAmplitudeInstance("minAppOrigin");
 
 logger("skjema åpnet", {
     skjemaId: 1234,
@@ -417,7 +417,7 @@ type SampleCustomEvents =
     | AmplitudeEvent<"first", { hei: string }>
     | AmplitudeEvent<"second", { hei: string }>;
 
-const logger = getAmplitudeInstance<SampleCustomEvents>("dekoratoren");
+const logger = getAmplitudeInstance<SampleCustomEvents>("minAppOrigin");
 
 logger("first", {
     hei: "hei",
