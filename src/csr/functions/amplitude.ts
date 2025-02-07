@@ -26,6 +26,10 @@ export type AutocompleteString = string & {};
 export type AmplitudeEventName = AmplitudeEvents["name"];
 export type AutocompleteEventName = AmplitudeEventName | AutocompleteString;
 
+const silentLogger = () => {
+    return Promise.resolve();
+};
+
 export async function logAmplitudeEvent<TName extends AmplitudeEventName>(params: {
     eventName: TName | AutocompleteString;
     eventData?: TName extends AmplitudeEventName
@@ -38,9 +42,7 @@ export async function logAmplitudeEvent<TName extends AmplitudeEventName>(params
     }
 
     if (!window.dekoratorenAmplitude) {
-        return Promise.reject(
-            "Amplitude not instantiated. Please check users consent for analytics",
-        );
+        return silentLogger;
     }
 
     const isValid = await validateAmplitudeFunction();
