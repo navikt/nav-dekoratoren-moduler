@@ -1,6 +1,6 @@
 {
     "name": "@navikt/nav-dekoratoren-moduler",
-    "version": "3.2.2-beta-stille-logge-amplitude-til-ingenting.0",
+    "version": "3.2.2",
     "description": "Moduler til nav-dekoratoren",
     "author": "NAVIKT",
     "license": "MIT",
