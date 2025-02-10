@@ -4,6 +4,14 @@
 
 ## Changelog
 
+### 3.2.2
+
+- Tar imot logging fra amplitude og forkaster hvis dekoratorenAmplitude ikke finnes. Dette er en justering fra tidligere hvor getAmplitudeInstance returnerte rejected promise.
+
+### 3.2.1
+
+- Eksporterer nye analyticsfunksjoner som logger både umami + amplitude
+
 ### 3.2.0
 
 - Ny funksjonalitet for å sette cookies, localStorage og sessionStorage basert på tillatte lagring. Se egen seksjon for mer info.
