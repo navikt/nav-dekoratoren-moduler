@@ -1,4 +1,4 @@
-name: Publish release (master only)
+name: Publish release (main only)
 on:
   workflow_dispatch:
     inputs:
@@ -20,7 +20,7 @@ jobs:
   publish:
     name: Publish to package registry
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     permissions:
       contents: write
       packages: write
