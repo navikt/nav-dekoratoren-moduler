@@ -23,7 +23,7 @@ import {
 } from "../common/common-types";
 import { AmplitudeParams, getAmplitudeInstance, logAmplitudeEvent } from "./functions/amplitude";
 import { AmplitudeEvent, AnalyticsEvent } from "./events";
-import { AnalyticsParams, logAnalyticsEvent } from "./functions/analytics";
+import { AnalyticsParams, getAnalyticsInstance, logAnalyticsEvent } from "./functions/analytics";
 
 export {
     setAvailableLanguages,
@@ -36,6 +36,7 @@ export {
     logAmplitudeEvent,
     logAnalyticsEvent,
     getAmplitudeInstance,
+    getAnalyticsInstance,
     awaitNavWebStorage as awaitDecoratorData,
     isStorageKeyAllowed,
     getCurrentConsent,
