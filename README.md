@@ -395,6 +395,27 @@ app.get("*", (req, res) => {
 });
 ```
 
+### getAnalyticsInstance
+
+Denne metoden skal erstatte getAmplitudeInstance, og har tilsvarende interface. Den vil foreløpig logge til begge våre analyse-tjenester (Umami + Amplitude), men vil etterhvert kun logge til Umami ettersom Amplitude skal fases ut av Nav innen 31. desember 2025.
+
+Bygger en logger-instans som sender events til våre analyseverktøy via dekoratørens klient. Tar i mot et parameter `origin` slik at man kan filtrere events som kommer fra egen app.
+Det er sterkt anbefalt å følge Navs taksonomi for analyseverktøy:
+https://github.com/navikt/analytics-taxonomy
+
+Eksempel på bruk:
+
+```ts
+import { getAnalyticsInstance } from "@navikt/nav-dekoratoren-moduler";
+
+const logger = getAnalyticsInstance("minAppOrigin");
+
+logger("skjema åpnet", {
+    skjemaId: 1234,
+    skjemanavn: "aap",
+});
+```
+
 ### getAmplitudeInstance
 
 Bygger en logger-instans som sender events til Amplitude via dekoratørens klient. Tar i mot et parameter `origin` slik at man kan filtrere events som kommer fra egen app.
@@ -436,8 +457,8 @@ logger("first", {
 
 Parameteret `breadcrumbs` (brødsmulestien) kan endres / settes på klient-siden ved behov.
 
-Obs! Klikk på breadcrumbs logges til analyseverktøy (Amplitude). Ettersom title i noen apper kan inneholde personopplysninger,
-som f.eks. navn på bruker, så logges dette i utgangspunktet kun som `[redacted]` til Amplitude.
+Obs! Klikk på breadcrumbs logges til analyseverktøy (Amplitude+Umami). Ettersom title i noen apper kan inneholde personopplysninger,
+som f.eks. navn på bruker, så logges dette i utgangspunktet kun som `[redacted]` til Amplitude+Umami.
 
 Om ønskelig kan feltet `analyticsTitle` også settes, dersom du ønsker å logge en title. Husk å fjerne eventuelle personopplysninger fra denne!
 
