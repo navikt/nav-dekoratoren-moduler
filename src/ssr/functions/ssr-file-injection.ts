@@ -13,8 +13,11 @@ export const injectDecoratorServerSide = async ({
 }: InjectWithFile): Promise<string> => {
     const file = fs.readFileSync(filePath).toString();
     const dom = new JSDOM(file);
-    return injectDecoratorServerSideDocument({
+    
+    await injectDecoratorServerSideDocument({
         ...props,
         document: dom.window.document,
-    }).then((document) => document.documentElement.outerHTML);
+    });
+
+    return dom.serialize();
 };
