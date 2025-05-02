@@ -3,6 +3,9 @@
 > NPM-pakke med hjelpefunksjoner for [Nav-dekoratøren](https://github.com/navikt/decorator-next) (header og footer på nav.no)
 
 ## Changelog
+### 3.2.3
+
+- Eksporterer `getAnalyticsInstance`-funksjonen som erstatter `getAmplitudeInstance`
 
 ### 3.2.2
 
