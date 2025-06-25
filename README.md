@@ -3,6 +3,7 @@
 > NPM-pakke med hjelpefunksjoner for [Nav-dekoratøren](https://github.com/navikt/decorator-next) (header og footer på nav.no)
 
 ## Changelog
+
 ### 3.2.3
 
 - Eksporterer `getAnalyticsInstance`-funksjonen som erstatter `getAmplitudeInstance`
@@ -400,7 +401,7 @@ app.get("*", (req, res) => {
 
 ### getAnalyticsInstance
 
-Denne metoden skal erstatte getAmplitudeInstance, og har tilsvarende interface. Den vil foreløpig logge til begge våre analyse-tjenester (Umami + Amplitude), men vil etterhvert kun logge til Umami ettersom Amplitude skal fases ut av Nav innen 31. desember 2025.
+Denne metoden skal erstatte getAmplitudeInstance, og har tilsvarende interface. Den logger foreløpig til både Umami og Amplitude. Amplitude skal etter planen fases ut av Nav etterhvert, og når den avtalen går ut kommer vi til å ta bort loggingen til Amplitude. Planen på sikt er at denne metoden skal støtte det analyseverktøyet som anbefales i Nav, når man har fått endelig landet hvilket verktøy det blir.
 
 Bygger en logger-instans som sender events til våre analyseverktøy via dekoratørens klient. Tar i mot et parameter `origin` slik at man kan filtrere events som kommer fra egen app.
 Det er sterkt anbefalt å følge Navs taksonomi for analyseverktøy:
