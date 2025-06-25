@@ -591,6 +591,17 @@ setParams({
 });
 ```
 
+### getParams
+
+Samtlige parametre kan også leses client-side via `getParams`.
+
+```tsx
+// Bruk
+import { getParams } from "@navikt/nav-dekoratoren-moduler";
+
+getParams();
+```
+
 ### openChatbot
 
 Hjelpefunksjon for å åpne Chatbot Frida. Denne setter parameteret `chatbotVisible=true` og åpner chat-vinduet.

@@ -1,7 +1,7 @@
 import { setBreadcrumbs, onBreadcrumbClick } from "./functions/breadcrumbs";
 import { setAvailableLanguages, onLanguageSelect } from "./functions/languages";
 import { injectDecoratorClientSide } from "./functions/csr";
-import { setParams } from "./functions/params";
+import { setParams, getParams } from "./functions/params";
 import { openChatbot } from "./functions/chatbot";
 import {
     isStorageKeyAllowed,
@@ -31,6 +31,7 @@ export {
     setBreadcrumbs,
     onBreadcrumbClick,
     setParams,
+    getParams,
     injectDecoratorClientSide,
     openChatbot,
     logAmplitudeEvent,
