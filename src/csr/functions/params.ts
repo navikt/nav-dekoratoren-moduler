@@ -1,5 +1,6 @@
 import { isReady } from "./utils";
 import { DecoratorParams } from "../../common/common-types";
+import { error } from "console";
 
 export const setParams = (params: DecoratorParams) =>
     isReady()
@@ -17,11 +18,19 @@ export const setParams = (params: DecoratorParams) =>
                                             [key]: value,
                                         }
                                       : acc,
-                              {} as Record<string, any>
+                              {} as Record<string, any>,
                           )
                         : {},
                 },
-                window.location.origin
-            )
+                window.location.origin,
+            ),
         )
         .catch((error) => console.warn(error));
+
+export const getParams = async (): Promise<DecoratorParams> => {
+    return isReady()
+        .then(() => window.__DECORATOR_DATA__.params)
+        .catch((error) => {
+            console.warn(error);
+        });
+};
