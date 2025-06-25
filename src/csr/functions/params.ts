@@ -1,6 +1,5 @@
 import { isReady } from "./utils";
 import { DecoratorParams } from "../../common/common-types";
-import { error } from "console";
 
 export const setParams = (params: DecoratorParams) =>
     isReady()
