@@ -27,6 +27,19 @@ export type Consent = {
 
 const DECORATOR_DATA_TIMEOUT = 5000;
 
+const defaultConsentObject: Consent = {
+    consent: {
+        analytics: false,
+        surveys: false,
+    },
+    userActionTaken: false,
+    meta: {
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        version: 1,
+    },
+};
+
 export const awaitNavWebStorage = async () => {
     return new Promise((resolve, reject) => {
         const timeout = setTimeout(() => {
@@ -59,5 +72,5 @@ export const getAllowedStorage = (): Storage[] => {
 };
 
 export const getCurrentConsent = (): Consent => {
-    return window.webStorageController?.getCurrentConsent();
+    return window.webStorageController?.getCurrentConsent() ?? defaultConsentObject;
 };
