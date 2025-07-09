@@ -1,7 +1,7 @@
 import { setBreadcrumbs, onBreadcrumbClick } from "./functions/breadcrumbs";
 import { setAvailableLanguages, onLanguageSelect } from "./functions/languages";
 import { injectDecoratorClientSide } from "./functions/csr";
-import { setParams } from "./functions/params";
+import { setParams, getParams } from "./functions/params";
 import { openChatbot } from "./functions/chatbot";
 import {
     isStorageKeyAllowed,
@@ -23,7 +23,7 @@ import {
 } from "../common/common-types";
 import { AmplitudeParams, getAmplitudeInstance, logAmplitudeEvent } from "./functions/amplitude";
 import { AmplitudeEvent, AnalyticsEvent } from "./events";
-import { AnalyticsParams, logAnalyticsEvent } from "./functions/analytics";
+import { AnalyticsParams, getAnalyticsInstance, logAnalyticsEvent } from "./functions/analytics";
 
 export {
     setAvailableLanguages,
@@ -31,11 +31,13 @@ export {
     setBreadcrumbs,
     onBreadcrumbClick,
     setParams,
+    getParams,
     injectDecoratorClientSide,
     openChatbot,
     logAmplitudeEvent,
     logAnalyticsEvent,
     getAmplitudeInstance,
+    getAnalyticsInstance,
     awaitNavWebStorage as awaitDecoratorData,
     isStorageKeyAllowed,
     getCurrentConsent,

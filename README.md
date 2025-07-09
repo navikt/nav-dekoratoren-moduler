@@ -4,6 +4,10 @@
 
 ## Changelog
 
+### 3.2.3
+
+- Eksporterer `getAnalyticsInstance`-funksjonen som erstatter `getAmplitudeInstance`
+
 ### 3.2.2
 
 - Tar imot logging fra amplitude og forkaster hvis dekoratorenAmplitude ikke finnes. Dette er en justering fra tidligere hvor getAmplitudeInstance returnerte rejected promise.
@@ -395,6 +399,27 @@ app.get("*", (req, res) => {
 });
 ```
 
+### getAnalyticsInstance
+
+Denne metoden skal erstatte getAmplitudeInstance, og har tilsvarende interface. Den logger foreløpig til både Umami og Amplitude. Amplitude skal etter planen fases ut av Nav etterhvert, og når den avtalen går ut kommer vi til å ta bort loggingen til Amplitude. Planen på sikt er at denne metoden skal støtte det analyseverktøyet som anbefales i Nav, når man har fått endelig landet hvilket verktøy det blir.
+
+Bygger en logger-instans som sender events til våre analyseverktøy via dekoratørens klient. Tar i mot et parameter `origin` slik at man kan filtrere events som kommer fra egen app.
+Det er sterkt anbefalt å følge Navs taksonomi for analyseverktøy:
+https://github.com/navikt/analytics-taxonomy
+
+Eksempel på bruk:
+
+```ts
+import { getAnalyticsInstance } from "@navikt/nav-dekoratoren-moduler";
+
+const logger = getAnalyticsInstance("minAppOrigin");
+
+logger("skjema åpnet", {
+    skjemaId: 1234,
+    skjemanavn: "aap",
+});
+```
+
 ### getAmplitudeInstance
 
 Bygger en logger-instans som sender events til Amplitude via dekoratørens klient. Tar i mot et parameter `origin` slik at man kan filtrere events som kommer fra egen app.
@@ -436,8 +461,8 @@ logger("first", {
 
 Parameteret `breadcrumbs` (brødsmulestien) kan endres / settes på klient-siden ved behov.
 
-Obs! Klikk på breadcrumbs logges til analyseverktøy (Amplitude). Ettersom title i noen apper kan inneholde personopplysninger,
-som f.eks. navn på bruker, så logges dette i utgangspunktet kun som `[redacted]` til Amplitude.
+Obs! Klikk på breadcrumbs logges til analyseverktøy (Amplitude+Umami). Ettersom title i noen apper kan inneholde personopplysninger,
+som f.eks. navn på bruker, så logges dette i utgangspunktet kun som `[redacted]` til Amplitude+Umami.
 
 Om ønskelig kan feltet `analyticsTitle` også settes, dersom du ønsker å logge en title. Husk å fjerne eventuelle personopplysninger fra denne!
 
@@ -564,6 +589,17 @@ setParams({
     simple: true,
     chatbot: true,
 });
+```
+
+### getParams
+
+Samtlige parametre kan også leses client-side via `getParams`.
+
+```tsx
+// Bruk
+import { getParams } from "@navikt/nav-dekoratoren-moduler";
+
+getParams();
 ```
 
 ### openChatbot

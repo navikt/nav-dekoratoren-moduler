@@ -49,7 +49,8 @@ describe("SSR injection", () => {
         expect(htmlWithDecorator).toContain(response.headAssets);
         expect(htmlWithDecorator).toContain(response.header);
         expect(htmlWithDecorator).toContain(response.footer);
-        expect(htmlWithDecorator).toContain(response.scripts);
+        expect(htmlWithDecorator).toContain(response.scripts);        
+        expect(htmlWithDecorator).toContain("<!DOCTYPE html>");
     });
 
     test("Should inject decorator into document", async () => {
