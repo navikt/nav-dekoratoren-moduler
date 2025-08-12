@@ -8,6 +8,7 @@ type VersionApiResponse = {
 };
 
 const UPDATE_RATE_MS = 10000;
+const DEBUG_WATCH_SSR = process.env.DECORATOR_WATCH_DEBUG_SSR === "true";
 
 // Keep this record at file scope to prevent multiple timers running per environment
 // in the event that the DecoratorUpdateListener is instantiated multiple times for
@@ -21,6 +22,7 @@ class DecoratorVersionWatcher {
     private readonly ssrUrl: string;
 
     private versionId: string = "";
+    private contentFingerprint: string | null = null;
 
     constructor(envProps: DecoratorEnvProps) {
         this.envProps = envProps;
@@ -64,20 +66,42 @@ class DecoratorVersionWatcher {
         console.log(`[watcher] tick (${this.envProps.env})`);
         console.log(`[watcher] (debug) ssr url = ${this.ssrUrl}`);
 
-        this.fetchLatestVersionId().then((freshVersionId) => {
-            if (!freshVersionId) {
-                return;
-            }
+        this.fetchLatestVersionId()
+            .then((freshVersionId) => {
+                if (!freshVersionId) {
+                    return;
+                }
 
-            if (this.versionId === freshVersionId) {
-                return;
-            }
+                if (this.versionId === freshVersionId) {
+                    return;
+                }
 
-            console.log(`New decorator version: ${freshVersionId}`);
+                console.log(`New decorator version: ${freshVersionId}`);
 
-            this.versionId = freshVersionId;
-            this.callbacks.forEach((callback) => callback(freshVersionId));
-        });
+                this.versionId = freshVersionId;
+                this.callbacks.forEach((callback) => callback(freshVersionId));
+            })
+            .finally(async () => {
+                //debug-only: fetch SSR and log a fingerprint
+                if (DEBUG_WATCH_SSR) {
+                    try {
+                        const res = await fetch(this.ssrUrl);
+                        if (!res.ok) {
+                            console.log(
+                                `[watcher][debug] SSR fetch failed: ${res.status} ${res.statusText}`,
+                            );
+                        } else {
+                            const json = await res.json();
+                            const keys = Object.keys(json ?? {});
+                            console.log(
+                                `[watcher][debug] SSR payload keys: ${keys.join(", ") || "(none)"}`,
+                            );
+                        }
+                    } catch (e) {
+                        console.log(`[watcher][debug] SSR fetch error: ${e}`);
+                    }
+                }
+            });
     };
 
     private fetchLatestVersionId = async () => {
