@@ -59,6 +59,7 @@ class DecoratorVersionWatcher {
     }
 
     private refresh = async () => {
+        console.log(`[watcher] tick (${this.envProps.env})`);
         this.fetchLatestVersionId().then((freshVersionId) => {
             if (!freshVersionId) {
                 return;
