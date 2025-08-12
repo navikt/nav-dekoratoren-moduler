@@ -96,6 +96,28 @@ class DecoratorVersionWatcher {
                             console.log(
                                 `[watcher][debug] SSR payload keys: ${keys.join(", ") || "(none)"}`,
                             );
+
+                            const {
+                                headAssets = "",
+                                header = "",
+                                footer = "",
+                                scripts = "",
+                            } = json ?? {};
+                            const fp = [headAssets, header, footer, scripts]
+                                .map((s) => (typeof s === "string" ? s.length : 0))
+                                .join("|");
+
+                            if (this.contentFingerprint === null) {
+                                this.contentFingerprint = fp;
+                                console.log(`[watcher][debug] baseline fingerprint: ${fp}`);
+                            } else if (this.contentFingerprint !== fp) {
+                                console.log(
+                                    `[watcher][debug] fingerprint ${this.contentFingerprint} -> ${fp}`,
+                                );
+                                this.contentFingerprint = fp;
+                            } else {
+                                console.log(`[watcher][debug] fingerprint unchanged ${fp}`);
+                            }
                         }
                     } catch (e) {
                         console.log(`[watcher][debug] SSR fetch error: ${e}`);
