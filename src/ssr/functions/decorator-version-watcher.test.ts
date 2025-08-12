@@ -40,3 +40,27 @@ describe("Version watcher", () => {
         });
     });
 });
+
+test("debug: logs fingerprint change (no callback yet)", async () => {
+    fetchMock.resetMocks();
+    clearDecoratorWatcherState();
+    jest.useFakeTimers();
+
+    //init watcher with version 1
+    fetchMock.mockResponseOnce(JSON.stringify({ latestVersion: "version1" }));
+    await addDecoratorUpdateListener({ env: "prod" }, () => {});
+
+    // tick 1: same version, baseline SSR
+    fetchMock.mockResponseOnce(JSON.stringify({ latestVersion: "version1" }));
+    fetchMock.mockResponseOnce(
+        JSON.stringify({ headAssets: "aa", header: "b", footer: "c", scripts: "d" }),
+    );
+    jest.runOnlyPendingTimers();
+
+    // tick 2: same version, change footer - fingerprint should change to 2|1|2|1
+    fetchMock.mockResponseOnce(JSON.stringify({ latestVersion: "version1" }));
+    fetchMock.mockResponseOnce(
+        JSON.stringify({ headAssets: "aa", header: "b", footer: "cc", scripts: "d" }),
+    );
+    jest.runOnlyPendingTimers();
+});
