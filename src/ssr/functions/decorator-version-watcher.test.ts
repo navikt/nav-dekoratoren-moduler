@@ -32,6 +32,10 @@ describe("Version watcher", () => {
                 }),
             );
 
+            fetchMock.mockResponseOnce(
+                JSON.stringify({ headAssets: "a", header: "b", footer: "c", scripts: "d" }),
+            );
+
             jest.runOnlyPendingTimers();
         });
     });
