@@ -1,5 +1,5 @@
 import { DecoratorEnv, DecoratorEnvProps } from "../../common/common-types";
-import { getDecoratorBaseUrl } from "../../common/urls";
+import { getDecoratorBaseUrl, getDecoratorEndpointUrl } from "../../common/urls";
 
 type DecoratorUpdateCallback = (versionId: string) => unknown;
 
@@ -18,6 +18,7 @@ class DecoratorVersionWatcher {
     private readonly callbacks = new Set<DecoratorUpdateCallback>();
     private readonly versionApiUrl: string;
     private readonly envProps: DecoratorEnvProps;
+    private readonly ssrUrl: string;
 
     private versionId: string = "";
 
@@ -26,6 +27,7 @@ class DecoratorVersionWatcher {
 
         const baseUrl = getDecoratorBaseUrl(envProps);
         this.versionApiUrl = `${baseUrl}/api/version`;
+        this.ssrUrl = getDecoratorEndpointUrl(envProps);
     }
 
     public async init() {
@@ -60,6 +62,8 @@ class DecoratorVersionWatcher {
 
     private refresh = async () => {
         console.log(`[watcher] tick (${this.envProps.env})`);
+        console.log(`[watcher] (debug) ssr url = ${this.ssrUrl}`);
+
         this.fetchLatestVersionId().then((freshVersionId) => {
             if (!freshVersionId) {
                 return;
