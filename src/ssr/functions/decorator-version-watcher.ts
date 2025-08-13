@@ -8,7 +8,6 @@ type VersionApiResponse = {
 };
 
 const UPDATE_RATE_MS = 10000;
-const DEBUG_WATCH_SSR = process.env.DECORATOR_WATCH_DEBUG_SSR === "true";
 
 // Keep this record at file scope to prevent multiple timers running per environment
 // in the event that the DecoratorUpdateListener is instantiated multiple times for
@@ -85,56 +84,54 @@ class DecoratorVersionWatcher {
                 this.callbacks.forEach((callback) => callback(freshVersionId));
             })
             .finally(async () => {
-                //debug-only: fetch SSR and log a fingerprint
-                if (DEBUG_WATCH_SSR) {
-                    try {
-                        const res = await fetch(this.ssrUrl);
-                        if (!res.ok) {
-                            console.log(
-                                `[watcher][debug] SSR fetch failed: ${res.status} ${res.statusText}`,
-                            );
-                        } else {
-                            const json = await res.json();
-                            const keys = Object.keys(json ?? {});
-                            console.log(
-                                `[watcher][debug] SSR payload keys: ${keys.join(", ") || "(none)"}`,
-                            );
+                // fetch SSR and compute fingerprint on every tick
+                try {
+                    const res = await fetch(this.ssrUrl);
+                    if (!res.ok) {
+                        console.log(
+                            `[watcher][debug] SSR fetch failed: ${res.status} ${res.statusText}`,
+                        );
+                    } else {
+                        const json = await res.json();
+                        const keys = Object.keys(json ?? {});
+                        console.log(
+                            `[watcher][debug] SSR payload keys: ${keys.join(", ") || "(none)"}`,
+                        );
 
-                            const {
-                                headAssets = "",
-                                header = "",
-                                footer = "",
-                                scripts = "",
-                            } = json ?? {};
-                            const fp = [headAssets, header, footer, scripts]
-                                .map((s) => (typeof s === "string" ? s.length : 0))
-                                .join("|");
+                        const {
+                            headAssets = "",
+                            header = "",
+                            footer = "",
+                            scripts = "",
+                        } = json ?? {};
+                        const fp = [headAssets, header, footer, scripts]
+                            .map((s) => (typeof s === "string" ? s.length : 0))
+                            .join("|");
 
-                            if (this.contentFingerprint === null) {
-                                this.contentFingerprint = fp;
-                                console.log(`[watcher][debug] baseline fingerprint: ${fp}`);
-                            } else if (this.contentFingerprint !== fp) {
+                        if (this.contentFingerprint === null) {
+                            this.contentFingerprint = fp;
+                            console.log(`[watcher][debug] baseline fingerprint: ${fp}`);
+                        } else if (this.contentFingerprint !== fp) {
+                            console.log(
+                                `[watcher][debug] fingerprint ${this.contentFingerprint} -> ${fp}`,
+                            );
+                            this.contentFingerprint = fp;
+
+                            if (!versionChanged) {
                                 console.log(
-                                    `[watcher][debug] fingerprint ${this.contentFingerprint} -> ${fp}`,
+                                    "[watcher][debug] triggering callbacks due to content change",
                                 );
-                                this.contentFingerprint = fp;
-
-                                if (!versionChanged) {
-                                    console.log(
-                                        "[watcher][debug] triggering callbacks due to content change",
-                                    );
-                                    console.log(
-                                        `[watcher][debug] invoking ${this.callbacks.size} callback(s) with versionId=${this.versionId}`,
-                                    ); // add
-                                    this.callbacks.forEach((cb) => cb(this.versionId));
-                                }
-                            } else {
-                                console.log(`[watcher][debug] fingerprint unchanged ${fp}`);
+                                console.log(
+                                    `[watcher][debug] invoking ${this.callbacks.size} callback(s) with versionId=${this.versionId}`,
+                                ); // add
+                                this.callbacks.forEach((cb) => cb(this.versionId));
                             }
+                        } else {
+                            console.log(`[watcher][debug] fingerprint unchanged ${fp}`);
                         }
-                    } catch (e) {
-                        console.log(`[watcher][debug] SSR fetch error: ${e}`);
                     }
+                } catch (e) {
+                    console.log(`[watcher][debug] SSR fetch error: ${e}`);
                 }
             });
     };
