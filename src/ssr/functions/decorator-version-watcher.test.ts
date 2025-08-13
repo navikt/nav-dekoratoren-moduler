@@ -64,3 +64,32 @@ test("debug: logs fingerprint change (no callback yet)", async () => {
     );
     jest.runOnlyPendingTimers();
 });
+
+test("debug: triggers callbacks on content change", (done) => {
+    fetchMock.resetMocks();
+    clearDecoratorWatcherState();
+    jest.useFakeTimers();
+    jest.clearAllTimers();
+
+    // init with version v1
+    fetchMock.mockResponseOnce(JSON.stringify({ latestVersion: "v1" }));
+    addDecoratorUpdateListener({ env: "prod" }, (v: string) => {
+        console.log("[test] callback called with:", v);
+        expect(v).toBe("v1");
+        done();
+    }).then(() => {
+        // tick 1: baseline (version then SSR)
+        fetchMock.mockResponseOnce(JSON.stringify({ latestVersion: "v1" }));
+        fetchMock.mockResponseOnce(
+            JSON.stringify({ headAssets: "a", header: "b", footer: "c", scripts: "d" }),
+        );
+        jest.runOnlyPendingTimers();
+
+        // tick 2: content change (version then SSR)
+        fetchMock.mockResponseOnce(JSON.stringify({ latestVersion: "v1" }));
+        fetchMock.mockResponseOnce(
+            JSON.stringify({ headAssets: "a", header: "b", footer: "cc", scripts: "d" }),
+        );
+        jest.runOnlyPendingTimers();
+    });
+});

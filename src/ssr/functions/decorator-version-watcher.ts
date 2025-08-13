@@ -66,6 +66,8 @@ class DecoratorVersionWatcher {
         console.log(`[watcher] tick (${this.envProps.env})`);
         console.log(`[watcher] (debug) ssr url = ${this.ssrUrl}`);
 
+        let versionChanged = false;
+
         this.fetchLatestVersionId()
             .then((freshVersionId) => {
                 if (!freshVersionId) {
@@ -79,6 +81,7 @@ class DecoratorVersionWatcher {
                 console.log(`New decorator version: ${freshVersionId}`);
 
                 this.versionId = freshVersionId;
+                versionChanged = true;
                 this.callbacks.forEach((callback) => callback(freshVersionId));
             })
             .finally(async () => {
@@ -115,6 +118,16 @@ class DecoratorVersionWatcher {
                                     `[watcher][debug] fingerprint ${this.contentFingerprint} -> ${fp}`,
                                 );
                                 this.contentFingerprint = fp;
+
+                                if (!versionChanged) {
+                                    console.log(
+                                        "[watcher][debug] triggering callbacks due to content change",
+                                    );
+                                    console.log(
+                                        `[watcher][debug] invoking ${this.callbacks.size} callback(s) with versionId=${this.versionId}`,
+                                    ); // add
+                                    this.callbacks.forEach((cb) => cb(this.versionId));
+                                }
                             } else {
                                 console.log(`[watcher][debug] fingerprint unchanged ${fp}`);
                             }
