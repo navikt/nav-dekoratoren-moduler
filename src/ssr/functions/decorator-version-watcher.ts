@@ -98,13 +98,8 @@ class DecoratorVersionWatcher {
                             `[watcher][debug] SSR payload keys: ${keys.join(", ") || "(none)"}`,
                         );
 
-                        const {
-                            headAssets = "",
-                            header = "",
-                            footer = "",
-                            scripts = "",
-                        } = json ?? {};
-                        const fp = [headAssets, header, footer, scripts]
+                        const { footer = "" } = json ?? {};
+                        const fp = [footer]
                             .map((s) => (typeof s === "string" ? s.length : 0))
                             .join("|");
 
