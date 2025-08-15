@@ -99,9 +99,17 @@ class DecoratorVersionWatcher {
                         );
 
                         const { footer = "" } = json ?? {};
-                        const fp = [footer]
-                            .map((s) => (typeof s === "string" ? s.length : 0))
-                            .join("|");
+                        const normalize = (s: unknown) =>
+                            typeof s === "string" ? s.replace(/\s+/g, " ") : "";
+                        const computeFingerprint = (...parts: string[]) => {
+                            const s = parts.map(normalize).join("|");
+                            let h = 5381;
+                            for (let i = 0; i < s.length; i++) {
+                                h = ((h << 5) + h) ^ s.charCodeAt(i);
+                            }
+                            return String(h >>> 0); // unsigned 32-bit
+                        };
+                        const fp = computeFingerprint(footer);
 
                         if (this.contentFingerprint === null) {
                             this.contentFingerprint = fp;
