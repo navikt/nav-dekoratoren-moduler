@@ -86,7 +86,7 @@ class DecoratorVersionWatcher {
             .finally(async () => {
                 // fetch SSR and compute fingerprint on every tick
                 try {
-                    const res = await fetch(this.ssrUrl);
+                    const res = await fetch("https://dekoratoren-beta-tms.intern.dev.nav.no/ssr"); //TODO this.ssrURL
                     if (!res.ok) {
                         console.log(
                             `[watcher][debug] SSR fetch failed: ${res.status} ${res.statusText}`,
