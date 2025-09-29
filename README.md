@@ -401,7 +401,8 @@ app.get("*", (req, res) => {
 
 ### getAnalyticsInstance
 
-Denne metoden skal erstatte getAmplitudeInstance, og har tilsvarende interface. Den logger foreløpig til både Umami og Amplitude. Amplitude skal etter planen fases ut av Nav etterhvert, og når den avtalen går ut kommer vi til å ta bort loggingen til Amplitude. Planen på sikt er at denne metoden skal støtte det analyseverktøyet som anbefales i Nav, når man har fått endelig landet hvilket verktøy det blir.
+Denne metoden erstatter getAmplitudeInstance, og har tilsvarende interface. Metoden skal støtte det/de til en hver tid gjeldende analyseverktøyet/ene i Nav. Den logger foreløpig til både Umami og Amplitude.
+Amplitude fases ut av Nav i november 2025 og Umami er da eneste alternativ. Når avtalen går ut, fjernes loggingen til Amplitude.
 
 Bygger en logger-instans som sender events til våre analyseverktøy via dekoratørens klient. Tar i mot et parameter `origin` slik at man kan filtrere events som kommer fra egen app.
 Det er sterkt anbefalt å følge Navs taksonomi for analyseverktøy:
@@ -420,7 +421,7 @@ logger("skjema åpnet", {
 });
 ```
 
-### getAmplitudeInstance
+### getAmplitudeInstance - NB! Vil ikke støttes etter 1.11.2025 NB!
 
 Bygger en logger-instans som sender events til Amplitude via dekoratørens klient. Tar i mot et parameter `origin` slik at man kan filtrere events som kommer fra egen app.
 Det er sterkt anbefalt å følge Navs taksonomi for analyseverktøy:
