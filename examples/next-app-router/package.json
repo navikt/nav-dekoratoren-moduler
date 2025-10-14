@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@navikt/nav-dekoratoren-moduler": "file:../../",
-    "html-react-parser": "5.1.15",
-    "next": "14.2.32",
+    "html-react-parser": "5.2.7",
+    "next": "14.2.33",
     "react": "^18",
     "react-dom": "^18"
   },
@@ -21,6 +21,6 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
-    "eslint-config-next": "14.2.7"
+    "eslint-config-next": "14.2.33"
   }
 }
