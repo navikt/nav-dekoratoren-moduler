@@ -1,12 +1,5 @@
 import { AmplitudeEvent, AmplitudeEvents } from "../events";
 
-/*
-    Information on discontinuation:
-    Starting 01.11.2025, Amplitude has been discontinued in Nav. Teams have had several months to migrate
-    to the new Umami regime, however in order to prevent breaking changes, the functions below
-    are still exposed, but now give DISCONTINUED warnings as well as silently throwing away any events.
-*/
-
 export type AmplitudeParams = {
     origin: string;
     eventName: string;
@@ -17,7 +10,7 @@ export type AutocompleteString = string & {};
 export type AmplitudeEventName = AmplitudeEvents["name"];
 export type AutocompleteEventName = AmplitudeEventName | AutocompleteString;
 
-const amplitudeDummy = () => {
+const throwawayLogger = () => {
     return Promise.resolve();
 };
 
@@ -32,19 +25,17 @@ export async function logAmplitudeEvent<TName extends AmplitudeEventName>(params
         return Promise.reject("Amplitude is only available in the browser");
     }
 
-    console.warn(
+    console.info(
         "[DISCONTINUED] getAmplitudeInstance is discontinued and will be removed in the next major version. Please use getAnalyticsInstance instead.",
     );
 
-    return amplitudeDummy;
+    // Amplitude function is discontinued, so we just return a resolved promise
+    return throwawayLogger();
 }
 
 export function getAmplitudeInstance<
     TCustomEvents extends AmplitudeEvent<string, Record<string, unknown>> = any,
 >(origin: string) {
-    console.warn(
-        "[DISCONTINUED] getAmplitudeInstance is discontinued and will be removed in the next major version. Please use getAnalyticsInstance instead.",
-    );
     return <TName extends AutocompleteEventName>(
         // Can be set to never if we want to be more strict
         eventName: TName extends AmplitudeEventName
@@ -58,6 +49,9 @@ export function getAmplitudeInstance<
               ? Extract<TCustomEvents, { name: TName }>["properties"]
               : Record<string, any>,
     ) => {
-        return amplitudeDummy();
+        console.info(
+            "[DISCONTINUED] getAmplitudeInstance is discontinued and will be removed in the next major version. Please use getAnalyticsInstance instead.",
+        );
+        return throwawayLogger;
     };
 }
