@@ -1,32 +1,23 @@
 import { AmplitudeEvent, AmplitudeEvents } from "../events";
 
+/*
+    Information on discontinuation:
+    Starting 01.11.2025, Amplitude has been discontinued in Nav. Teams have had several months to migrate
+    to the new Umami regime, however in order to prevent breaking changes, the functions below
+    are still exposed, but now give DISCONTINUED warnings as well as silently throwing away any events.
+*/
+
 export type AmplitudeParams = {
     origin: string;
     eventName: string;
     eventData?: Record<string, any>;
 };
 
-const waitForRetry = async () => new Promise((resolve) => setTimeout(resolve, 500));
-
-const validateAmplitudeFunction = async (retries = 5): Promise<boolean> => {
-    if (typeof window.dekoratorenAmplitude === "function") {
-        return Promise.resolve(true);
-    }
-
-    if (retries === 0) {
-        return Promise.resolve(false);
-    }
-
-    await waitForRetry();
-
-    return validateAmplitudeFunction(retries - 1);
-};
-
 export type AutocompleteString = string & {};
 export type AmplitudeEventName = AmplitudeEvents["name"];
 export type AutocompleteEventName = AmplitudeEventName | AutocompleteString;
 
-const silentLogger = () => {
+const amplitudeDummy = () => {
     return Promise.resolve();
 };
 
@@ -41,22 +32,19 @@ export async function logAmplitudeEvent<TName extends AmplitudeEventName>(params
         return Promise.reject("Amplitude is only available in the browser");
     }
 
-    if (!window.dekoratorenAmplitude) {
-        return silentLogger;
-    }
+    console.warn(
+        "[DISCONTINUED] getAmplitudeInstance is discontinued and will be removed in the next major version. Please use getAnalyticsInstance instead.",
+    );
 
-    const isValid = await validateAmplitudeFunction();
-
-    if (!isValid) {
-        return Promise.reject("Amplitude instance not found, it may not have been initialized yet");
-    }
-
-    return window.dekoratorenAmplitude(params);
+    return amplitudeDummy;
 }
 
 export function getAmplitudeInstance<
     TCustomEvents extends AmplitudeEvent<string, Record<string, unknown>> = any,
 >(origin: string) {
+    console.warn(
+        "[DISCONTINUED] getAmplitudeInstance is discontinued and will be removed in the next major version. Please use getAnalyticsInstance instead.",
+    );
     return <TName extends AutocompleteEventName>(
         // Can be set to never if we want to be more strict
         eventName: TName extends AmplitudeEventName
@@ -70,10 +58,6 @@ export function getAmplitudeInstance<
               ? Extract<TCustomEvents, { name: TName }>["properties"]
               : Record<string, any>,
     ) => {
-        return logAmplitudeEvent({
-            eventName,
-            eventData,
-            origin,
-        });
+        return amplitudeDummy();
     };
 }
