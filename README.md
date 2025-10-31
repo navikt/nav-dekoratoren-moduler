@@ -378,7 +378,7 @@ injectDecoratorServerSide({
 | removeDecoratorUpdateListener | server-side             | Fjerner registrert callback fra dekoratøren                                |
 | getDecoratorVersionId         | server-side             | Henter nåværende versjons-ID for dekoratøren                               |
 | buildCspHeader                | server-side             | Bygger Content Security Policy som inkluderer dekoratørens direktiver      |
-| getAnalyticsInstance          | client/server           | Logger events til Umami og Amplitude (erstatter getAmplitudeInstance)      |
+| getAnalyticsInstance          | client/server           | Logger events til gjeldende Analyticsplattform - Umami (erstatter getAmplitudeInstance)      |
 | getAmplitudeInstance          | client/server (utfases) | Logger events til Amplitude (utfases november 2025)                        |
 | setBreadcrumbs                | client-side             | Setter brødsmulesti (breadcrumbs) i dekoratøren                            |
 | onBreadcrumbClick             | client-side             | Håndterer klikk på breadcrumbs ved client-side routing                     |
