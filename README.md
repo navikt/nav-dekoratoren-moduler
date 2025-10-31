@@ -450,8 +450,6 @@ app.get("*", (req, res) => {
 
 #### getAnalyticsInstance
 
-> ⚠️ Utfases 01.11.2025
-
 Denne metoden erstatter getAmplitudeInstance, og har tilsvarende interface. Metoden skal støtte
 det/de til en hver tid gjeldende analyseverktøyet/ene i Nav. Den logger foreløpig til både Umami og
 Amplitude.
