@@ -4,6 +4,18 @@
 
 ## Changelog
 
+### 3.4.1
+
+- Legger på discontinuation warning på `getAmplitudeInstance` og `logAmplitudeEvent`. Fra 1. november 2025 vil ikke lenger dekoratøren logge til amplitude, men funksjonene vil fortsatt finnes for å unngå feilmeldinger i appene til teamet.
+
+### 3.4.0
+
+- Ved tidlig getCurrentConsent kan det oppstå en race condition i noen få tilfeller. Denne fiksen sørger for at et Consent-objekt blir returnert uansett i stedet for undefined.
+
+### 3.3.0
+
+- Eksponerer `getParams` slik at klientene kan lese dekoratøren-params.
+
 ### 3.2.3
 
 - Eksporterer `getAnalyticsInstance`-funksjonen som erstatter `getAmplitudeInstance`
@@ -401,10 +413,7 @@ app.get("*", (req, res) => {
 
 ### getAnalyticsInstance
 
-Denne metoden erstatter getAmplitudeInstance, og har tilsvarende interface. Metoden skal støtte det/de til en hver tid gjeldende analyseverktøyet/ene i Nav. Den logger foreløpig til både Umami og Amplitude.
-Amplitude fases ut av Nav i november 2025 og Umami er da eneste alternativ. Når avtalen går ut, fjernes loggingen til Amplitude.
-
-Bygger en logger-instans som sender events til våre analyseverktøy via dekoratørens klient. Tar i mot et parameter `origin` slik at man kan filtrere events som kommer fra egen app.
+Funksjonen bygger en logger-instans som sender events til våre analyseverktøy via dekoratørens klient. Tar i mot et parameter `origin` slik at man kan filtrere events som kommer fra egen app.
 Det er sterkt anbefalt å følge Navs taksonomi for analyseverktøy:
 https://github.com/navikt/analytics-taxonomy
 
@@ -421,49 +430,12 @@ logger("skjema åpnet", {
 });
 ```
 
-### getAmplitudeInstance - NB! Vil ikke støttes etter 1.11.2025 NB!
-
-Bygger en logger-instans som sender events til Amplitude via dekoratørens klient. Tar i mot et parameter `origin` slik at man kan filtrere events som kommer fra egen app.
-Det er sterkt anbefalt å følge Navs taksonomi for analyseverktøy:
-https://github.com/navikt/analytics-taxonomy
-
-Eksempel på bruk:
-
-```ts
-import { getAmplitudeInstance } from "@navikt/nav-dekoratoren-moduler";
-
-const logger = getAmplitudeInstance("minAppOrigin");
-
-logger("skjema åpnet", {
-    skjemaId: 1234,
-    skjemanavn: "aap",
-});
-```
-
-Du kan også utvide taxonomien som er definert for å tilpasse ditt bruk. Det har ingen funksjonell effekt, men vil gjøre det lettere for utviklerene i prosjektet å følge en standard hvis ønskelig.
-
-Eksempel på å definere events:
-
-```ts
-import { AmplitudeEvent, getAmplitudeInstance } from "@navikt/nav-dekoratoren-moduler";
-
-type SampleCustomEvents =
-    | AmplitudeEvent<"first", { hei: string }>
-    | AmplitudeEvent<"second", { hei: string }>;
-
-const logger = getAmplitudeInstance<SampleCustomEvents>("minAppOrigin");
-
-logger("first", {
-    hei: "hei",
-});
-```
-
 ### setBreadcrumbs
 
 Parameteret `breadcrumbs` (brødsmulestien) kan endres / settes på klient-siden ved behov.
 
-Obs! Klikk på breadcrumbs logges til analyseverktøy (Amplitude+Umami). Ettersom title i noen apper kan inneholde personopplysninger,
-som f.eks. navn på bruker, så logges dette i utgangspunktet kun som `[redacted]` til Amplitude+Umami.
+Obs! Klikk på breadcrumbs logges til analyseverktøy (Umami). Ettersom title i noen apper kan inneholde personopplysninger,
+som f.eks. navn på bruker, så logges dette i utgangspunktet kun som `[redacted]` til Umami.
 
 Om ønskelig kan feltet `analyticsTitle` også settes, dersom du ønsker å logge en title. Husk å fjerne eventuelle personopplysninger fra denne!
 
