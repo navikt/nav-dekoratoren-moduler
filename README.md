@@ -4,7 +4,7 @@
 
 ## Changelog
 
-### 3.4.1
+### 3.5.0
 
 - Legger på discontinuation warning på `getAmplitudeInstance` og `logAmplitudeEvent`. Fra 1. november 2025 vil ikke lenger dekoratøren logge til amplitude, men funksjonene vil fortsatt finnes for å unngå feilmeldinger i appene til teamet.
 
