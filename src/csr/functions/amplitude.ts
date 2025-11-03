@@ -6,27 +6,11 @@ export type AmplitudeParams = {
     eventData?: Record<string, any>;
 };
 
-const waitForRetry = async () => new Promise((resolve) => setTimeout(resolve, 500));
-
-const validateAmplitudeFunction = async (retries = 5): Promise<boolean> => {
-    if (typeof window.dekoratorenAmplitude === "function") {
-        return Promise.resolve(true);
-    }
-
-    if (retries === 0) {
-        return Promise.resolve(false);
-    }
-
-    await waitForRetry();
-
-    return validateAmplitudeFunction(retries - 1);
-};
-
 export type AutocompleteString = string & {};
 export type AmplitudeEventName = AmplitudeEvents["name"];
 export type AutocompleteEventName = AmplitudeEventName | AutocompleteString;
 
-const silentLogger = () => {
+const throwawayLogger = () => {
     return Promise.resolve();
 };
 
@@ -41,17 +25,12 @@ export async function logAmplitudeEvent<TName extends AmplitudeEventName>(params
         return Promise.reject("Amplitude is only available in the browser");
     }
 
-    if (!window.dekoratorenAmplitude) {
-        return silentLogger;
-    }
+    console.info(
+        "[DISCONTINUED] getAmplitudeInstance is discontinued and will be removed in the next major version. Please use getAnalyticsInstance instead.",
+    );
 
-    const isValid = await validateAmplitudeFunction();
-
-    if (!isValid) {
-        return Promise.reject("Amplitude instance not found, it may not have been initialized yet");
-    }
-
-    return window.dekoratorenAmplitude(params);
+    // Amplitude function is discontinued, so we just return a resolved promise
+    return throwawayLogger();
 }
 
 export function getAmplitudeInstance<
@@ -70,10 +49,9 @@ export function getAmplitudeInstance<
               ? Extract<TCustomEvents, { name: TName }>["properties"]
               : Record<string, any>,
     ) => {
-        return logAmplitudeEvent({
-            eventName,
-            eventData,
-            origin,
-        });
+        console.info(
+            "[DISCONTINUED] getAmplitudeInstance is discontinued and will be removed in the next major version. Please use getAnalyticsInstance instead.",
+        );
+        return throwawayLogger;
     };
 }
