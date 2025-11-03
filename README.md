@@ -1,124 +1,101 @@
-# nav-dekoratoren-moduler
+# Nav Dekoratøren Moduler
 
-> NPM-pakke med hjelpefunksjoner for [Nav-dekoratøren](https://github.com/navikt/decorator-next) (header og footer på nav.no)
+NPM-pakke med hjelpefunksjoner for [Nav-dekoratøren](https://github.com/navikt/decorator-next) (
+header og footer på nav.no).
 
-## Changelog
+---
 
-### 3.5.0
+## Innholdsfortegnelse 📚
 
-- Legger på discontinuation warning på `getAmplitudeInstance` og `logAmplitudeEvent`. Fra 1. november 2025 vil ikke lenger dekoratøren logge til amplitude, men funksjonene vil fortsatt finnes for å unngå feilmeldinger i appene til teamet.
+1. [Om pakken 🧠](#1-om-pakken-)
+2. [Installasjon og oppsett ⚙️](#2-installasjon-og-oppsett-)
+    - [2.1 Ved lokal kjøring](#21-ved-lokal-kjøring)
+    - [2.2 Ved bygg på GitHub Actions](#22-ved-bygg-på-github-actions)
+3. [Hente dekoratøren 🏗️](#3-hente-dekoratøren-)
+    - [3.1 Typer og miljøer](#31-typer-og-miljøer)
+    - [3.2 Service Discovery](#32-service-discovery)
+    - [3.3 Access Policy](#33-access-policy)
+4. [Server-Side Rendering (anbefalt) 🧱](#4-server-side-rendering-anbefalt-)
+    - [4.1 Oversikt over SSR-funksjoner](#41-oversikt-over-ssr-funksjoner)
+    - [4.2 Detaljer](#42-detaljer)
+5. [Client-Side Rendering (CSR) 💻](#5-client-side-rendering-csr-)
+    - [5.1 injectDecoratorClientSide](#51-injectdecoratorclientside)
+    - [5.2 Bruk med egendefinert dekoratør-url 🔗](#-52-bruk-med-egendefinert-dekoratør-url)
+6. [Andre hjelpefunksjoner 🧰](#6-andre-hjelpefunksjoner-)
+    - [6.1 Oversikt over hjelpefunksjoner](#61-oversikt-over-hjelpefunksjoner)
+    - [6.2 Detaljer](#62-detaljer)
+7. [Samtykke og cookies ("cookie-banner") 🍪](#7-samtykke-og-cookies-cookie-banner-)
+    - [7.1 awaitDecoratorData](#71-awaitdecoratordata)
+    - [7.2 isStorageKeyAllowed](#72-isstoragekeyallowedkey-string)
+    - [7.3 getAllowedStorage](#73-getallowedstorage)
+    - [7.4 setNavCookie / getNavCookie](#74-setnavcookie--getnavcookie)
+    - [7.5 navSessionStorage og navLocalStorage](#75-navsessionstorage-og-navlocalstorage)
 
-### 3.4.0
+---
 
-- Ved tidlig getCurrentConsent kan det oppstå en race condition i noen få tilfeller. Denne fiksen sørger for at et Consent-objekt blir returnert uansett i stedet for undefined.
+## 1 Om pakken 🧠
 
-### 3.3.0
+`@navikt/nav-dekoratoren-moduler` gir utviklere et enkelt grensesnitt for å integrere NAVs
+dekoratør (header og footer) i egne applikasjoner – både ved **server-side rendering (SSR)** og *
+*client-side rendering (CSR)**.
 
-- Eksponerer `getParams` slik at klientene kan lese dekoratøren-params.
+Pakken håndterer miljøkonfigurasjon, service discovery, analyse, språk, brødsmulesti, samtykke (
+ekomloven), og mer.
 
-### 3.2.3
+---
 
-- Eksporterer `getAnalyticsInstance`-funksjonen som erstatter `getAmplitudeInstance`
+## 2 Installasjon og oppsett ⚙️
 
-### 3.2.2
-
-- Tar imot logging fra amplitude og forkaster hvis dekoratorenAmplitude ikke finnes. Dette er en justering fra tidligere hvor getAmplitudeInstance returnerte rejected promise.
-
-### 3.2.1
-
-- Eksporterer nye analyticsfunksjoner som logger både umami + amplitude
-
-### 3.2.0
-
-- Ny funksjonalitet for å sette cookies, localStorage og sessionStorage basert på tillatte lagring. Se egen seksjon for mer info.
-
-### 3.1.3
-
-- Oppdaterer avhengigheter, kun patch.
-
-### 3.1.2
-
-- Legger til `pageType` i params. Kan brukes til å logge sidetype til Analytics/Amplitude
-
-### 3.1.1
-
-- Legger til `redirectOnUserChange` i params
-
-### 3.1
-
-- Legger til prop for egendefinert komponent for `script`-elementer fra `fetchDecoratorReact`. Skal nå støtte bruk i next.js app-router layouts, se [fetchDecoratorReact](#fetchdecoratorreact).
-- Peer dependencies er ikke lengre optional (med unntak av React).
-
-### 3.0
-
-- Server-side fetch-funksjoner henter nå ferdige HTML-fragmenter fra `/ssr`-endepunktet, istedenfor å parse hele dekoratørens HTML.
-- (breaking) Alle dekoratørens `<head>`-elementer er nå inkludert i det påkrevde fragmentet `DECORATOR_HEAD_ASSETS`. CSS, favicon, etc.
-- (breaking) Fjerner `DECORATOR_STYLES`/`Styles` fra responsen for `fetchDecoratorHtml`/`fetchDecoratorReact` (erstattes av `DECORATOR_HEAD_ASSETS`).
-- Den innbygde cachen av dekoratørens elementer invalideres nå automatisk når en ny versjon av dekoratøren er tilgjengelig.
-- Nye funksjoner: `addDecoratorUpdateListener`, `removeDecoratorUpdateListener`, `getDecoratorVersionId`. Tiltenkt brukt for cache-invalidering i apper som cacher dekoratøren på andre måter.
-- Fjerner typer for ubrukte parametre `urlLookupTable` og `enforceLogin`
-- (breaking) Fjerner `<EnforceLoginLoader/>`
-- (breaking) Fjerner `injectDecoratorServerSideDom`. Denne erstattes av `injectDecoratorServerSideDocument`, som tar inn et standard Document DOM-objekt.
-- (breaking) Fjerner `getUrlFromLookupTable` og tilhørende url-mappinger
-- (breaking) Fjerner `parseDecoratorHTMLToReact`
-- (breaking) Alle dependencies er nå optional peer dependencies
-
-### 2.0
-
-- (breaking) Node.js v18 eller nyere er påkrevd, ettersom vi ikke lengre benytter node-fetch. (Node 18 har fetch innebygd)
-- (breaking) Server-side fetch-funksjoner benytter nå [service discovery](#service-discovery) som default. Dette krever visse [access policy](#access-policy) regler.
-- (breaking) Parametre til fetch-funksjoner er endret, slik at query-parametre til dekoratøren nå er et separat objekt.<br/>
-  Eksempel 1.x -> 2.0: `{ env: "prod", context: "arbeidsgiver", simple: true}` -> `{ env: "prod", params: { context: "arbeidsgiver", simple: true }}`)
-- (breaking) Ved bruk av `env: "localhost"` må dekoratørens url nå alltid settes med parameteret `localUrl`. Dette erstatter parameterene `port` og `dekoratorenUrl`, og vi har ikke lengre en default localhost url.
-- Flere typer er endret eller har fått mer spesifikke navn (f.eks. `Params` -> `DecoratorParams`)
-
-## Kom i gang
-
-```
+```bash
 npm install --save @navikt/nav-dekoratoren-moduler
 ```
 
-Obs! Oppdaterte pakker publiseres kun i GitHub Packages registry'et. For å kunne installere nyere versjoner må pakker fra @navikt-orgen scopes til GitHub Packages.
+> 💡 Oppdaterte versjoner publiseres kun i **GitHub Packages Registry**.  
+> For å installere nye versjoner må `@navikt`-scopede pakker hentes fra
+`https://npm.pkg.github.com`.
 
-#### Ved lokal kjøring:
+### 2.1 Ved lokal kjøring
 
-- Legg til dette i `.npmrc`-fila for prosjektet. Opprett fila på rot i prosjektet hvis den ikke finnes.
+Legg dette i `.npmrc`-filen (opprett om den ikke finnes):
 
 ```
 @navikt:registry=https://npm.pkg.github.com
 ```
 
-- Opprett et PAT med `read:packages` scope og SSO auth, og bruk dette som passord ved login.
+Opprett et **Personal Access Token (PAT)** med `read:packages`-scope og SSO auth, og bruk dette som
+passord ved login.
 
 ```
 npm login --registry=https://npm.pkg.github.com --auth-type=legacy
 ```
 
-#### Ved bygg på Github Actions:
+### 2.2 Ved bygg på GitHub Actions
 
-- Sett registry url med f.eks. `actions/setup-node`:
+Sett registry-url med f.eks `actions/setup-node` og bruk `NODE_AUTH_TOKEN` fra
+`secrets.READER_TOKEN`.
 
-```
+```yaml
 - name: Setup node.js
   uses: actions/setup-node@v4
   with:
     registry-url: 'https://npm.pkg.github.com'
-```
 
-- Sett `NODE_AUTH_TOKEN` på `npm ci`. `READER_TOKEN` er en navikt org-wide secret til dette formålet.
-
-```
 - name: Install dependencies
   run: npm ci
   env:
     NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 ```
 
-# Hente dekoratøren
+---
 
-Pakka inneholder funksjoner for å laste inn dekoratøren i apper på ulike måter.
+## 3 Hente dekoratøren 🏗️
 
-Samtlige funksjoner for fetch av dekoratøren tar inn parametre med følgende type:
+Pakken inneholder funksjoner for å laste inn dekoratøren i apper på ulike måter.
+
+### 3.1 Typer og miljøer
+
+Dekoratøren kan hentes fra ulike miljøer: `prod`, `dev`, `beta`, `betaTms`, eller `localhost`.  
+For lokale miljøer må du angi `localUrl`.
 
 ```tsx
 type DecoratorNaisEnv =
@@ -128,7 +105,7 @@ type DecoratorNaisEnv =
     | "betaTms"; // Disse kan være ustabile i lengre perioder
 
 type DecoratorEnvProps =
-    // Dersom env er satt til localhost, må du selv sette url for dekoratøren.
+// Dersom env er satt til localhost, må du selv sette url for dekoratøren.
     | { env: "localhost"; localUrl: string }
     // For nais-miljøer settes url automatisk
     | { env: DecoratorNaisEnv; serviceDiscovery?: boolean };
@@ -139,57 +116,82 @@ type DecoratorFetchProps = {
 } & DecoratorEnvProps;
 ```
 
-### Service discovery
+### 3.2 Service Discovery
 
-Server-side fetch-funksjonene benytter [service discovery](https://docs.nais.io/clusters/service-discovery) som default.
-Vær obs på at dette kun fungerer ved kjøring på dev-gcp eller prod-gcp nais-clusterne. Dersom appen ikke kjører i ett av disse clusterne, vil vi falle tilbake til å kalle eksterne ingresser.
+Server-side fetch bruker [service discovery](https://docs.nais.io/clusters/service-discovery) som
+standard. Vær obs på at dette kun fungerer ved kjøring på dev-gcp eller prod-gcp nais-clusterne.
+Dersom appen ikke kjører i ett av disse clusterne, vil vi falle tilbake til å kalle eksterne
+ingresser.
 
 Du kan også sette parameteret `serviceDiscovery: false` for å alltid benytte eksterne ingresser.
 
-```tsx
+```ts
 fetchDecoratorHtml({
     env: "prod",
     serviceDiscovery: false,
 });
 ```
 
-### Access policy
+### 3.3 Access Policy
 
-Se [nais doc](https://docs.nais.io/nais-application/access-policy) for oppsett av access policy.
+Se [Nais dokumentasjon](https://docs.nais.io/nais-application/access-policy) for oppsett av access
+policy.
 
-#### Service discovery (default)
+#### 3.3.1 Ved Service Discovery (default)
 
 Ved bruk av service discovery må følgende regel inkluderes i access policy:
 
 ```yaml
 accessPolicy:
-    outbound:
-        rules:
-            - application: nav-dekoratoren
-              namespace: personbruker
+  outbound:
+    rules:
+      - application: nav-dekoratoren
+        namespace: personbruker
 ```
 
-#### Eksterne ingresser
+#### 3.3.2 Ved eksterne ingresser
 
-Dersom service discovery ikke benyttes, vil dekoratørens eksterne ingresser kalles. Dette gjelder ved bruk av versjon 1.9 eller tidligere, eller dersom `serviceDiscovery: false` er satt.
+Dersom service discovery ikke benyttes, vil dekoratørens eksterne ingresser kalles. Dette gjelder
+ved bruk av versjon 1.9 eller tidligere, eller dersom `serviceDiscovery: false` er satt.
 
 Følgende access policy kreves:
 
 ```yaml
 accessPolicy:
-    outbound:
-        external:
-            - host: www.nav.no # for prod
-            - host: dekoratoren.ekstern.dev.nav.no # for dev
+  outbound:
+    external:
+      - host: www.nav.no # for prod
+      - host: dekoratoren.ekstern.dev.nav.no # for dev
 ```
 
-## Server side rendering (anbefalt)
+---
 
-Server-side rendering av dekoratøren anbefales for optimal brukeropplevelse. Dersom kallet feiler (etter 3 retries), faller vi tilbake til statiske placeholder-elementer som client-side rendres.
+## 4 Server-Side Rendering (anbefalt) 🧱
 
-### injectDecoratorServerSide
+Server-side rendering (SSR) av dekoratøren anbefales for optimal brukeropplevelse.  
+Dersom kallet feiler (etter tre forsøk), falles det tilbake til statiske placeholder-elementer som
+rendres client-side.
 
-Parser en HTML-fil med JSDOM og returnerer en HTML-string som inkluderer dekoratøren. Krever at `jsdom >=16.x` er installert.
+### 4.1 Oversikt over SSR-funksjoner
+
+| Funksjon                          | Type                | Formål / Forklaring                                                       |
+|-----------------------------------|---------------------|---------------------------------------------------------------------------|
+| injectDecoratorServerSide         | server-side         | Parser HTML-fil og setter inn dekoratør-HTML via JSDOM                    |
+| injectDecoratorServerSideDocument | server-side         | Setter inn dekoratøren i et eksisterende `Document`-objekt                |
+| fetchDecoratorHtml                | server-side         | Henter dekoratøren som HTML-fragmenter                                    |
+| fetchDecoratorReact               | server-side (React) | Henter dekoratøren som React-komponenter for SSR-rammeverk (Next.js m.m.) |
+
+---
+
+### 4.2 Detaljer
+
+<details>
+<summary><strong>Klikk for å utvide detaljene</strong></summary>
+
+#### injectDecoratorServerSide
+
+Parser en HTML-fil med JSDOM og returnerer en HTML-string som inkluderer dekoratøren. Krever at
+`jsdom >=16.x` er installert.
 
 ```tsx
 import { injectDecoratorServerSide } from "@navikt/nav-dekoratoren-moduler/ssr";
@@ -203,7 +205,7 @@ injectDecoratorServerSide({
 });
 ```
 
-### injectDecoratorServerSideDocument
+#### injectDecoratorServerSideDocument
 
 Setter inn dekoratøren i et Document DOM-objekt. Objektet i document-parameteret muteres.
 
@@ -220,11 +222,11 @@ injectDecoratorServerSideDocument({
 });
 ```
 
-### fetchDecoratorHtml
+#### fetchDecoratorHtml
 
 Henter dekoratøren som HTML-fragmenter.
 
-Eksempel på bruk:
+Eksempel:
 
 ```tsx
 import { fetchDecoratorHtml } from "@navikt/nav-dekoratoren-moduler/ssr";
@@ -239,17 +241,19 @@ const { DECORATOR_HEAD_ASSETS, DECORATOR_HEADER, DECORATOR_FOOTER, DECORATOR_SCR
 // Sett inn fragmenter i app-html'en med f.eks. en template engine
 ```
 
-### fetchDecoratorReact
+#### fetchDecoratorReact
 
-Henter dekoratøren som React-komponenter. Kan benyttes med React rammeverk som støtter server-side rendering. Krever at `react >=17.x` og `html-react-parser >=5.x` er installert.
+Henter dekoratøren som React-komponenter. Kan benyttes med React rammeverk som støtter server-side
+rendering. Krever at `react >=17.x` og `html-react-parser >=5.x` er installert.
 
-Ved behov kan det settes en egendefinert komponent for `<script>`-elementer i `<Decorator.Scripts>`. Denne vil erstatte standard `<script>`-tags i parser'en. Ved bruk av next.js app-router kan `next/script` benyttes her, se eksempel #2.
+Ved behov kan det settes en egendefinert komponent for `<script>`-elementer i `<Decorator.Scripts>`.
+Denne vil erstatte standard `<script>`-tags i parseren. Ved bruk av next.js app-router kan
+`next/script` benyttes her, se
+eksempel [Eksempel 2- Med next.js app router](#eksempel-2--nextjs-app-router).
 
-<br/>
+##### Eksempel 1 – Next.js Page Router
 
-#### Med next.js page router
-
-Settes inn i `pages/_document.tsx`:
+Brukes i `pages/_document.tsx`:
 
 ```tsx
 import { fetchDecoratorReact } from "@navikt/nav-dekoratoren-moduler/ssr";
@@ -275,11 +279,11 @@ class MyDocument extends Document<DocumentProps> {
                     <Decorator.HeadAssets />
                 </Head>
                 <body>
-                    <Decorator.Header />
-                    <Main />
-                    <Decorator.Footer />
-                    <Decorator.Scripts />
-                    <NextScript />
+                <Decorator.Header />
+                <Main />
+                <Decorator.Footer />
+                <Decorator.Scripts />
+                <NextScript />
                 </body>
             </Html>
         );
@@ -287,11 +291,9 @@ class MyDocument extends Document<DocumentProps> {
 }
 ```
 
-<br/>
+##### Eksempel 2 – Next.js App Router
 
-#### Med next.js app router
-
-Settes inn i root layout med `next/script` loader:
+Brukes i `app/layout.tsx` med `next/script` loader:
 
 ```tsx
 import { fetchDecoratorReact } from "@navikt/nav-dekoratoren-moduler/ssr";
@@ -304,15 +306,15 @@ const RootLayout = async ({ children }: Readonly<{ children: React.ReactNode }>)
 
     return (
         <html lang="no">
-            <head>
-                <Decorator.HeadAssets />
-            </head>
-            <body>
-                <Decorator.Header />
-                {children}
-                <Decorator.Footer />
-                <Decorator.Scripts loader={Script} />
-            </body>
+        <head>
+            <Decorator.HeadAssets />
+        </head>
+        <body>
+        <Decorator.Header />
+        {children}
+        <Decorator.Footer />
+        <Decorator.Scripts loader={Script} />
+        </body>
         </html>
     );
 };
@@ -320,15 +322,21 @@ const RootLayout = async ({ children }: Readonly<{ children: React.ReactNode }>)
 export default RootLayout;
 ```
 
-## Client-side rendering
+</details>
 
-CSR vil gi en redusert brukeropplevelse pga layout-shifting/"pop-in" når headeren rendres, og bør unngås om mulig. Ta gjerne kontakt i #dekoratøren_på_navno for bistand med å sette opp SSR i appen din!
 
-### injectDecoratorClientSide
+---
 
-Setter inn dekoratøren i DOM'en client-side. Service discovery kan ikke benyttes ved client-side injection.
+## 5 Client-Side Rendering (CSR) 💻
 
-Eksempel på bruk:
+> ⚠️ Merk: CSR gir layout-shift og bør unngås om mulig. Bruk SSR for best opplevelse.
+
+### 5.1 injectDecoratorClientSide
+
+Setter inn dekoratøren i DOM'en client-side. Service discovery kan ikke benyttes ved client-side
+injection.
+
+Eksempel:
 
 ```tsx
 import { injectDecoratorClientSide } from "@navikt/nav-dekoratoren-moduler";
@@ -342,9 +350,12 @@ injectDecoratorClientSide({
 });
 ```
 
-## Bruk med egendefinert dekoratør-url.
+---
 
-Dersom `env` er satt til `localhost` må dekoratørens URL settes med parametret `localUrl`. Benyttes dersom du f.eks. kjører dekoratøren lokalt på egen maskin, eller den hentes via en proxy.
+### 🔗 5.2 Bruk med egendefinert dekoratør-url
+
+Dersom `env` er satt til `localhost` må dekoratørens URL settes med parametret `localUrl`. Benyttes
+dersom du f.eks. kjører dekoratøren lokalt på egen maskin, eller den hentes via en proxy.
 
 Eksempel:
 
@@ -356,12 +367,37 @@ injectDecoratorServerSide({
 });
 ```
 
-# Andre hjelpefunksjoner
+---
 
-### addDecoratorUpdateListener / removeDecoratorUpdateListener
+## 6 Andre hjelpefunksjoner 🧰
 
-Legger til/fjerner en callback-funksjon som kalles når en ny versjon av dekoratøren er deployet til valgt miljø.
+### 6.1 Oversikt over hjelpefunksjoner
 
+| Funksjon                      | Type                    | Formål / Forklaring                                                        |
+|-------------------------------|-------------------------|----------------------------------------------------------------------------|
+| addDecoratorUpdateListener    | server-side             | Legger til callback for ny dekoratørversjon, brukes for cache-invalidering |
+| removeDecoratorUpdateListener | server-side             | Fjerner registrert callback fra dekoratøren                                |
+| getDecoratorVersionId         | server-side             | Henter nåværende versjons-ID for dekoratøren                               |
+| buildCspHeader                | server-side             | Bygger Content Security Policy som inkluderer dekoratørens direktiver      |
+| getAnalyticsInstance          | client/server           | Logger events til Umami og Amplitude (erstatter getAmplitudeInstance)      |
+| getAmplitudeInstance          | client/server (utfases) | Logger events til Amplitude (utfases november 2025)                        |
+| setBreadcrumbs                | client-side             | Setter brødsmulesti (breadcrumbs) i dekoratøren                            |
+| onBreadcrumbClick             | client-side             | Håndterer klikk på breadcrumbs ved client-side routing                     |
+| setAvailableLanguages         | client-side             | Setter tilgjengelige språk i språkvelgeren                                 |
+| onLanguageSelect              | client-side             | Håndterer språkvalg ved client-side routing                                |
+| setParams                     | client-side             | Oppdaterer dekoratørens parametre dynamisk                                 |
+| getParams                     | client-side             | Leser gjeldende dekoratørparametre                                         |
+| openChatbot                   | client-side             | Åpner Chatbot Frida og setter `chatbotVisible=true`                        |
+
+### 6.2 Detaljer
+
+<details>
+<summary><strong>Klikk for å utvide detaljene</strong></summary>
+
+#### addDecoratorUpdateListener / removeDecoratorUpdateListener
+
+Legger til/fjerner en callback-funksjon som kalles når en ny versjon av dekoratøren er deployet til
+valgt miljø.  
 Tiltenkt brukt for cache-invalidering i apper som cacher dekoratørens HTML.
 
 ```ts
@@ -375,7 +411,7 @@ const flushHtmlCache = (versionId: string) => {
 addDecoratorUpdateListener({ env: "prod" }, flushHtmlCache);
 ```
 
-### getDecoratorVersionId
+#### getDecoratorVersionId
 
 Henter nåværende versjons-id for dekoratøren i valgt miljø.
 
@@ -385,13 +421,15 @@ import { getDecoratorVersionId } from "@navikt/nav-dekoratoren-moduler/ssr";
 const currentVersionId = await getDecoratorVersionId({ env: "prod" });
 ```
 
-### buildCspHeader
+#### buildCspHeader
 
-Bygger en Content-Security-Policy header som inkluderer dekoratørens påkrevde direktiver, kombinert med applikasjonens egne direktiver. Krever at `csp-header >=5.x` er installert.
+Bygger en CSP (Content Security Policy) header som inkluderer dekoratørens påkrevde direktiver,
+kombinert
+med applikasjonens egne direktiver.
 
 Funksjonen gjør et fetch-kall til dekoratøren for å hente gjeldende direktiver.
 
-Eksempel på bruk:
+Eksempel:
 
 ```ts
 import { buildCspHeader } from "@navikt/nav-dekoratoren-moduler/ssr";
@@ -411,13 +449,20 @@ app.get("*", (req, res) => {
 });
 ```
 
-### getAnalyticsInstance
+#### getAnalyticsInstance
 
-Funksjonen bygger en logger-instans som sender events til våre analyseverktøy via dekoratørens klient. Tar i mot et parameter `origin` slik at man kan filtrere events som kommer fra egen app.
+Denne metoden erstatter getAmplitudeInstance, og har tilsvarende interface. Metoden skal støtte
+det/de til en hver tid gjeldende analyseverktøyet/ene i Nav. Den logger foreløpig til både Umami og
+Amplitude.
+Amplitude fases ut av Nav i november 2025 og Umami er da eneste alternativ. Når avtalen går ut,
+fjernes loggingen til Amplitude.
+
+Bygger en logger-instans som sender events til våre analyseverktøy via dekoratørens klient. Tar i
+mot et parameter `origin` slik at man kan filtrere events som kommer fra egen app.
 Det er sterkt anbefalt å følge Navs taksonomi for analyseverktøy:
 https://github.com/navikt/analytics-taxonomy
 
-Eksempel på bruk:
+Eksempel:
 
 ```ts
 import { getAnalyticsInstance } from "@navikt/nav-dekoratoren-moduler";
@@ -430,14 +475,57 @@ logger("skjema åpnet", {
 });
 ```
 
-### setBreadcrumbs
+#### getAmplitudeInstance
+
+> ⚠️ Vil ikke støttes etter 01.11.2025
+
+Bygger en logger-instans som sender events til Amplitude via dekoratørens klient. Tar i mot et
+parameter `origin` slik at man kan filtrere events som kommer fra egen app.
+Det er sterkt anbefalt å følge Navs taksonomi for analyseverktøy:
+https://github.com/navikt/analytics-taxonomy
+
+Eksempel:
+
+```ts
+import { getAmplitudeInstance } from "@navikt/nav-dekoratoren-moduler";
+
+const logger = getAmplitudeInstance("minAppOrigin");
+
+logger("skjema åpnet", {
+    skjemaId: 1234,
+    skjemanavn: "aap",
+});
+```
+
+Du kan også utvide taxonomien som er definert for å tilpasse ditt bruk. Det har ingen funksjonell
+effekt, men vil gjøre det lettere for utviklerene i prosjektet å følge en standard hvis ønskelig.
+
+Eksempel på å definere events:
+
+```ts
+import { AmplitudeEvent, getAmplitudeInstance } from "@navikt/nav-dekoratoren-moduler";
+
+type SampleCustomEvents =
+    | AmplitudeEvent<"first", { hei: string }>
+    | AmplitudeEvent<"second", { hei: string }>;
+
+const logger = getAmplitudeInstance<SampleCustomEvents>("minAppOrigin");
+
+logger("first", {
+    hei: "hei",
+});
+```
+
+#### setBreadcrumbs
 
 Parameteret `breadcrumbs` (brødsmulestien) kan endres / settes på klient-siden ved behov.
 
-Obs! Klikk på breadcrumbs logges til analyseverktøy (Umami). Ettersom title i noen apper kan inneholde personopplysninger,
-som f.eks. navn på bruker, så logges dette i utgangspunktet kun som `[redacted]` til Umami.
+Obs! Klikk på breadcrumbs logges til analyseverktøy (Amplitude+Umami). Ettersom title i noen apper
+kan inneholde personopplysninger, som f.eks. navn på bruker, så logges dette i utgangspunktet kun
+som `[redacted]` til Amplitude+Umami.
 
-Om ønskelig kan feltet `analyticsTitle` også settes, dersom du ønsker å logge en title. Husk å fjerne eventuelle personopplysninger fra denne!
+Om ønskelig kan feltet `analyticsTitle` også settes, dersom du ønsker å logge en title. Husk å
+fjerne eventuelle personopplysninger fra denne!
 
 ```tsx
 // Type
@@ -450,6 +538,7 @@ export type DecoratorBreadcrumb = {
 
 // Bruk
 import { setBreadcrumbs } from "@navikt/nav-dekoratoren-moduler";
+
 setBreadcrumbs([
     { title: "Ditt Nav", url: "https://www.nav.no/person/dittnav" }, // Sender brukeren til definert url
     {
@@ -470,9 +559,10 @@ setBreadcrumbs([
 ]);
 ```
 
-### onBreadcrumbClick
+#### onBreadcrumbClick
 
-Kalles med `breadcrumb`-parametre dersom `handleInApp` var satt til `true`. Kan benyttes for client-side routing.
+Kalles med `breadcrumb`-parametre dersom `handleInApp` var satt til `true`. Kan benyttes for
+client-side routing.
 
 ```tsx
 import { onBreadcrumbClick } from "@navikt/nav-dekoratoren-moduler";
@@ -483,9 +573,10 @@ onBreadcrumbClick((breadcrumb) => {
 });
 ```
 
-### setAvailableLanguages
+#### setAvailableLanguages
 
-Parameteret `languages` (liste av tilgjengelige språk i språkvelgeren) kan endres / settes client-side ved behov.
+Parameteret `languages` (liste av tilgjengelige språk i språkvelgeren) kan endres / settes
+client-side ved behov.
 Aktivt språk kan hentes ut fra cookien `decorator-language`.
 
 ```tsx
@@ -493,18 +584,19 @@ Aktivt språk kan hentes ut fra cookien `decorator-language`.
 export type DecoratorLocale = "nb" | "nn" | "en" | "se" | "pl" | "uk" | "ru";
 export type DecoratorLanguageOption =
     | {
-          url?: string;
-          locale: DecoratorLocale;
-          handleInApp: true;
-      }
+    url?: string;
+    locale: DecoratorLocale;
+    handleInApp: true;
+}
     | {
-          url: string;
-          locale: DecoratorLocale;
-          handleInApp?: false;
-      };
+    url: string;
+    locale: DecoratorLocale;
+    handleInApp?: false;
+};
 
 // Bruk
 import { setAvailableLanguages } from "@navikt/nav-dekoratoren-moduler";
+
 setAvailableLanguages([
     { locale: "nb", url: "https://www.nav.no/person/kontakt-oss/nb/" }, // Sender brukeren til definert url
     {
@@ -515,9 +607,10 @@ setAvailableLanguages([
 ]);
 ```
 
-### onLanguageSelect
+#### onLanguageSelect
 
-Kalles med `language`-parametre dersom `handleInApp` var satt til `true`. Kan benyttes for client-side routing.
+Kalles med `language`-parametre dersom `handleInApp` var satt til `true`. Kan benyttes for
+client-side routing.
 
 ```tsx
 import { onLanguageSelect } from "@navikt/nav-dekoratoren-moduler";
@@ -528,9 +621,10 @@ onLanguageSelect((language) => {
 });
 ```
 
-### setParams
+#### setParams
 
-Samtlige parametre kan settes client-side via `setParams` dersom `setAvailableLanguages` og `setBreadcrumbs` ikke er tilstrekkelig.
+Samtlige parametre kan settes client-side via `setParams` dersom `setAvailableLanguages` og
+`setBreadcrumbs` ikke er tilstrekkelig.
 
 ```tsx
 // Type
@@ -564,20 +658,19 @@ setParams({
 });
 ```
 
-### getParams
+#### getParams
 
-Samtlige parametre kan også leses client-side via `getParams`.
+Leser gjeldende parametre fra dekoratøren.
 
 ```tsx
-// Bruk
 import { getParams } from "@navikt/nav-dekoratoren-moduler";
 
 getParams();
 ```
 
-### openChatbot
+#### openChatbot
 
-Hjelpefunksjon for å åpne Chatbot Frida. Denne setter parameteret `chatbotVisible=true` og åpner chat-vinduet.
+Åpner Chatbot Frida og setter `chatbotVisible=true`.
 
 ```tsx
 import { openChatbot } from "@navikt/nav-dekoratoren-moduler";
@@ -585,17 +678,28 @@ import { openChatbot } from "@navikt/nav-dekoratoren-moduler";
 openChatbot();
 ```
 
-## Plakat for samtykke ("cookie-banner")
+</details>
 
-Etter at en strengere Lov om elektronisk kommunikasjon (ekomloven) ble gjort gjeldende fra 1. januar 2025, har Nav måttet innhente samtykke før verktøy for analyse, statistikk etc kunne bli tatt i bruk. Du kan lese mer i Dekoratøren om bakgrunn og hvordan prinsippene og det juridiske ved samtykke fungerer.
+---
 
-For nav-dekoratoren-moduler har vi laget en rekke hjelpefunksjoner som et ment å bidra til at teamene etterlever den nye ekomloven.
+## 7 Samtykke og cookies ("cookie-banner") 🍪
 
-Disse funksjonene er et forslag til hva vi tror teamene vil kunne trenge, så vi håper at team som ønsker seg andre funksjoner melder ifra på #dekoratøren_på_navno på Slack slik at vi kan utvide nav-dekoratoren-moduler og fortsatt gjøre den nyttig for teamene.
+Etter at en strengere Lov om elektronisk kommunikasjon (ekomloven) ble gjort gjeldende fra 1. januar
+2025, har Nav måttet innhente samtykke før verktøy for analyse, statistikk etc kunne bli tatt i
+bruk. Du kan lese mer i [Dekoratøren](https://github.com/navikt/nav-dekoratoren) om bakgrunn og
+hvordan prinsippene og det juridiske ved samtykke fungerer.
 
-### awaitDecoratorData()
+For nav-dekoratoren-moduler har vi laget en rekke hjelpefunksjoner som et ment å bidra til at
+teamene etterlever den nye ekomloven.
 
-Dersom du trenger å lese/skrive cookies som en del av oppstarten i applikasjonen, kan det hende at du må vente til dekoratøren har lastet inn dataene.
+Disse funksjonene er et forslag til hva vi tror teamene vil kunne trenge, så vi håper at team som
+ønsker seg andre funksjoner melder ifra på #dekoratøren_på_navno på Slack slik at vi kan utvide
+nav-dekoratoren-moduler og fortsatt gjøre den nyttig for teamene.
+
+### 7.1 awaitDecoratorData
+
+Dersom du trenger å lese/skrive cookies som en del av oppstarten i applikasjonen, kan det hende at
+du må vente til dekoratøren har lastet inn dataene.
 
 ```ts
 const initMyApp = async () => {
@@ -604,14 +708,16 @@ const initMyApp = async () => {
 };
 ```
 
-### isStorageKeyAllowed(key: string)
+### 7.2 isStorageKeyAllowed(key: string)
 
 Sjekker om en nøkkel er tillatt å sette:
 
 1. er den i tillatt-listen
-2. hvis nøkkelen er markert som frivillig (og dermed krever samtykke): har bruker samtykket til denne type lagring
+2. hvis nøkkelen er markert som frivillig (og dermed krever samtykke): har bruker samtykket til
+   denne type lagring
 
-Funksjonene for å lese og skrive (cookies, localstorage etc) sjekker dette selv automatisk, så denne funksjonen er laget for å gi team en mulighet til å sjekke skrivbarhet uten å faktisk skrive.
+Funksjonene for å lese og skrive (cookies, localstorage etc) sjekker dette selv automatisk, så denne
+funksjonen er laget for å gi team en mulighet til å sjekke skrivbarhet uten å faktisk skrive.
 
 Kan brukes for både cookies, localStorage og sessionStorage.
 
@@ -619,26 +725,34 @@ Kan brukes for både cookies, localStorage og sessionStorage.
 import { isStorageKeyAllowed } from '@navikt/nav-dekoratoren-moduler'
 
 // Returnerer false fordi 'jabberwocky' ikke er i tillatt-listen.
-const isJabberwocky = isStorageKeyAllowed('jabberwocky'):
+const isJabberwocky = isStorageKeyAllowed('jabberwocky')
+:
 
 // Selv om 'usertest' er i tillatt-listen har ikke bruker gitt sitt samtykke i dette tenkte eksempelet, så funksjonen returnerer false.
 const isUsertestAllowed = isStorageKeyAllowed('usertest-229843829')
 
 ```
 
-### getAllowedStorage()
+### 7.3 getAllowedStorage()
 
-Denne returnerer en liste over alle ting som er lov å sette, enten cookies, localStorage etc. Vi tilbyr denne til team som vil lage sine egne løsninger eller som trenger funksjonalitet som ikke finnes i nav-dekoratoren-moduler. I hovedsak tenker vi at isStorageKeyAllowed ovenfor vil fungere best i de fleste tilfeller.
+Denne returnerer en liste over alle ting som er lov å sette, enten cookies, localStorage etc. Vi
+tilbyr denne til team som vil lage sine egne løsninger eller som trenger funksjonalitet som ikke
+finnes i nav-dekoratoren-moduler. I hovedsak tenker vi at isStorageKeyAllowed ovenfor vil fungere
+best i de fleste tilfeller.
 
 Retunerer tillatt lagring for både cookies, localStorage og sessionStorage.
 
-### setNavCookie / getNavCookie
+### 7.4 setNavCookie / getNavCookie
 
-Denne kan brukes for å sette cookies og være sikker på at det er tillatt å sette de. Funksjonen sjekker på om (1) cookien er i tillatt-listen og (2) brukeren har gitt nødvendige samtykker hvis cookien er frivillig.
+Denne kan brukes for å sette cookies og være sikker på at det er tillatt å sette de. Funksjonen
+sjekker på om (1) cookien er i tillatt-listen og (2) brukeren har gitt nødvendige samtykker hvis
+cookien er frivillig.
 
-Dersom det for eksempel er en cookie som er team har definert som nødvendig kan den settes uansett så lenge den ligger i listen over tillatte cookies.
+Dersom det for eksempel er en cookie som er team har definert som nødvendig kan den settes uansett
+så lenge den ligger i listen over tillatte cookies.
 
-Dersom cookien er regnet som frivillig vil den ikke kunne settes dersom bruker ikke har gitt samtykke til at Nav kan lagre alle frivillige cookies.
+Dersom cookien er regnet som frivillig vil den ikke kunne settes dersom bruker ikke har gitt
+samtykke til at Nav kan lagre alle frivillige cookies.
 
 ```ts
 import { setNavCookie, getNavCookie } from "@navikt/nav-dekoratoren-moduler";
@@ -650,6 +764,10 @@ setNavCookie("usertest-382738");
 const foo = getNavCookie("foobar");
 ```
 
-### navSessionStorage og navLocalStorage
+### 7.5 navSessionStorage og navLocalStorage
 
-Utvider sessionStorage og localStorage og eksponerer de samme funksjonene. Forskjellen er at nav\*Storage først sjekker om en nøkkel er tillatt å sette basert på tillattlisten og status på eksisterende samtykke.
+Utvider sessionStorage og localStorage og eksponerer de samme funksjonene. Forskjellen er at
+nav\*Storage først sjekker om en nøkkel er tillatt å sette basert på tillattlisten og status på
+eksisterende samtykke.
+
+---
