@@ -56,7 +56,7 @@ npm install --save @navikt/nav-dekoratoren-moduler
 
 ### 2.1 Ved lokal kjøring
 
-Legg dette i `.npmrc`-fila (opprett om den ikke finnes):
+Legg dette i `.npmrc`-filen (opprett om den ikke finnes):
 
 ```
 @navikt:registry=https://npm.pkg.github.com
