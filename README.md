@@ -1,7 +1,6 @@
 # Nav Dekoratøren Moduler
 
-NPM-pakke med hjelpefunksjoner for [Nav-dekoratøren](https://github.com/navikt/decorator-next) (
-header og footer på nav.no).
+NPM-pakke med hjelpefunksjoner for [Nav Dekoratøren](https://github.com/navikt/nav-dekoratoren) (header og footer på nav.no).
 
 ---
 
