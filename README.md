@@ -1,7 +1,7 @@
-# nav-dekoratoren-moduler
+# Nav Dekoratøren Moduler
 
-> NPM-pakke med hjelpefunksjoner for [Nav-dekoratøren](https://github.com/navikt/decorator-next) (
-> header og footer på nav.no).
+NPM-pakke med hjelpefunksjoner for [Nav-dekoratøren](https://github.com/navikt/decorator-next) (
+header og footer på nav.no).
 
 ---
 
@@ -166,13 +166,13 @@ accessPolicy:
 
 ---
 
-# 4 Server-Side Rendering (anbefalt) 🧱
+## 4 Server-Side Rendering (anbefalt) 🧱
 
 Server-side rendering (SSR) av dekoratøren anbefales for optimal brukeropplevelse.  
 Dersom kallet feiler (etter tre forsøk), falles det tilbake til statiske placeholder-elementer som
 rendres client-side.
 
-## 4.1 Oversikt over SSR-funksjoner
+### 4.1 Oversikt over SSR-funksjoner
 
 | Funksjon                          | Type                | Formål / Forklaring                                                       |
 |-----------------------------------|---------------------|---------------------------------------------------------------------------|
@@ -183,12 +183,12 @@ rendres client-side.
 
 ---
 
-## 4.2 Detaljer 💡
+### 4.2 Detaljer 💡
 
 <details>
 <summary><strong>Klikk for å utvide detaljene</strong></summary>
 
-### injectDecoratorServerSide
+#### injectDecoratorServerSide
 
 Parser en HTML-fil med JSDOM og returnerer en HTML-string som inkluderer dekoratøren. Krever at
 `jsdom >=16.x` er installert.
@@ -205,7 +205,7 @@ injectDecoratorServerSide({
 });
 ```
 
-### injectDecoratorServerSideDocument
+#### injectDecoratorServerSideDocument
 
 Setter inn dekoratøren i et Document DOM-objekt. Objektet i document-parameteret muteres.
 
@@ -222,7 +222,7 @@ injectDecoratorServerSideDocument({
 });
 ```
 
-### fetchDecoratorHtml
+#### fetchDecoratorHtml
 
 Henter dekoratøren som HTML-fragmenter.
 
@@ -241,16 +241,17 @@ const { DECORATOR_HEAD_ASSETS, DECORATOR_HEADER, DECORATOR_FOOTER, DECORATOR_SCR
 // Sett inn fragmenter i app-html'en med f.eks. en template engine
 ```
 
-### fetchDecoratorReact
+#### fetchDecoratorReact
 
 Henter dekoratøren som React-komponenter. Kan benyttes med React rammeverk som støtter server-side
 rendering. Krever at `react >=17.x` og `html-react-parser >=5.x` er installert.
 
 Ved behov kan det settes en egendefinert komponent for `<script>`-elementer i `<Decorator.Scripts>`.
 Denne vil erstatte standard `<script>`-tags i parseren. Ved bruk av next.js app-router kan
-`next/script` benyttes her, se eksempel [Eksempel 2- Med next.js app router](#eksempel-2--nextjs-app-router).
+`next/script` benyttes her, se
+eksempel [Eksempel 2- Med next.js app router](#eksempel-2--nextjs-app-router).
 
-#### Eksempel 1 – Next.js Page Router
+##### Eksempel 1 – Next.js Page Router
 
 Brukes i `pages/_document.tsx`:
 
@@ -290,7 +291,7 @@ class MyDocument extends Document<DocumentProps> {
 }
 ```
 
-#### Eksempel 2 – Next.js App Router
+##### Eksempel 2 – Next.js App Router
 
 Brukes i `app/layout.tsx` med `next/script` loader:
 
@@ -520,8 +521,8 @@ logger("first", {
 Parameteret `breadcrumbs` (brødsmulestien) kan endres / settes på klient-siden ved behov.
 
 Obs! Klikk på breadcrumbs logges til analyseverktøy (Amplitude+Umami). Ettersom title i noen apper
-kan inneholde personopplysninger, som f.eks. navn på bruker, så logges dette i utgangspunktet kun som `[redacted]` til 
-Amplitude+Umami.
+kan inneholde personopplysninger, som f.eks. navn på bruker, så logges dette i utgangspunktet kun
+som `[redacted]` til Amplitude+Umami.
 
 Om ønskelig kan feltet `analyticsTitle` også settes, dersom du ønsker å logge en title. Husk å
 fjerne eventuelle personopplysninger fra denne!
