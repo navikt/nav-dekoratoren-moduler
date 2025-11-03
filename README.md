@@ -17,10 +17,10 @@ header og footer på nav.no).
     - [3.3 Access Policy](#33-access-policy)
 4. [Server-Side Rendering (anbefalt) 🧱](#4-server-side-rendering-anbefalt-)
     - [4.1 Oversikt over SSR-funksjoner](#41-oversikt-over-ssr-funksjoner)
-    - [4.2 Detaljer](#42-detaljer-)
-5. [Client-Side Rendering (CSR) 💻](#-5-client-side-rendering-csr)
+    - [4.2 Detaljer](#42-detaljer)
+5. [Client-Side Rendering (CSR) 💻](#5-client-side-rendering-csr-)
     - [5.1 injectDecoratorClientSide](#51-injectdecoratorclientside)
-    - [5.2 Bruk med egendefinert dekoratør-url 🔗](#52-bruk-med-egendefinert-dekoratør-url-)
+    - [5.2 Bruk med egendefinert dekoratør-url 🔗](#-52-bruk-med-egendefinert-dekoratør-url)
 6. [Andre hjelpefunksjoner 🧰](#6-andre-hjelpefunksjoner-)
     - [6.1 Oversikt over hjelpefunksjoner](#61-oversikt-over-hjelpefunksjoner)
     - [6.2 Detaljer](#62-detaljer)
@@ -183,7 +183,7 @@ rendres client-side.
 
 ---
 
-### 4.2 Detaljer 💡
+### 4.2 Detaljer
 
 <details>
 <summary><strong>Klikk for å utvide detaljene</strong></summary>
