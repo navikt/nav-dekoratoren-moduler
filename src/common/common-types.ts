@@ -57,6 +57,7 @@ export type DecoratorParams = Partial<{
     logoutWarning: boolean;
     redirectOnUserChange: boolean;
     pageType: string;
+    analyticsQueryParams: string[];
 }>;
 
 export type DecoratorElements = {

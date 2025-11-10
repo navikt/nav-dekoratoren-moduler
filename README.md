@@ -35,8 +35,8 @@ NPM-pakke med hjelpefunksjoner for [Nav Dekoratøren](https://github.com/navikt/
 ## 1 Om pakken 🧠
 
 `@navikt/nav-dekoratoren-moduler` gir utviklere et enkelt grensesnitt for å integrere NAVs
-dekoratør (header og footer) i egne applikasjoner – både ved **server-side rendering (SSR)** og *
-*client-side rendering (CSR)**.
+dekoratør (header og footer) i egne applikasjoner – både ved **server-side rendering (SSR)** og \*
+\*client-side rendering (CSR)\*\*.
 
 Pakken håndterer miljøkonfigurasjon, service discovery, analyse, språk, brødsmulesti, samtykke (
 ekomloven), og mer.
@@ -49,9 +49,9 @@ ekomloven), og mer.
 npm install --save @navikt/nav-dekoratoren-moduler
 ```
 
-> 💡 Oppdaterte versjoner publiseres kun i **GitHub Packages Registry**.  
+> 💡 Oppdaterte versjoner publiseres kun i **GitHub Packages Registry**.
 > For å installere nye versjoner må `@navikt`-scopede pakker hentes fra
-`https://npm.pkg.github.com`.
+> `https://npm.pkg.github.com`.
 
 ### 2.1 Ved lokal kjøring
 
@@ -77,12 +77,12 @@ Sett registry-url med f.eks `actions/setup-node` og bruk `NODE_AUTH_TOKEN` fra
 - name: Setup node.js
   uses: actions/setup-node@v4
   with:
-    registry-url: 'https://npm.pkg.github.com'
+      registry-url: "https://npm.pkg.github.com"
 
 - name: Install dependencies
   run: npm ci
   env:
-    NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+      NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 ```
 
 ---
@@ -93,7 +93,7 @@ Pakken inneholder funksjoner for å laste inn dekoratøren i apper på ulike må
 
 ### 3.1 Typer og miljøer
 
-Dekoratøren kan hentes fra ulike miljøer: `prod`, `dev`, `beta`, `betaTms`, eller `localhost`.  
+Dekoratøren kan hentes fra ulike miljøer: `prod`, `dev`, `beta`, `betaTms`, eller `localhost`.
 For lokale miljøer må du angi `localUrl`.
 
 ```tsx
@@ -104,7 +104,7 @@ type DecoratorNaisEnv =
     | "betaTms"; // Disse kan være ustabile i lengre perioder
 
 type DecoratorEnvProps =
-// Dersom env er satt til localhost, må du selv sette url for dekoratøren.
+    // Dersom env er satt til localhost, må du selv sette url for dekoratøren.
     | { env: "localhost"; localUrl: string }
     // For nais-miljøer settes url automatisk
     | { env: DecoratorNaisEnv; serviceDiscovery?: boolean };
@@ -142,10 +142,10 @@ Ved bruk av service discovery må følgende regel inkluderes i access policy:
 
 ```yaml
 accessPolicy:
-  outbound:
-    rules:
-      - application: nav-dekoratoren
-        namespace: personbruker
+    outbound:
+        rules:
+            - application: nav-dekoratoren
+              namespace: personbruker
 ```
 
 #### 3.3.2 Ved eksterne ingresser
@@ -157,24 +157,24 @@ Følgende access policy kreves:
 
 ```yaml
 accessPolicy:
-  outbound:
-    external:
-      - host: www.nav.no # for prod
-      - host: dekoratoren.ekstern.dev.nav.no # for dev
+    outbound:
+        external:
+            - host: www.nav.no # for prod
+            - host: dekoratoren.ekstern.dev.nav.no # for dev
 ```
 
 ---
 
 ## 4 Server-Side Rendering (anbefalt) 🧱
 
-Server-side rendering (SSR) av dekoratøren anbefales for optimal brukeropplevelse.  
+Server-side rendering (SSR) av dekoratøren anbefales for optimal brukeropplevelse.
 Dersom kallet feiler (etter tre forsøk), falles det tilbake til statiske placeholder-elementer som
 rendres client-side.
 
 ### 4.1 Oversikt over SSR-funksjoner
 
 | Funksjon                          | Type                | Formål / Forklaring                                                       |
-|-----------------------------------|---------------------|---------------------------------------------------------------------------|
+| --------------------------------- | ------------------- | ------------------------------------------------------------------------- |
 | injectDecoratorServerSide         | server-side         | Parser HTML-fil og setter inn dekoratør-HTML via JSDOM                    |
 | injectDecoratorServerSideDocument | server-side         | Setter inn dekoratøren i et eksisterende `Document`-objekt                |
 | fetchDecoratorHtml                | server-side         | Henter dekoratøren som HTML-fragmenter                                    |
@@ -278,11 +278,11 @@ class MyDocument extends Document<DocumentProps> {
                     <Decorator.HeadAssets />
                 </Head>
                 <body>
-                <Decorator.Header />
-                <Main />
-                <Decorator.Footer />
-                <Decorator.Scripts />
-                <NextScript />
+                    <Decorator.Header />
+                    <Main />
+                    <Decorator.Footer />
+                    <Decorator.Scripts />
+                    <NextScript />
                 </body>
             </Html>
         );
@@ -305,15 +305,15 @@ const RootLayout = async ({ children }: Readonly<{ children: React.ReactNode }>)
 
     return (
         <html lang="no">
-        <head>
-            <Decorator.HeadAssets />
-        </head>
-        <body>
-        <Decorator.Header />
-        {children}
-        <Decorator.Footer />
-        <Decorator.Scripts loader={Script} />
-        </body>
+            <head>
+                <Decorator.HeadAssets />
+            </head>
+            <body>
+                <Decorator.Header />
+                {children}
+                <Decorator.Footer />
+                <Decorator.Scripts loader={Script} />
+            </body>
         </html>
     );
 };
@@ -322,7 +322,6 @@ export default RootLayout;
 ```
 
 </details>
-
 
 ---
 
@@ -373,7 +372,7 @@ injectDecoratorServerSide({
 ### 6.1 Oversikt over hjelpefunksjoner
 
 | Funksjon                      | Type                    | Formål / Forklaring                                                        |
-|-------------------------------|-------------------------|----------------------------------------------------------------------------|
+| ----------------------------- | ----------------------- | -------------------------------------------------------------------------- |
 | addDecoratorUpdateListener    | server-side             | Legger til callback for ny dekoratørversjon, brukes for cache-invalidering |
 | removeDecoratorUpdateListener | server-side             | Fjerner registrert callback fra dekoratøren                                |
 | getDecoratorVersionId         | server-side             | Henter nåværende versjons-ID for dekoratøren                               |
@@ -396,7 +395,7 @@ injectDecoratorServerSide({
 #### addDecoratorUpdateListener / removeDecoratorUpdateListener
 
 Legger til/fjerner en callback-funksjon som kalles når en ny versjon av dekoratøren er deployet til
-valgt miljø.  
+valgt miljø.
 Tiltenkt brukt for cache-invalidering i apper som cacher dekoratørens HTML.
 
 ```ts
@@ -583,15 +582,15 @@ Aktivt språk kan hentes ut fra cookien `decorator-language`.
 export type DecoratorLocale = "nb" | "nn" | "en" | "se" | "pl" | "uk" | "ru";
 export type DecoratorLanguageOption =
     | {
-    url?: string;
-    locale: DecoratorLocale;
-    handleInApp: true;
-}
+          url?: string;
+          locale: DecoratorLocale;
+          handleInApp: true;
+      }
     | {
-    url: string;
-    locale: DecoratorLocale;
-    handleInApp?: false;
-};
+          url: string;
+          locale: DecoratorLocale;
+          handleInApp?: false;
+      };
 
 // Bruk
 import { setAvailableLanguages } from "@navikt/nav-dekoratoren-moduler";
@@ -646,6 +645,7 @@ export type DecoratorParams = Partial<{
     logoutWarning: boolean;
     redirectOnUserChange: boolean;
     pageType: string;
+    analyticsQueryParams: string[];
 }>;
 
 // Bruk
