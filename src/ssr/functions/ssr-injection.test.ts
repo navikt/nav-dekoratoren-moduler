@@ -35,6 +35,10 @@ describe("SSR injection", () => {
         fetchMock.mockResponse(JSON.stringify(response));
     });
 
+    afterEach(() => {
+        fsMock.restore();
+    });
+
     test("Should inject decorator into file", async () => {
         fsMock({
             "app/index.html": baseHtml,
