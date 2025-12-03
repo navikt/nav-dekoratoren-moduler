@@ -58,6 +58,7 @@ export type DecoratorParams = Partial<{
     redirectOnUserChange: boolean;
     pageType: string;
     analyticsQueryParams: string[];
+    redactPaths: string[];
 }>;
 
 export type DecoratorElements = {
