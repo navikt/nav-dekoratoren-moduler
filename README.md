@@ -646,6 +646,7 @@ export type DecoratorParams = Partial<{
     redirectOnUserChange: boolean;
     pageType: string;
     analyticsQueryParams: string[];
+    redactPaths: string[];
 }>;
 
 // Bruk
