@@ -39,7 +39,7 @@ jobs:
           git config --global user.email '${{ github.actor }}@users.noreply.github.com'
           echo "VERSION_TAG=$(npm version ${{ github.event.inputs.releaseType }})" >> $GITHUB_ENV
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
       - name: Run tests
         run: npm run test
       - name: Build package

@@ -80,7 +80,7 @@ Sett registry-url med f.eks `actions/setup-node` og bruk `NODE_AUTH_TOKEN` fra
       registry-url: "https://npm.pkg.github.com"
 
 - name: Install dependencies
-  run: npm ci
+  run: npm ci --ignore-scripts
   env:
       NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
 ```
