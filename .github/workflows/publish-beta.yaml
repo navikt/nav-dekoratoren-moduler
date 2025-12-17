@@ -23,7 +23,7 @@ jobs:
                   git config --global user.email '${{ github.actor }}@users.noreply.github.com'
                   npm version prerelease --preid 'beta-${{github.head_ref || github.ref_name}}'
             - name: Install dependencies
-              run: npm ci
+              run: npm ci --ignore-scripts
             - name: Run tests
               run: npm run test
             - name: Build package
