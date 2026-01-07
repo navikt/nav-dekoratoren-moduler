@@ -9,7 +9,7 @@
     "module": "csr/index.js",
     "source": "src/csr/index.tsx",
     "engines": {
-        "node": ">=18"
+        "node": ">=20.19"
     },
     "scripts": {
         "start": "npm-run-all --parallel start:*",
