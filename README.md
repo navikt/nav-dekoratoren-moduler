@@ -75,7 +75,7 @@ Sett registry-url med f.eks `actions/setup-node` og bruk `NODE_AUTH_TOKEN` fra
 
 ```yaml
 - name: Setup node.js
-  uses: actions/setup-node@v4
+  uses: actions/setup-node@v6
   with:
       registry-url: "https://npm.pkg.github.com"
 
