@@ -19,8 +19,9 @@ const pagePropsByPath: Record<string, PageProps> = {
     },
 };
 
-export default async function Home({ params }: { params: { route: string[] } }) {
-    const path = params.route?.join("/") || "";
+export default async function Home({ params }: { params: Promise<{ route: string[] }> }) {
+    const { route } = await params;
+    const path = "/" + (route?.join("/") || "");
 
     console.log(`Fetching from ${path}`);
 
@@ -30,6 +31,7 @@ export default async function Home({ params }: { params: { route: string[] } }) 
         <main className={styles.main}>
             <Link href={"/"}>{"Privatperson"}</Link>
             <Link href={"/arbeidsgiver"}>{"Arbeidsgiver"}</Link>
+            <Link href={"/samarbeidspartner"}>{"Samarbeidspartner"}</Link>
             <Link href={"/aap"}>{"AAP"}</Link>
             {<h1>{pageProps ? pageProps.title : `Fant ikke siden for ${path}`}</h1>}
             {pageProps && <p>{pageProps.content}</p>}

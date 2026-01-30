@@ -1,4 +1,4 @@
-import { Storage } from "./functions/storage/storageHelpers";
+import { Storage, Consent } from "./functions/storage/storageHelpers";
 
 declare global {
     interface Window {
