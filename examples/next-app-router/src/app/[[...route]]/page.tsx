@@ -19,7 +19,7 @@ const pagePropsByPath: Record<string, PageProps> = {
     },
 };
 
-export default async function Home({ params }: { params: Promise<{ route: string[] }> }) {
+export default async function Home({ params }: { readonly params: Promise<{ route: string[] }> }) {
     const { route } = await params;
     const path = "/" + (route?.join("/") || "");
 
