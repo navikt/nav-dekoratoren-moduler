@@ -127,6 +127,13 @@ export const getDecoratorVersionId = async (envProps: DecoratorEnvProps) => {
 };
 
 export const clearDecoratorWatcherState = () => {
+    Object.keys(updateTimers).forEach((env) => {
+        const timer = updateTimers[env as DecoratorEnv];
+        if (timer) {
+            clearInterval(timer);
+            delete updateTimers[env as DecoratorEnv];
+        }
+    });
     Object.keys(updateListeners).forEach((env) => {
         delete updateListeners[env as DecoratorEnv];
     });

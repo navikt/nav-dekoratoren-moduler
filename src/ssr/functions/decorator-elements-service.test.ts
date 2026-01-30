@@ -1,4 +1,4 @@
-import fetchMock, { enableFetchMocks } from "jest-fetch-mock";
+import fetchMock from "jest-fetch-mock";
 import { SsrResponse } from "./fetch-decorator-elements";
 import { clearDecoratorElementsState, getDecoratorElements } from "./decorator-elements-service";
 import { getCsrElements } from "../../common/csr-elements";
@@ -24,12 +24,18 @@ const validResponseNew = {
 const invalidResponse = { foo: "bar" };
 
 describe("Get decorator elements", () => {
-    enableFetchMocks();
-
     beforeEach(() => {
         clearDecoratorElementsState();
         clearDecoratorWatcherState();
         fetchMock.resetMocks();
+        jest.useRealTimers();
+    });
+
+    afterEach(() => {
+        clearDecoratorElementsState();
+        clearDecoratorWatcherState();
+        jest.clearAllTimers();
+        jest.clearAllMocks();
         jest.useRealTimers();
     });
 
