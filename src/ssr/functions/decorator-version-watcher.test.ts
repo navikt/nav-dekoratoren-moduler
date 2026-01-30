@@ -1,16 +1,22 @@
-import fetchMock, { enableFetchMocks } from "jest-fetch-mock";
+import fetchMock from "jest-fetch-mock";
 import {
     addDecoratorUpdateListener,
     clearDecoratorWatcherState,
 } from "./decorator-version-watcher";
 
 describe("Version watcher", () => {
-    enableFetchMocks();
     jest.useFakeTimers();
 
     beforeEach(() => {
         fetchMock.resetMocks();
         clearDecoratorWatcherState();
+    });
+
+    afterEach(() => {
+        clearDecoratorWatcherState();
+        jest.clearAllTimers();
+        jest.clearAllMocks();
+        jest.useRealTimers();
     });
 
     test("Should get a callback on new decorator version", (done) => {

@@ -1,8 +1,7 @@
-import fetchMock, { enableFetchMocks } from "jest-fetch-mock";
+import fetchMock from "jest-fetch-mock";
 import { buildCspHeader } from "./csp";
 
 describe("CSP header builder function", () => {
-    enableFetchMocks();
 
     test("Should not include duplicate directives from decorator and app", async () => {
         fetchMock.mockResponseOnce(JSON.stringify({ "default-src": ["foo.bar"] }));
