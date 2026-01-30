@@ -20,6 +20,8 @@ jobs:
           registry-url: "https://npm.pkg.github.com"
           cache: "npm"
       - name: Install dependencies
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
         run: npm ci --ignore-scripts
       - name: Lint
         run: npm run lint
