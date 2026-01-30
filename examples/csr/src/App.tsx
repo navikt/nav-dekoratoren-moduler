@@ -1,5 +1,3 @@
-// @ts-ignore
-import React from "react";
 import { useState } from "react";
 import { onLanguageSelect } from "@navikt/nav-dekoratoren-moduler";
 import { onBreadcrumbClick } from "@navikt/nav-dekoratoren-moduler";

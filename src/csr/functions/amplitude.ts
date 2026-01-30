@@ -14,7 +14,7 @@ const throwawayLogger = () => {
     return Promise.resolve();
 };
 
-export async function logAmplitudeEvent<TName extends AmplitudeEventName>(params: {
+export async function logAmplitudeEvent<TName extends AmplitudeEventName>(_params: {
     eventName: TName | AutocompleteString;
     eventData?: TName extends AmplitudeEventName
         ? Extract<AmplitudeEvents, { name: TName }>["properties"]
@@ -35,15 +35,15 @@ export async function logAmplitudeEvent<TName extends AmplitudeEventName>(params
 
 export function getAmplitudeInstance<
     TCustomEvents extends AmplitudeEvent<string, Record<string, unknown>> = any,
->(origin: string) {
+>(_origin: string) {
     return <TName extends AutocompleteEventName>(
         // Can be set to never if we want to be more strict
-        eventName: TName extends AmplitudeEventName
+        _eventName: TName extends AmplitudeEventName
             ? TName
             : TName extends TCustomEvents["name"]
               ? TName
               : TName,
-        eventData?: TName extends AmplitudeEventName
+        _eventData?: TName extends AmplitudeEventName
             ? Extract<AmplitudeEvents, { name: TName }>["properties"]
             : TName extends TCustomEvents["name"]
               ? Extract<TCustomEvents, { name: TName }>["properties"]

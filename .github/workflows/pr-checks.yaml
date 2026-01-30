@@ -24,7 +24,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
         run: npm ci --ignore-scripts
       - name: Lint
-        run: npm run lint
+        run: npm run lint:moduler
       - name: Run tests
         run: npm run test
       - name: Build
