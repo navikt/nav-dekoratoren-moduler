@@ -6,25 +6,21 @@
         "dev": "next dev --port 4400",
         "build": "next build",
         "start": "next start --port 4400",
-        "lint": "next lint"
+        "lint": "eslint src && tsc --noEmit"
     },
     "dependencies": {
         "@navikt/nav-dekoratoren-moduler": "file:../../",
         "html-react-parser": "5.2.7",
-        "next": "14.2.35",
-        "react": "18.3.1",
-        "react-dom": "18.3.1"
+        "next": "16.1.6",
+        "react": "19.2.4",
+        "react-dom": "19.2.4"
     },
     "devDependencies": {
         "@types/node": "24.10.9",
-        "@types/react": "18.3.27",
-        "@types/react-dom": "18.3.7",
-        "eslint": "8.57.1",
-        "eslint-config-next": "14.2.33",
+        "@types/react": "19.2.10",
+        "@types/react-dom": "19.2.3",
+        "eslint": "9.39.2",
+        "eslint-config-next": "16.1.6",
         "typescript": "file:../../node_modules/typescript"
-    },
-    "overrides": {
-        "glob": "10.5.0",
-        "js-yaml": "4.1.1"
     }
 }

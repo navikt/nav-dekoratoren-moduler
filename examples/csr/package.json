@@ -6,28 +6,27 @@
     "scripts": {
         "dev": "vite --force",
         "build": "tsc && vite build",
-        "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+        "lint": "eslint src && tsc --noEmit",
         "preview": "vite preview"
     },
     "dependencies": {
         "@navikt/nav-dekoratoren-moduler": "file:../../",
-        "react": "18.3.1",
-        "react-dom": "18.3.1"
+        "react": "19.2.4",
+        "react-dom": "19.2.4"
     },
     "devDependencies": {
-        "@types/react": "18.3.27",
-        "@types/react-dom": "18.3.7",
-        "@typescript-eslint/eslint-plugin": "5.62.0",
-        "@typescript-eslint/parser": "5.62.0",
+        "@eslint/js": "9.39.2",
+        "@types/react": "19.2.10",
+        "@types/react-dom": "19.2.3",
+        "@typescript-eslint/eslint-plugin": "8.54.0",
+        "@typescript-eslint/parser": "8.54.0",
         "@vitejs/plugin-react": "5.1.2",
-        "eslint": "8.57.1",
-        "eslint-plugin-react-hooks": "4.6.2",
-        "eslint-plugin-react-refresh": "0.3.5",
+        "eslint": "9.39.2",
+        "eslint-plugin-react": "7.37.5",
+        "eslint-plugin-react-hooks": "7.0.1",
+        "eslint-plugin-react-refresh": "0.4.26",
+        "globals": "17.2.0",
         "typescript": "file:../../node_modules/typescript",
-        "vite": "5.4.17"
-    },
-    "overrides": {
-        "esbuild": "0.25.12",
-        "js-yaml": "4.1.1"
+        "vite": "7.3.1"
     }
 }
