@@ -21,8 +21,6 @@ import {
     DecoratorEnvProps,
     DecoratorFetchProps,
 } from "../common/common-types";
-import { AmplitudeParams, getAmplitudeInstance, logAmplitudeEvent } from "./functions/amplitude";
-import { AmplitudeEvent, AnalyticsEvent } from "./events";
 import { AnalyticsParams, getAnalyticsInstance, logAnalyticsEvent } from "./functions/analytics";
 
 export {
@@ -34,9 +32,7 @@ export {
     getParams,
     injectDecoratorClientSide,
     openChatbot,
-    logAmplitudeEvent,
     logAnalyticsEvent,
-    getAmplitudeInstance,
     getAnalyticsInstance,
     awaitNavWebStorage as awaitDecoratorData,
     isStorageKeyAllowed,
@@ -51,10 +47,10 @@ export {
 export type {
     DecoratorParams,
     DecoratorLocale,
-    AmplitudeParams,
     DecoratorEnvProps,
     DecoratorFetchProps,
-    AmplitudeEvent,
-    AnalyticsEvent,
     AnalyticsParams,
 };
+
+// Re-export types from @navikt/analytics-types for convenience
+export type * from "@navikt/analytics-types";
