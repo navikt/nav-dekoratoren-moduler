@@ -52,7 +52,7 @@
         "jsdom": "Jest 30 requires v26. v27+ has ESM-only deps incompatible with Jest CommonJS."
     },
     "devDependencies": {
-        "@eslint/js": "9.39.2",
+        "@eslint/js": "10.0.1",
         "@rollup/plugin-terser": "0.4.4",
         "@rollup/plugin-typescript": "12.3.0",
         "@types/jest": "30.0.0",
