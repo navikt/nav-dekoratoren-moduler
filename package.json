@@ -1,6 +1,7 @@
 {
     "name": "@navikt/nav-dekoratoren-moduler",
     "version": "3.6.2",
+    "packageManager": "pnpm@10.30.0+sha512.2b5753de015d480eeb88f5b5b61e0051f05b4301808a82ec8b840c9d2adf7748eb352c83f5c1593ca703ff1017295bc3fdd3119abb9686efc96b9fcb18200937",
     "description": "Moduler til nav-dekoratoren",
     "author": "NAVIKT",
     "license": "MIT",
@@ -12,20 +13,20 @@
         "node": "24.x"
     },
     "scripts": {
-        "start": "npm-run-all --parallel start:*",
+        "start": "pnpm run start:csr & pnpm run start:ssr",
         "start:csr": "rollup -c rollup.config.csr.mjs -w",
         "start:ssr": "rollup -c rollup.config.ssr.mjs -w",
-        "build": "npm-run-all --parallel build:*",
+        "build": "pnpm run build:csr & pnpm run build:ssr & wait",
         "build:csr": "rollup -c rollup.config.csr.mjs",
         "build:ssr": "rollup -c rollup.config.ssr.mjs",
-        "lint": "npm run lint:moduler && npm run lint:example-csr && npm run lint:example-next",
+        "lint": "pnpm run lint:moduler && pnpm run lint:example-csr && pnpm run lint:example-next",
         "lint:moduler": "eslint src/ && tsc --noEmit",
-        "lint:example-csr": "npm run lint --prefix examples/csr",
-        "lint:example-next": "npm run lint --prefix examples/next-app-router",
+        "lint:example-csr": "pnpm -C examples/csr run lint",
+        "lint:example-next": "pnpm -C examples/next-app-router run lint",
         "test": "jest",
         "prepare": "husky",
-        "predeploy": "cd example && npm install && npm run build",
-        "publish:beta": "npm run build && npm version prerelease --preid beta && npm publish --access public --tag beta"
+        "predeploy": "cd example && pnpm install && pnpm run build",
+        "publish:beta": "pnpm run build && npm version prerelease --preid beta && npm publish --access public --tag beta"
     },
     "files": [
         "csr",
@@ -73,7 +74,6 @@
         "jest-watch-typeahead": "3.0.1",
         "jsdom": "26.1.0",
         "mock-fs": "5.5.0",
-        "npm-run-all": "4.1.5",
         "prettier": "3.8.1",
         "rollup": "4.57.1",
         "rollup-plugin-dts": "6.3.0",
