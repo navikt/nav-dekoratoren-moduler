@@ -17,6 +17,9 @@ importers:
       react-dom:
         specifier: 19.2.4
         version: 19.2.4(react@19.2.4)
+      scheduler:
+        specifier: 0.27.0
+        version: 0.27.0
     devDependencies:
       '@eslint/js':
         specifier: 9.39.2

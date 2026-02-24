@@ -23,5 +23,11 @@
         "eslint": "9.39.2",
         "eslint-config-next": "16.1.6",
         "typescript": "file:../../node_modules/typescript"
+    },
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "sharp",
+            "unrs-resolver"
+        ]
     }
 }

@@ -13,10 +13,10 @@
         "node": "24.x"
     },
     "scripts": {
-        "start": "pnpm run start:csr & pnpm run start:ssr",
+        "start": "pnpm run --parallel \"/^start:.*/\"",
         "start:csr": "rollup -c rollup.config.csr.mjs -w",
         "start:ssr": "rollup -c rollup.config.ssr.mjs -w",
-        "build": "pnpm run build:csr & pnpm run build:ssr & wait",
+        "build": "pnpm run --parallel \"/^build:.*/\"",
         "build:csr": "rollup -c rollup.config.csr.mjs",
         "build:ssr": "rollup -c rollup.config.ssr.mjs",
         "lint": "pnpm run lint:moduler && pnpm run lint:example-csr && pnpm run lint:example-next",
