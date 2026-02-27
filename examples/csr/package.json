@@ -2,6 +2,7 @@
     "name": "example-ts",
     "private": true,
     "version": "0.0.0",
+    "packageManager": "pnpm@10.30.0+sha512.2b5753de015d480eeb88f5b5b61e0051f05b4301808a82ec8b840c9d2adf7748eb352c83f5c1593ca703ff1017295bc3fdd3119abb9686efc96b9fcb18200937",
     "type": "module",
     "scripts": {
         "dev": "vite --force",
@@ -12,7 +13,8 @@
     "dependencies": {
         "@navikt/nav-dekoratoren-moduler": "file:../../",
         "react": "19.2.4",
-        "react-dom": "19.2.4"
+        "react-dom": "19.2.4",
+        "scheduler": "0.27.0"
     },
     "devDependencies": {
         "@eslint/js": "9.39.2",
@@ -28,5 +30,10 @@
         "globals": "17.2.0",
         "typescript": "file:../../node_modules/typescript",
         "vite": "7.3.1"
+    },
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "esbuild"
+        ]
     }
 }
