@@ -41,7 +41,7 @@ jobs:
           git config --global user.email '${{ github.actor }}@users.noreply.github.com'
           echo "VERSION_TAG=$(npm version ${{ github.event.inputs.releaseType }})" >> $GITHUB_ENV
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --filter .
         env:
             NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Lint all packages

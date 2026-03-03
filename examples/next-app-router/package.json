@@ -10,24 +10,18 @@
         "lint": "eslint src && tsc --noEmit"
     },
     "dependencies": {
-        "@navikt/nav-dekoratoren-moduler": "file:../../",
+        "@navikt/nav-dekoratoren-moduler": "workspace:*",
         "html-react-parser": "5.2.7",
         "next": "16.1.6",
-        "react": "19.2.4",
-        "react-dom": "19.2.4"
+        "react": "catalog:",
+        "react-dom": "catalog:"
     },
     "devDependencies": {
-        "@types/node": "24.10.9",
-        "@types/react": "19.2.10",
-        "@types/react-dom": "19.2.3",
-        "eslint": "9.39.2",
+        "@types/node": "catalog:",
+        "@types/react": "catalog:",
+        "@types/react-dom": "catalog:",
+        "eslint": "catalog:",
         "eslint-config-next": "16.1.6",
-        "typescript": "file:../../node_modules/typescript"
-    },
-    "pnpm": {
-        "onlyBuiltDependencies": [
-            "sharp",
-            "unrs-resolver"
-        ]
+        "typescript": "catalog:"
     }
 }
