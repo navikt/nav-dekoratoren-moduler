@@ -3,11 +3,11 @@ import htmlReactParser, {
     attributesToProps,
     DOMNode,
     domToReact,
+    Element,
     HTMLReactParserOptions,
 } from "html-react-parser";
 import React, { FunctionComponent } from "react";
 import { getDecoratorElements } from "./decorator-elements-service";
-import { ElementType } from "domelementtype";
 
 // @ts-expect-error Property 'default' exists on type
 const parse = htmlReactParser.default as typeof htmlReactParser;
@@ -23,7 +23,7 @@ export type DecoratorComponentsReact = {
 
 const scriptReplacer = (ScriptLoader: React.FunctionComponent): HTMLReactParserOptions["replace"] =>
     function ScriptReplacer(domNode) {
-        if (domNode.type === ElementType.Script) {
+        if (domNode instanceof Element && domNode.name === "script") {
             return (
                 <ScriptLoader {...attributesToProps(domNode.attribs)}>
                     {domToReact(domNode.children as DOMNode[])}
