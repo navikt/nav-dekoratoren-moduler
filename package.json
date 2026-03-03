@@ -53,7 +53,7 @@
         "jsdom": "Jest 30 requires v26. v27+ has ESM-only deps incompatible with Jest CommonJS."
     },
     "dependencies": {
-        "@navikt/analytics-types": "0.0.6",
+        "@navikt/analytics-types": "0.0.7",
         "js-cookie": "3.0.5"
     },
     "devDependencies": {
