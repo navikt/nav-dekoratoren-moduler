@@ -1,9 +1,13 @@
+import resolve from "@rollup/plugin-node-resolve";
 import typescript from "@rollup/plugin-typescript";
 import { dts } from "rollup-plugin-dts";
 
 import pkg from "./package.json" with { type: "json" };
 
-const deps = Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies });
+const deps = Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies }).filter(
+    // Excluded so its runtime values are bundled rather than treated as an external require()
+    (dep) => dep !== "@navikt/analytics-types",
+);
 
 export default [
     {
@@ -19,6 +23,7 @@ export default [
             },
         },
         plugins: [
+            resolve(),
             typescript({
                 compilerOptions: {
                     declaration: false,

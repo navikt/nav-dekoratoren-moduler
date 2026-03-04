@@ -52,5 +52,6 @@ export type {
     AnalyticsParams,
 };
 
-// Re-export types from @navikt/analytics-types for convenience
+// Re-export from @navikt/analytics-types for convenience
+export { Events } from "@navikt/analytics-types";
 export type * from "@navikt/analytics-types";
