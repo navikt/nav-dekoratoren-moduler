@@ -1,6 +1,6 @@
 import react from "eslint-plugin-react";
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
-import jest from "eslint-plugin-jest";
+import vitest from "@vitest/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
 import js from "@eslint/js";
 import globals from "globals";
@@ -15,7 +15,7 @@ export default [
         plugins: {
             react,
             "@typescript-eslint": typescriptEslint,
-            jest,
+            vitest,
         },
 
         languageOptions: {
@@ -28,7 +28,8 @@ export default [
             globals: {
                 ...globals.browser,
                 ...globals.node,
-                ...jest.environments.globals.globals,
+                ...vitest.environments.env.globals,
+                fetchMock: "readonly",
                 NodeJS: "readonly",
             },
         },

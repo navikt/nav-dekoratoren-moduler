@@ -1,4 +1,4 @@
-import fetchMock from "jest-fetch-mock";
+import { vi } from "vitest";
 import { SsrResponse } from "./fetch-decorator-elements";
 import { clearDecoratorElementsState, getDecoratorElements } from "./decorator-elements-service";
 import { getCsrElements } from "../../common/csr-elements";
@@ -28,15 +28,15 @@ describe("Get decorator elements", () => {
         clearDecoratorElementsState();
         clearDecoratorWatcherState();
         fetchMock.resetMocks();
-        jest.useRealTimers();
+        vi.useRealTimers();
     });
 
     afterEach(() => {
         clearDecoratorElementsState();
         clearDecoratorWatcherState();
-        jest.clearAllTimers();
-        jest.clearAllMocks();
-        jest.useRealTimers();
+        vi.clearAllTimers();
+        vi.clearAllMocks();
+        vi.useRealTimers();
     });
 
     test("Should return SSR elements on a valid response", async () => {
@@ -83,8 +83,6 @@ describe("Get decorator elements", () => {
         await getDecoratorElements({ env: "prod" });
         await getDecoratorElements({ env: "prod" });
 
-        console.log(fetchMock.mock.calls);
-
         const numSsrCalls = fetchMock.mock.calls
             .flat()
             .filter((url) => typeof url === "string" && url.endsWith("/ssr")).length;
@@ -92,31 +90,28 @@ describe("Get decorator elements", () => {
         expect(numSsrCalls).toEqual(1);
     });
 
-    test("Should not return stale version after new version is available", (done) => {
-        const newVersionCallback = jest.fn(async () => {
-            const newVersionRes = await getDecoratorElements({ env: "prod" });
-
-            expect(newVersionRes.DECORATOR_HEADER).toEqual(validResponseNew.header);
-            done();
-        });
-
-        jest.useFakeTimers();
+    test("Should not return stale version after new version is available", async () => {
+        vi.useFakeTimers();
         fetchMock.mockResponse(async () => JSON.stringify(validResponse));
 
-        getDecoratorElements({ env: "prod" }).then(() => {
-            fetchMock.mockResponse(async (req) => {
-                return JSON.stringify(
-                    req.url.endsWith("/api/version")
-                        ? {
-                              latestVersion: "version2",
-                          }
-                        : validResponseNew,
-                );
-            });
+        await getDecoratorElements({ env: "prod" });
 
-            addDecoratorUpdateListener({ env: "prod" }, newVersionCallback);
-
-            jest.runOnlyPendingTimers();
+        fetchMock.mockResponse(async (req) => {
+            return JSON.stringify(
+                req.url.endsWith("/api/version")
+                    ? {
+                          latestVersion: "version2",
+                      }
+                    : validResponseNew,
+            );
         });
+
+        const newVersionCallback = vi.fn();
+        await addDecoratorUpdateListener({ env: "prod" }, newVersionCallback);
+        await vi.runOnlyPendingTimersAsync();
+
+        const newVersionRes = await getDecoratorElements({ env: "prod" });
+        expect(newVersionCallback).toHaveBeenCalled();
+        expect(newVersionRes.DECORATOR_HEADER).toEqual(validResponseNew.header);
     });
 });

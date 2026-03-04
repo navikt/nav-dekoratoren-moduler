@@ -1,7 +1,6 @@
 {
     "compilerOptions": {
         "outDir": "lib",
-        "rootDir": "src",
         "module": "esnext",
         "lib": ["dom", "esnext"],
         "moduleResolution": "node",
@@ -16,8 +15,8 @@
         "forceConsistentCasingInFileNames": true,
         "resolveJsonModule": true,
         "isolatedModules": true,
-        "noEmit": true
+        "noEmit": true,
+        "types": ["vitest/globals"]
     },
-    "include": ["src"],
-    "exclude": ["src/**/*.test.ts"]
+    "include": ["src", "vitest.setup.ts"],
 }
