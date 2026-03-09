@@ -24,9 +24,10 @@ export default [
                     rootDir: undefined,
                 },
                 include: ["src/common/**/*.(ts|tsx)", "src/ssr/**/*.(ts|tsx)"],
+                exclude: ["**/*.test.ts"],
             }),
         ],
-        external: ["fs", ...deps],
+        external: ["fs", "react/jsx-runtime", ...deps],
     },
     {
         input: "src/ssr/index.tsx",

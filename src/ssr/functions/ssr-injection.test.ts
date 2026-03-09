@@ -1,4 +1,3 @@
-import fetchMock from "jest-fetch-mock";
 import fsMock from "mock-fs";
 import { SsrResponse } from "./fetch-decorator-elements";
 import { JSDOM } from "jsdom";

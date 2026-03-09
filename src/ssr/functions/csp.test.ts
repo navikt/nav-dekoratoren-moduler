@@ -1,4 +1,3 @@
-import fetchMock from "jest-fetch-mock";
 import { buildCspHeader } from "./csp";
 
 describe("CSP header builder function", () => {
