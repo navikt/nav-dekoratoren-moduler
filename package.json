@@ -76,12 +76,5 @@
         "typescript": "catalog:",
         "vitest": "4.0.18",
         "vitest-fetch-mock": "0.4.5"
-    },
-    "pnpm": {
-        "onlyBuiltDependencies": [
-            "esbuild",
-            "sharp",
-            "unrs-resolver"
-        ]
     }
 }
