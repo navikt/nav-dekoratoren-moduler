@@ -1,16 +1,21 @@
 packages:
-  - 'examples/*'
+    - examples/*
 
 catalog:
-  '@eslint/js': 9.39.2
-  '@types/node': 24.10.13
-  '@types/react': 19.2.14
-  '@types/react-dom': 19.2.3
-  '@typescript-eslint/eslint-plugin': 8.55.0
-  '@typescript-eslint/parser': 8.55.0
-  eslint: 9.39.2
-  eslint-plugin-react: 7.37.5
-  globals: 17.3.0
-  react: 19.2.4
-  react-dom: 19.2.4
-  typescript: 5.9.3
+    "@eslint/js": 9.39.4
+    "@types/node": 24.12.0
+    "@types/react": 19.2.14
+    "@types/react-dom": 19.2.3
+    "@typescript-eslint/eslint-plugin": 8.56.1
+    "@typescript-eslint/parser": 8.56.1
+    eslint: 9.39.4
+    eslint-plugin-react: 7.37.5
+    globals: 17.4.0
+    react: 19.2.4
+    react-dom: 19.2.4
+    typescript: 5.9.3
+
+minimumReleaseAge: 4320
+
+minimumReleaseAgeExclude:
+    - "@navikt/*"
