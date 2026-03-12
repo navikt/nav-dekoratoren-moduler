@@ -1,29 +1,25 @@
-import fetchMock from "jest-fetch-mock";
+import { vi } from "vitest";
 import {
     addDecoratorUpdateListener,
     clearDecoratorWatcherState,
 } from "./decorator-version-watcher";
 
 describe("Version watcher", () => {
-    jest.useFakeTimers();
-
     beforeEach(() => {
+        vi.useFakeTimers();
         fetchMock.resetMocks();
         clearDecoratorWatcherState();
     });
 
     afterEach(() => {
         clearDecoratorWatcherState();
-        jest.clearAllTimers();
-        jest.clearAllMocks();
-        jest.useRealTimers();
+        vi.clearAllTimers();
+        vi.clearAllMocks();
+        vi.useRealTimers();
     });
 
-    test("Should get a callback on new decorator version", (done) => {
-        const callback = jest.fn((versionId: string) => {
-            expect(versionId).toBe("version2");
-            done();
-        });
+    test("Should get a callback on new decorator version", async () => {
+        const callback = vi.fn();
 
         fetchMock.mockResponseOnce(
             JSON.stringify({
@@ -31,14 +27,16 @@ describe("Version watcher", () => {
             }),
         );
 
-        addDecoratorUpdateListener({ env: "prod" }, callback).then(() => {
-            fetchMock.mockResponseOnce(
-                JSON.stringify({
-                    latestVersion: "version2",
-                }),
-            );
+        await addDecoratorUpdateListener({ env: "prod" }, callback);
 
-            jest.runOnlyPendingTimers();
-        });
+        fetchMock.mockResponseOnce(
+            JSON.stringify({
+                latestVersion: "version2",
+            }),
+        );
+
+        await vi.runOnlyPendingTimersAsync();
+
+        expect(callback).toHaveBeenCalledWith("version2");
     });
 });

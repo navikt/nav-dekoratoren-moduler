@@ -20,6 +20,7 @@ export default [
             exports: "named",
             globals: {
                 ["react"]: "React",
+                ["js-cookie"]: "Cookies",
             },
         },
         plugins: [
@@ -30,8 +31,10 @@ export default [
                     outDir: "csr",
                     rootDirs: ["src/csr", "src/common"],
                     rootDir: undefined,
+                    types: ["node"],
                 },
                 include: ["src/common/**/*.(ts|tsx)", "src/csr/**/*.(ts|tsx)"],
+                exclude: ["**/*.test.ts"],
             }),
         ],
         external: deps,
