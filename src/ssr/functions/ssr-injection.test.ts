@@ -69,6 +69,15 @@ describe("SSR injection", () => {
         const scriptsPos = html.indexOf(response.scripts);
         const bodyClosePos = html.indexOf("</body>");
 
+        expect(headAssetsPos).toBeGreaterThanOrEqual(0);
+        expect(headClosePos).toBeGreaterThanOrEqual(0);
+        expect(bodyOpenPos).toBeGreaterThanOrEqual(0);
+        expect(headerPos).toBeGreaterThanOrEqual(0);
+        expect(pageContentPos).toBeGreaterThanOrEqual(0);
+        expect(footerPos).toBeGreaterThanOrEqual(0);
+        expect(scriptsPos).toBeGreaterThanOrEqual(0);
+        expect(bodyClosePos).toBeGreaterThanOrEqual(0);
+
         // head assets injected before </head>
         expect(headAssetsPos).toBeLessThan(headClosePos);
         // header injected immediately after <body>
