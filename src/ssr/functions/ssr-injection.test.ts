@@ -149,6 +149,14 @@ describe("SSR injection", () => {
             .rejects.toThrow("Could not find <body> in HTML template");
     });
 
+    test("Should throw if </body> is missing", async () => {
+        const brokenHtml = baseHtml.replace("</body>", "");
+        fsMock({ "app/index.html": brokenHtml });
+
+        await expect(injectDecoratorServerSide({ filePath: "app/index.html", env: "prod" }))
+            .rejects.toThrow("Could not find </body> in HTML template");
+    });
+
     test("Should inject decorator into document", async () => {
         const dom = new JSDOM(baseHtml);
 
