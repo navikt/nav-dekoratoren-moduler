@@ -99,6 +99,44 @@ describe("SSR injection", () => {
         expect(html.indexOf(response.header)).toBeGreaterThan(html.indexOf('<body class="my-app" data-theme="dark">'));
     });
 
+    test("Should be case-insensitive for closing tags", async () => {
+        const upperCaseHtml = baseHtml.replace("</head>", "</HEAD>").replace("</body>", "</BODY>");
+        fsMock({ "app/index.html": upperCaseHtml });
+
+        const html = await injectDecoratorServerSide({ filePath: "app/index.html", env: "prod" });
+
+        expect(html).toContain(response.headAssets);
+        expect(html).toContain(response.header);
+        expect(html).toContain(response.footer);
+        expect(html).toContain(response.scripts);
+    });
+
+    test("Should handle whitespace inside closing tags", async () => {
+        const spacedHtml = baseHtml.replace("</head>", "</head >").replace("</body>", "</body >");
+        fsMock({ "app/index.html": spacedHtml });
+
+        const html = await injectDecoratorServerSide({ filePath: "app/index.html", env: "prod" });
+
+        expect(html).toContain(response.headAssets);
+        expect(html).toContain(response.footer);
+    });
+
+    test("Should throw if </head> is missing", async () => {
+        const brokenHtml = baseHtml.replace("</head>", "");
+        fsMock({ "app/index.html": brokenHtml });
+
+        await expect(injectDecoratorServerSide({ filePath: "app/index.html", env: "prod" }))
+            .rejects.toThrow("Could not find </head> in HTML template");
+    });
+
+    test("Should throw if <body> is missing", async () => {
+        const brokenHtml = baseHtml.replace("<body>", "").replace("</body>", "");
+        fsMock({ "app/index.html": brokenHtml });
+
+        await expect(injectDecoratorServerSide({ filePath: "app/index.html", env: "prod" }))
+            .rejects.toThrow("Could not find <body> in HTML template");
+    });
+
     test("Should inject decorator into document", async () => {
         const dom = new JSDOM(baseHtml);
 
