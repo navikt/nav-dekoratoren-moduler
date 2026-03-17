@@ -121,6 +121,18 @@ describe("SSR injection", () => {
         expect(html).toContain(response.footer);
     });
 
+    test("Should handle special regex replacement characters in injected content", async () => {
+        fetchMock.mockResponse(JSON.stringify({
+            ...response,
+            headAssets: '<script>const x = $& || 0;</script>',
+        }));
+        fsMock({ "app/index.html": baseHtml });
+
+        const html = await injectDecoratorServerSide({ filePath: "app/index.html", env: "prod" });
+
+        expect(html).toContain('<script>const x = $& || 0;</script>');
+    });
+
     test("Should throw if </head> is missing", async () => {
         const brokenHtml = baseHtml.replace("</head>", "");
         fsMock({ "app/index.html": brokenHtml });

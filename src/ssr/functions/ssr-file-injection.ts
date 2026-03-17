@@ -7,7 +7,7 @@ type InjectWithFile = DecoratorFetchProps & {
 };
 
 const inject = (html: string, tag: RegExp, tagName: string, content: string, position: "before" | "after"): string => {
-    const result = html.replace(tag, position === "before" ? `${content}$&` : `$&${content}`);
+    const result = html.replace(tag, (match) => position === "before" ? `${content}${match}` : `${match}${content}`);
     if (result === html) throw new Error(`Could not find ${tagName} in HTML template`);
     return result;
 };
@@ -21,7 +21,7 @@ export const injectDecoratorServerSide = async ({
 
     return [
         (h: string) => inject(h, /<\/head\s*>/i, "</head>", elements.DECORATOR_HEAD_ASSETS, "before"),
-        (h: string) => inject(h, /<body(?:\s[^>]*)?\s*>/i, "<body>", elements.DECORATOR_HEADER, "after"),
+        (h: string) => inject(h, /<body[^>]*>/i, "<body>", elements.DECORATOR_HEADER, "after"),
         (h: string) => inject(h, /<\/body\s*>/i, "</body>", `${elements.DECORATOR_FOOTER}${elements.DECORATOR_SCRIPTS}`, "before"),
     ].reduce((acc, fn) => fn(acc), html);
 };
