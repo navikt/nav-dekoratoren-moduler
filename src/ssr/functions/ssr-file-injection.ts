@@ -23,7 +23,7 @@ export const injectDecoratorServerSide = async ({
     filePath,
     ...props
 }: InjectWithFile): Promise<string> => {
-    const html = fs.readFileSync(filePath).toString();
+    const html = fs.readFileSync(filePath, "utf8");
     const elements = await getDecoratorElements(props);
 
     return [
