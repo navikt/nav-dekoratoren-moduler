@@ -45,9 +45,6 @@
     "peerDependenciesMeta": {
         "react": {
             "optional": true
-        },
-        "html-react-parser": {
-            "optional": true
         }
     },
     "dependencies": {

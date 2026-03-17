@@ -7,9 +7,8 @@ type InjectWithFile = DecoratorFetchProps & {
 };
 
 const inject = (html: string, tag: RegExp, tagName: string, content: string, position: "before" | "after"): string => {
-    const result = html.replace(tag, (match) => position === "before" ? `${content}${match}` : `${match}${content}`);
-    if (result === html) throw new Error(`Could not find ${tagName} in HTML template`);
-    return result;
+    if (html.search(tag) === -1) throw new Error(`Could not find ${tagName} in HTML template`);
+    return html.replace(tag, (match) => position === "before" ? `${content}${match}` : `${match}${content}`);
 };
 
 /**
