@@ -1,6 +1,5 @@
 import fs from "fs";
-import { JSDOM } from "jsdom";
-import { injectDecoratorServerSideDocument } from "./ssr-document-injection";
+import { getDecoratorElements } from "./decorator-elements-service";
 import { DecoratorFetchProps } from "../../common/common-types";
 
 type InjectWithFile = DecoratorFetchProps & {
@@ -11,13 +10,11 @@ export const injectDecoratorServerSide = async ({
     filePath,
     ...props
 }: InjectWithFile): Promise<string> => {
-    const file = fs.readFileSync(filePath).toString();
-    const dom = new JSDOM(file);
+    const html = fs.readFileSync(filePath).toString();
+    const elements = await getDecoratorElements(props);
 
-    await injectDecoratorServerSideDocument({
-        ...props,
-        document: dom.window.document,
-    });
-
-    return dom.serialize();
+    return html
+        .replace("</head>", `${elements.DECORATOR_HEAD_ASSETS}</head>`)
+        .replace(/(<body(?:\s[^>]*)?>)/, `$1${elements.DECORATOR_HEADER}`)
+        .replace("</body>", `${elements.DECORATOR_FOOTER}${elements.DECORATOR_SCRIPTS}</body>`);
 };

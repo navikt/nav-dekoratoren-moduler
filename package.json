@@ -39,9 +39,6 @@
         "registry": "https://npm.pkg.github.com"
     },
     "peerDependencies": {
-        "csp-header": ">=5.x",
-        "html-react-parser": ">=5.x",
-        "jsdom": ">=16.x",
         "react": ">=17.x"
     },
     "peerDependenciesMeta": {
@@ -50,7 +47,9 @@
         }
     },
     "dependencies": {
-        "js-cookie": "3.0.5"
+        "js-cookie": "3.0.5",
+        "csp-header": "6.3.0",
+        "html-react-parser": "5.2.17"
     },
     "devDependencies": {
         "@eslint/js": "catalog:",

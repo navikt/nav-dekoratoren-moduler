@@ -51,8 +51,43 @@ describe("SSR injection", () => {
         expect(htmlWithDecorator).toContain(response.headAssets);
         expect(htmlWithDecorator).toContain(response.header);
         expect(htmlWithDecorator).toContain(response.footer);
-        expect(htmlWithDecorator).toContain(response.scripts);        
+        expect(htmlWithDecorator).toContain(response.scripts);
         expect(htmlWithDecorator).toContain("<!DOCTYPE html>");
+    });
+
+    test("Should inject elements in correct positions", async () => {
+        fsMock({ "app/index.html": baseHtml });
+
+        const html = await injectDecoratorServerSide({ filePath: "app/index.html", env: "prod" });
+
+        const headAssetsPos = html.indexOf(response.headAssets);
+        const headClosePos = html.indexOf("</head>");
+        const bodyOpenPos = html.indexOf("<body>");
+        const headerPos = html.indexOf(response.header);
+        const pageContentPos = html.indexOf("<!-- page content -->");
+        const footerPos = html.indexOf(response.footer);
+        const scriptsPos = html.indexOf(response.scripts);
+        const bodyClosePos = html.indexOf("</body>");
+
+        // head assets injected before </head>
+        expect(headAssetsPos).toBeLessThan(headClosePos);
+        // header injected immediately after <body>
+        expect(bodyOpenPos).toBeLessThan(headerPos);
+        expect(headerPos).toBeLessThan(pageContentPos);
+        // footer and scripts injected before </body>, footer first
+        expect(pageContentPos).toBeLessThan(footerPos);
+        expect(footerPos).toBeLessThan(scriptsPos);
+        expect(scriptsPos).toBeLessThan(bodyClosePos);
+    });
+
+    test("Should handle body tag with attributes", async () => {
+        const htmlWithBodyAttrs = baseHtml.replace("<body>", '<body class="my-app" data-theme="dark">');
+        fsMock({ "app/index.html": htmlWithBodyAttrs });
+
+        const html = await injectDecoratorServerSide({ filePath: "app/index.html", env: "prod" });
+
+        expect(html).toContain('<body class="my-app" data-theme="dark">');
+        expect(html.indexOf(response.header)).toBeGreaterThan(html.indexOf('<body class="my-app" data-theme="dark">'));
     });
 
     test("Should inject decorator into document", async () => {
