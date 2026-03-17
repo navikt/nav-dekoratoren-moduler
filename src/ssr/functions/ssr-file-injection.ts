@@ -12,6 +12,13 @@ const inject = (html: string, tag: RegExp, tagName: string, content: string, pos
     return result;
 };
 
+/**
+ * Injects the NAV decorator into a static HTML template file.
+ *
+ * The template must be a fully-formed HTML document containing
+ * `</head>`, `<body>`, and `</body>` tags. If any of these are
+ * missing, an error is thrown.
+ */
 export const injectDecoratorServerSide = async ({
     filePath,
     ...props
