@@ -16,7 +16,7 @@ catalog:
     typescript: 5.9.3
 
 overrides:
-    flatted: "^3.4.1"
+    flatted: "^3.4.2"
 
 onlyBuiltDependencies:
     - esbuild
