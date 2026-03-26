@@ -1,23 +1,33 @@
 import fs from "fs";
-import { JSDOM } from "jsdom";
-import { injectDecoratorServerSideDocument } from "./ssr-document-injection";
+import { getDecoratorElements } from "./decorator-elements-service";
 import { DecoratorFetchProps } from "../../common/common-types";
 
 type InjectWithFile = DecoratorFetchProps & {
     filePath: string;
 };
 
+const inject = (html: string, tag: RegExp, tagName: string, content: string, position: "before" | "after"): string => {
+    if (html.search(tag) === -1) throw new Error(`Could not find ${tagName} in HTML template`);
+    return html.replace(tag, (match) => position === "before" ? `${content}${match}` : `${match}${content}`);
+};
+
+/**
+ * Injects the NAV decorator into a static HTML template file.
+ *
+ * The template must be a fully-formed HTML document containing
+ * `</head>`, `<body>`, and `</body>` tags. If any of these are
+ * missing, an error is thrown.
+ */
 export const injectDecoratorServerSide = async ({
     filePath,
     ...props
 }: InjectWithFile): Promise<string> => {
-    const file = fs.readFileSync(filePath).toString();
-    const dom = new JSDOM(file);
+    const html = fs.readFileSync(filePath, "utf8");
+    const elements = await getDecoratorElements(props);
 
-    await injectDecoratorServerSideDocument({
-        ...props,
-        document: dom.window.document,
-    });
-
-    return dom.serialize();
+    return [
+        (h: string) => inject(h, /<\/head\s*>/i, "</head>", elements.DECORATOR_HEAD_ASSETS, "before"),
+        (h: string) => inject(h, /<body[^>]*>/i, "<body>", elements.DECORATOR_HEADER, "after"),
+        (h: string) => inject(h, /<\/body\s*>/i, "</body>", `${elements.DECORATOR_FOOTER}${elements.DECORATOR_SCRIPTS}`, "before"),
+    ].reduce((acc, fn) => fn(acc), html);
 };

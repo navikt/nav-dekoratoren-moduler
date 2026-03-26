@@ -51,7 +51,7 @@ importers:
   .:
     dependencies:
       csp-header:
-        specifier: '>=5.x'
+        specifier: 6.3.0
         version: 6.3.0
       html-react-parser:
         specifier: '>=5.x'
