@@ -1,16 +1,8 @@
 export type DecoratorLocale = "nb" | "nn" | "en" | "se" | "pl" | "uk" | "ru";
 
 export type DecoratorLanguageOption =
-    | {
-          url?: string;
-          locale: DecoratorLocale;
-          handleInApp: true;
-      }
-    | {
-          url: string;
-          locale: DecoratorLocale;
-          handleInApp?: false;
-      };
+    | { url?: string; locale: DecoratorLocale; handleInApp: true }
+    | { url: string; locale: DecoratorLocale; handleInApp?: false };
 
 export type DecoratorBreadcrumb = {
     url: string;
@@ -32,9 +24,7 @@ export type DecoratorFetchProps = {
     noCache?: boolean;
 } & DecoratorEnvProps;
 
-export type DecoratorUrlProps = {
-    csr?: boolean;
-} & DecoratorFetchProps;
+export type DecoratorUrlProps = { csr?: boolean } & DecoratorFetchProps;
 
 export type DecoratorParams = Partial<{
     context: "privatperson" | "arbeidsgiver" | "samarbeidspartner";
@@ -58,6 +48,7 @@ export type DecoratorParams = Partial<{
     redirectOnUserChange: boolean;
     pageType: string;
     analyticsQueryParams: string[];
+    analyticsRedactFilter: string[];
 }>;
 
 export type DecoratorElements = {
