@@ -53,8 +53,8 @@ importers:
   .:
     dependencies:
       '@navikt/analytics-types':
-        specifier: 0.0.7
-        version: 0.0.7
+        specifier: 0.0.8
+        version: 0.0.8
       csp-header:
         specifier: '>=5.x'
         version: 6.3.0
@@ -743,8 +743,8 @@ packages:
   '@napi-rs/wasm-runtime@0.2.12':
     resolution: {integrity: sha512-ZVWUcfwY4E/yPitQJl481FjFo3K22D6qF0DuFH6Y/nbnE11GY5uguDxZMGXPQ8WQ0128MXQD7TnfHyK4oWoIJQ==}
 
-  '@navikt/analytics-types@0.0.7':
-    resolution: {integrity: sha512-rwSKrTd+cN8j9JoSs7FZhAqsyluPIvw8YI+lvDxAEwFVM0M/p7lW9N625Fz0AIMxgASQ5e+sM+ixGkBclpPdpg==, tarball: https://npm.pkg.github.com/download/@navikt/analytics-types/0.0.7/5fc7a2c116b8ce4cd8ae8e9cea57788399824c25}
+  '@navikt/analytics-types@0.0.8':
+    resolution: {integrity: sha512-h+JVrGmIdEpWG2CjUI9XdW8sxG/loFj4qJTgC9xanw1CDVjGrDxia4WI19+jV+frBPGV/onP+f02fkRr33tUQw==, tarball: https://npm.pkg.github.com/download/@navikt/analytics-types/0.0.8/a7634f8854ca6d40b95ece91c0c6f5e206c3178e}
     engines: {node: '>=20.0.0', npm: '>=9.0.0'}
 
   '@next/env@16.1.6':
@@ -3225,7 +3225,7 @@ snapshots:
       '@tybys/wasm-util': 0.10.1
     optional: true
 
-  '@navikt/analytics-types@0.0.7': {}
+  '@navikt/analytics-types@0.0.8': {}
 
   '@next/env@16.1.6': {}
 

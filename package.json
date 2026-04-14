@@ -50,7 +50,7 @@
         }
     },
     "dependencies": {
-        "@navikt/analytics-types": "0.0.7",
+        "@navikt/analytics-types": "0.0.8",
         "js-cookie": "3.0.5"
     },
     "devDependencies": {
