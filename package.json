@@ -48,7 +48,7 @@
         }
     },
     "dependencies": {
-        "@navikt/analytics-types": "0.0.8",
+        "@navikt/analytics-types": "0.0.9",
         "csp-header": "6.3.1",
         "js-cookie": "3.0.5"
     },
