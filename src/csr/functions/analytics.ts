@@ -1,9 +1,9 @@
-import { AnalyticsEvent, AnalyticsEvents } from "../events";
+import type { EventName, PropertiesFor } from "@navikt/analytics-types";
 
-export type AnalyticsParams = {
+export type AnalyticsParams<TName extends EventName = EventName> = {
     origin: string;
-    eventName: string;
-    eventData?: Record<string, any>;
+    eventName: TName;
+    eventData?: PropertiesFor<TName>;
 };
 
 const waitForRetry = async () => new Promise((resolve) => setTimeout(resolve, 500));
@@ -22,17 +22,9 @@ const validateAnalyticsFunction = async (retries = 5): Promise<boolean> => {
     return validateAnalyticsFunction(retries - 1);
 };
 
-export type AutocompleteString = string & {};
-export type AnalyticsEventName = AnalyticsEvents["name"];
-export type AutocompleteEventName = AnalyticsEventName | AutocompleteString;
-
-export async function logAnalyticsEvent<TName extends AnalyticsEventName>(params: {
-    eventName: TName | AutocompleteString;
-    eventData?: TName extends AnalyticsEventName
-        ? Extract<AnalyticsEvents, { name: TName }>["properties"]
-        : Record<string, any>;
-    origin: string;
-}): Promise<any> {
+export async function logAnalyticsEvent<TName extends EventName>(
+    params: AnalyticsParams<TName>,
+): Promise<any> {
     if (typeof window === "undefined") {
         return Promise.reject("Analytics is only available in the browser");
     }
@@ -46,23 +38,12 @@ export async function logAnalyticsEvent<TName extends AnalyticsEventName>(params
     return window.dekoratorenAnalytics(params);
 }
 
-export function getAnalyticsInstance<
-    TCustomEvents extends AnalyticsEvent<string, Record<string, unknown>> = any,
->(origin: string) {
-    return <TName extends AutocompleteEventName>(
-        // Can be set to never if we want to be more strict
-        eventName: TName extends AnalyticsEventName
-            ? TName
-            : TName extends TCustomEvents["name"]
-              ? TName
-              : TName,
-        eventData?: TName extends AnalyticsEventName
-            ? Extract<AnalyticsEvents, { name: TName }>["properties"]
-            : TName extends TCustomEvents["name"]
-              ? Extract<TCustomEvents, { name: TName }>["properties"]
-              : Record<string, any>,
+export function getAnalyticsInstance(origin: string) {
+    return <TName extends EventName>(
+        eventName: TName,
+        eventData?: PropertiesFor<TName>,
     ) => {
-        return logAnalyticsEvent({
+        return logAnalyticsEvent<TName>({
             eventName,
             eventData,
             origin,
