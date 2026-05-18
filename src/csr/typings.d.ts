@@ -1,9 +1,9 @@
 import { Storage, Consent } from "./functions/storage/storageHelpers";
-import type { AnalyticsParams } from "./functions/analytics";
+import type { CustomAnalyticsParams } from "./functions/analytics";
 
 declare global {
     interface Window {
-        dekoratorenAnalytics: (params: AnalyticsParams) => Promise<any>;
+        dekoratorenAnalytics: (params: CustomAnalyticsParams) => Promise<any>;
         __DECORATOR_DATA__: any;
         webStorageController: {
             isStorageKeyAllowed: (key: string) => boolean;
