@@ -26,6 +26,9 @@ jobs:
       packages: write
 
     steps:
+      - name: Checkout branch
+        uses: actions/checkout@v6
+
       - name: Build package
         id: build
         uses: ./.github/actions/build-package

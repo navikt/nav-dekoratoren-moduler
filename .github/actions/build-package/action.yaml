@@ -17,9 +17,6 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Checkout branch
-      uses: actions/checkout@v6
-
     - name: Validate release on main
       if: inputs.publish_type == 'release' && github.ref != 'refs/heads/main'
       shell: bash
