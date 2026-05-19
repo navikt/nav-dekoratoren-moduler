@@ -1,12 +1,13 @@
-name: Publish release (main only)
+name: Publish release
+
 on:
   workflow_dispatch:
     inputs:
       releaseType:
         type: choice
         required: true
-        description: 'Release type'
-        default: 'patch'
+        description: "Release type"
+        default: "patch"
         options:
           - patch
           - minor
@@ -14,52 +15,38 @@ on:
       releaseBody:
         type: string
         required: true
-        description: 'Release description'
+        description: "Release description"
 
 jobs:
   publish:
     name: Publish to package registry
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
     permissions:
       contents: write
       packages: write
+
     steps:
-      - name: Checkout branch
-        uses: actions/checkout@v6
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v5
-      - name: Setup node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: '24'
-          registry-url: 'https://npm.pkg.github.com'
-          cache: 'pnpm'
-      - name: Bump version
-        run: |
-          git config --global user.name '${{ github.actor }}'
-          git config --global user.email '${{ github.actor }}@users.noreply.github.com'
-          echo "VERSION_TAG=$(npm version ${{ github.event.inputs.releaseType }})" >> $GITHUB_ENV
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile --filter .
-        env:
-            NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Lint all packages
-        run: pnpm run lint:moduler
-      - name: Run tests
-        run: pnpm run test
       - name: Build package
-        run: pnpm run build
+        id: build
+        uses: ./.github/actions/build-package
+        with:
+          publish_type: release
+          version_type: ${{ inputs.releaseType }}
+
       - name: Publish package
         id: publish
+        shell: bash
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Push new version tag
+
+      - name: Push version commit and tag
         if: steps.publish.outcome == 'success'
-        run: git push
+        shell: bash
+        run: git push --follow-tags
+
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ env.VERSION_TAG }}
-          body: ${{ github.event.inputs.releaseBody }}
+          tag_name: ${{ steps.build.outputs.version_tag }}
+          body: ${{ inputs.releaseBody }}

@@ -1,55 +1,42 @@
 name: Publish beta
+
 on:
-    workflow_dispatch:
-        inputs:
-            version_type:
-                description: 'Version bump: prerelease (3.6.3-beta.N), preminor (3.7.0-beta.0), premajor (4.0.0-beta.0). After preminor/premajor, use prerelease to increment beta version.'
-                required: true
-                default: 'prerelease'
-                type: choice
-                options:
-                    - prerelease
-                    - preminor
-                    - premajor
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: "Version bump: prerelease, preminor or premajor"
+        required: true
+        default: "prerelease"
+        type: choice
+        options:
+          - prerelease
+          - preminor
+          - premajor
 
 jobs:
-    publish-beta:
-        name: Publish to package registry
-        runs-on: ubuntu-latest
-        permissions:
-            contents: write
-            packages: write
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v6
-            - name: Setup pnpm
-              uses: pnpm/action-setup@v5
-            - name: Setup node.js
-              uses: actions/setup-node@v6
-              with:
-                  node-version: "24"
-                  registry-url: "https://npm.pkg.github.com"
-                  cache: "pnpm"
-            - name: Bump version
-              run: |
-                  git config --global user.name '${{ github.actor }}'
-                  git config --global user.email '${{ github.actor }}@users.noreply.github.com'
-                  npm version ${{ inputs.version_type }} --preid 'beta-${{github.head_ref || github.ref_name}}'
-            - name: Install dependencies
-              run: pnpm install --frozen-lockfile --filter .
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            - name: Lint all packages
-              run: pnpm run lint:moduler
-            - name: Run tests
-              run: pnpm run test
-            - name: Build package
-              run: pnpm run build
-            - name: Publish package
-              id: publish
-              run: npm publish --tag beta
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            - name: Push new version tag
-              if: steps.publish.outcome == 'success'
-              run: git push
+  publish-beta:
+    name: Publish beta to package registry
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - name: Build package
+        id: build
+        uses: ./.github/actions/build-package
+        with:
+          publish_type: beta
+          version_type: ${{ inputs.version_type }}
+
+      - name: Publish beta package
+        id: publish
+        shell: bash
+        run: npm publish --tag beta
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push version commit and tag
+        if: steps.publish.outcome == 'success'
+        shell: bash
+        run: git push --follow-tags
