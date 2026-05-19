@@ -21,7 +21,7 @@ import {
     DecoratorEnvProps,
     DecoratorFetchProps,
 } from "../common/common-types";
-import { AnalyticsParams, getAnalyticsInstance, logAnalyticsEvent } from "./functions/analytics";
+import { AnalyticsParams, CustomAnalyticsParams, getAnalyticsInstance, logAnalyticsCustomEvent, logAnalyticsEvent } from "./functions/analytics";
 
 export {
     setAvailableLanguages,
@@ -33,6 +33,7 @@ export {
     injectDecoratorClientSide,
     openChatbot,
     logAnalyticsEvent,
+    logAnalyticsCustomEvent,
     getAnalyticsInstance,
     awaitNavWebStorage as awaitDecoratorData,
     isStorageKeyAllowed,
@@ -50,6 +51,7 @@ export type {
     DecoratorEnvProps,
     DecoratorFetchProps,
     AnalyticsParams,
+    CustomAnalyticsParams,
 };
 
 // Re-export from @navikt/analytics-types for convenience

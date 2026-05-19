@@ -6,6 +6,12 @@ export type AnalyticsParams<TName extends EventName = EventName> = {
     eventData?: PropertiesFor<TName>;
 };
 
+export type CustomAnalyticsParams = {
+    origin: string;
+    eventName: string;
+    eventData?: Record<string, unknown>;
+};
+
 const waitForRetry = async () => new Promise((resolve) => setTimeout(resolve, 500));
 
 const validateAnalyticsFunction = async (retries = 5): Promise<boolean> => {
@@ -22,9 +28,7 @@ const validateAnalyticsFunction = async (retries = 5): Promise<boolean> => {
     return validateAnalyticsFunction(retries - 1);
 };
 
-export async function logAnalyticsEvent<TName extends EventName>(
-    params: AnalyticsParams<TName>,
-): Promise<any> {
+async function dispatchAnalyticsEvent(params: CustomAnalyticsParams): Promise<any> {
     if (typeof window === "undefined") {
         return Promise.reject("Analytics is only available in the browser");
     }
@@ -38,15 +42,21 @@ export async function logAnalyticsEvent<TName extends EventName>(
     return window.dekoratorenAnalytics(params);
 }
 
+export function logAnalyticsEvent<TName extends EventName>(params: AnalyticsParams<TName>): Promise<any> {
+    return dispatchAnalyticsEvent({ ...params, eventData: params.eventData as Record<string, unknown> | undefined });
+}
+
+export function logAnalyticsCustomEvent(params: CustomAnalyticsParams): Promise<any> {
+    return dispatchAnalyticsEvent(params);
+}
+
 export function getAnalyticsInstance(origin: string) {
-    return <TName extends EventName>(
-        eventName: TName,
-        eventData?: PropertiesFor<TName>,
-    ) => {
-        return logAnalyticsEvent<TName>({
-            eventName,
-            eventData,
-            origin,
-        });
-    };
+    function log<TName extends EventName>(eventName: TName, eventData?: PropertiesFor<TName>) {
+        return logAnalyticsEvent({ eventName, eventData, origin });
+    }
+
+    log.custom = (eventName: string, eventData?: Record<string, unknown>) =>
+        logAnalyticsCustomEvent({ eventName, eventData, origin });
+
+    return log;
 }
