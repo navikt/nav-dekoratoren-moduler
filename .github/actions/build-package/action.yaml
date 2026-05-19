@@ -36,18 +36,23 @@ runs:
 
     - name: Configure git
       shell: bash
+      env:
+        ACTOR: ${{ github.actor }}
       run: |
-        git config --global user.name "${{ github.actor }}"
-        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+        git config --global user.name "$ACTOR"
+        git config --global user.email "$ACTOR@users.noreply.github.com"
 
     - name: Bump version
       id: bump-version
       shell: bash
+      env:
+        PUBLISH_TYPE: ${{ inputs.publish_type }}
+        VERSION_TYPE: ${{ inputs.version_type }}
       run: |
-        if [ "${{ inputs.publish_type }}" = "beta" ]; then
-          VERSION_TAG=$(npm version "${{ inputs.version_type }}" --preid beta)
+        if [ "$PUBLISH_TYPE" = "beta" ]; then
+          VERSION_TAG=$(npm version "$VERSION_TYPE" --preid beta)
         else
-          VERSION_TAG=$(npm version "${{ inputs.version_type }}")
+          VERSION_TAG=$(npm version "$VERSION_TYPE")
         fi
 
         echo "version_tag=$VERSION_TAG" >> "$GITHUB_OUTPUT"
