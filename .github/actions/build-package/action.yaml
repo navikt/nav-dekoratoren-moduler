@@ -1,0 +1,76 @@
+name: Build package
+description: Bumps version, installs dependencies, lints, tests and builds package
+
+inputs:
+  publish_type:
+    required: true
+    description: "beta or release"
+  version_type:
+    required: true
+    description: "Beta: prerelease, preminor, premajor. Release: patch, minor, major"
+
+outputs:
+  version_tag:
+    description: "Created npm version tag"
+    value: ${{ steps.bump-version.outputs.version_tag }}
+
+runs:
+  using: composite
+  steps:
+    - name: Validate release on main
+      if: inputs.publish_type == 'release' && github.ref != 'refs/heads/main'
+      shell: bash
+      run: |
+        echo "Release can only be published from the main branch"
+        exit 1
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v5
+
+    - name: Setup node.js
+      uses: actions/setup-node@v6
+      with:
+        node-version: "24"
+        registry-url: "https://npm.pkg.github.com"
+        cache: "pnpm"
+
+    - name: Configure git
+      shell: bash
+      env:
+        ACTOR: ${{ github.actor }}
+      run: |
+        git config --global user.name "$ACTOR"
+        git config --global user.email "$ACTOR@users.noreply.github.com"
+
+    - name: Bump version
+      id: bump-version
+      shell: bash
+      env:
+        PUBLISH_TYPE: ${{ inputs.publish_type }}
+        VERSION_TYPE: ${{ inputs.version_type }}
+      run: |
+        if [ "$PUBLISH_TYPE" = "beta" ]; then
+          VERSION_TAG=$(npm version "$VERSION_TYPE" --preid beta)
+        else
+          VERSION_TAG=$(npm version "$VERSION_TYPE")
+        fi
+
+        echo "version_tag=$VERSION_TAG" >> "$GITHUB_OUTPUT"
+
+    - name: Install dependencies
+      shell: bash
+      run: pnpm install --frozen-lockfile --filter .
+      env:
+        NODE_AUTH_TOKEN: ${{ github.token }}
+
+    - name: Lint all packages
+      shell: bash
+      run: pnpm run lint:moduler
+
+    - name: Run tests
+      shell: bash
+      run: pnpm run test
+
+    - name: Build package
+      shell: bash
+      run: pnpm run build
