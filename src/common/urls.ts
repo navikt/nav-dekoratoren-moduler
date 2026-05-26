@@ -5,6 +5,7 @@ type NaisUrls = Record<DecoratorNaisEnv, string>;
 type InternalDecoratorUrlProps = DecoratorUrlProps & {
     params?: ParamsWithMetadata;
 };
+type QueryParamValue = string | number | boolean | object;
 
 const externalUrls: NaisUrls = {
     prod: "https://www.nav.no/dekoratoren",
@@ -22,15 +23,19 @@ const serviceUrls: NaisUrls = {
 
 const naisGcpClusters: ReadonlySet<string> = new Set(["dev-gcp", "prod-gcp"]);
 
-const objectToQueryString = (params?: Record<string, unknown>) => {
-    const definedParams = Object.entries(params ?? {}).filter(([, value]) => value !== undefined);
+const encodeQueryParam = (value: QueryParamValue) =>
+    encodeURIComponent(
+        typeof value === "object" ? JSON.stringify(value) : String(value),
+    );
+
+const objectToQueryString = (params?: Record<string, QueryParamValue | undefined>) => {
+    const definedParams = Object.entries(params ?? {}).filter(
+        (entry): entry is [string, QueryParamValue] => entry[1] !== undefined,
+    );
 
     return definedParams.length > 0
         ? `?${definedParams
-              .map(
-                  ([key, value]) =>
-                      `${key}=${encodeURIComponent(typeof value === "object" ? JSON.stringify(value) : String(value))}`,
-              )
+              .map(([key, value]) => `${key}=${encodeQueryParam(value)}`)
               .join("&")}`
         : "";
 };
