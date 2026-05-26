@@ -5,6 +5,7 @@ on:
   pull_request:
     branches:
       - main
+      - 3.x
 
 jobs:
   lint-and-test:

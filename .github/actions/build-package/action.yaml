@@ -17,11 +17,18 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Validate release on main
-      if: inputs.publish_type == 'release' && github.ref != 'refs/heads/main'
+    - name: Validate release branch
+      if: inputs.publish_type == 'release' && github.ref != 'refs/heads/main' && github.ref != 'refs/heads/3.x'
       shell: bash
       run: |
-        echo "Release can only be published from the main branch"
+        echo "Release can only be published from the main or 3.x branch"
+        exit 1
+
+    - name: Prevent major version on 3.x
+      if: github.ref == 'refs/heads/3.x' && (inputs.version_type == 'major' || inputs.version_type == 'premajor')
+      shell: bash
+      run: |
+        echo "Major versions cannot be published from the 3.x branch"
         exit 1
 
     - name: Setup pnpm
