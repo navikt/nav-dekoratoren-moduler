@@ -1,6 +1,10 @@
 import { DecoratorNaisEnv, DecoratorUrlProps } from "./common-types";
+import type { ParamsWithMetadata } from "./decorator-moduler-metadata";
 
 type NaisUrls = Record<DecoratorNaisEnv, string>;
+type InternalDecoratorUrlProps = DecoratorUrlProps & {
+    params?: ParamsWithMetadata;
+};
 
 const externalUrls: NaisUrls = {
     prod: "https://www.nav.no/dekoratoren",
@@ -18,18 +22,18 @@ const serviceUrls: NaisUrls = {
 
 const naisGcpClusters: ReadonlySet<string> = new Set(["dev-gcp", "prod-gcp"]);
 
-const objectToQueryString = (params?: Record<string, any>) =>
-    params
-        ? Object.entries(params).reduce(
-              (acc, [k, v], i) =>
-                  v !== undefined
-                      ? `${acc}${i ? "&" : "?"}${k}=${encodeURIComponent(
-                            typeof v === "object" ? JSON.stringify(v) : v,
-                        )}`
-                      : acc,
-              "",
-          )
+const objectToQueryString = (params?: Record<string, unknown>) => {
+    const definedParams = Object.entries(params ?? {}).filter(([, value]) => value !== undefined);
+
+    return definedParams.length > 0
+        ? `?${definedParams
+              .map(
+                  ([key, value]) =>
+                      `${key}=${encodeURIComponent(typeof value === "object" ? JSON.stringify(value) : String(value))}`,
+              )
+              .join("&")}`
         : "";
+};
 
 const isNaisApp = () =>
     typeof process !== "undefined" &&
@@ -55,7 +59,7 @@ export const getDecoratorBaseUrl = (props: DecoratorUrlProps) => {
         : getNaisUrl(props.env, props.csr, props.serviceDiscovery);
 };
 
-export const getDecoratorEndpointUrl = (props: DecoratorUrlProps) => {
+export const getDecoratorEndpointUrl = (props: InternalDecoratorUrlProps) => {
     const { params, csr } = props;
     const baseUrl = getDecoratorBaseUrl(props);
 
