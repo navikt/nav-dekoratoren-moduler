@@ -5,7 +5,10 @@
     "description": "Moduler til nav-dekoratoren",
     "author": "NAVIKT",
     "license": "MIT",
-    "repository": "navikt/nav-dekoratoren-moduler",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/navikt/nav-dekoratoren-moduler.git"
+    },
     "main": "csr/index.js",
     "module": "csr/index.js",
     "source": "src/csr/index.tsx",

@@ -39,7 +39,12 @@ jobs:
       - name: Publish package
         id: publish
         shell: bash
-        run: npm publish
+        run: |
+          if [ "${GITHUB_REF}" = "refs/heads/3.x" ]; then
+            npm publish --tag latest-3
+          else
+            npm publish
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
