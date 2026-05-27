@@ -35,3 +35,4 @@ Corepack leser `packageManager`-feltet i `package.json` og installerer riktig ve
 - `pnpm run build`
 - `npm version patch|minor|major`
 - `npm publish --access public`
+
