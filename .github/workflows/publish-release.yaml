@@ -58,3 +58,4 @@ jobs:
         with:
           tag_name: ${{ steps.build.outputs.version_tag }}
           body: ${{ inputs.releaseBody }}
+          make_latest: ${{ github.ref == 'refs/heads/3.x' && 'false' || 'true' }}
