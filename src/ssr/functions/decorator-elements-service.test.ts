@@ -68,11 +68,14 @@ describe("Get decorator elements", () => {
 
         const elements = await getDecoratorElements({ env: "prod", noCache: true });
         const csrElements = getCsrElements({ env: "prod" });
+        const src = elements.DECORATOR_SCRIPTS.match(/data-src="([^"]+)"/)?.[1];
 
         expect(elements.DECORATOR_HEAD_ASSETS).toContain(csrElements.styles);
         expect(elements.DECORATOR_HEADER).toContain(csrElements.header);
         expect(elements.DECORATOR_FOOTER).toContain(csrElements.footer);
         expect(elements.DECORATOR_SCRIPTS).toContain(csrElements.scripts);
+        expect(src).toBeDefined();
+        expect(new URL(src!).searchParams.get("decoratorModulerEntryPoint")).toBe("ssr");
     });
 
     test("Should not fetch again if recently cached", async () => {
@@ -85,9 +88,25 @@ describe("Get decorator elements", () => {
 
         const numSsrCalls = fetchMock.mock.calls
             .flat()
-            .filter((url) => typeof url === "string" && url.endsWith("/ssr")).length;
+            .filter((url) => typeof url === "string" && url.includes("/ssr?")).length;
 
         expect(numSsrCalls).toEqual(1);
+    });
+
+    test("Should include decorator moduler metadata in SSR requests", async () => {
+        fetchMock.mockResponse(JSON.stringify(validResponse));
+
+        await getDecoratorElements({ env: "prod", noCache: true });
+
+        const requestUrl = fetchMock.mock.calls
+            .flat()
+            .find((url) => typeof url === "string" && url.includes("/ssr?")) as string;
+        const url = new URL(requestUrl);
+
+        expect(url.searchParams.get("decoratorModulerVersion")).toBe(
+            "__NAV_DEKORATOREN_MODULER_VERSION__",
+        );
+        expect(url.searchParams.get("decoratorModulerEntryPoint")).toBe("ssr");
     });
 
     test("Should not return stale version after new version is available", async () => {
