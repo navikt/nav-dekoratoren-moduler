@@ -55,5 +55,5 @@ export type {
 };
 
 // Re-export from @navikt/analytics-types for convenience
-export { Events } from "@navikt/analytics-types";
+export { Events, isValidEventName } from "@navikt/analytics-types";
 export type * from "@navikt/analytics-types";
