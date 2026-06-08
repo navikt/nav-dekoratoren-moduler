@@ -8,6 +8,7 @@ import { addDecoratorUpdateListener } from "./decorator-version-watcher";
 import { getDecoratorEndpointUrl } from "../../common/urls";
 import { fetchSsrElements } from "./fetch-decorator-elements";
 import { getCsrElements } from "../../common/csr-elements";
+import { withMetadata } from "../../common/decorator-moduler-metadata";
 
 type CacheEntry = {
     expires: number;
@@ -34,7 +35,10 @@ class DecoratorElementsService {
     }
 
     public async get(props: DecoratorFetchProps): Promise<DecoratorElements> {
-        const url = getDecoratorEndpointUrl(props);
+        const url = getDecoratorEndpointUrl({
+            ...props,
+            params: withMetadata(props.params, "ssr"),
+        });
 
         if (props.noCache) {
             return fetchSsrElements(url).then((res) => {
@@ -74,7 +78,8 @@ class DecoratorElementsService {
     private csrFallback(props: DecoratorFetchProps): DecoratorElements {
         console.error("Failed to fetch SSR decorator elements - Falling back to CSR elements");
 
-        const csrElements = getCsrElements(props);
+        // This is still an SSR integration even when rendering falls back to CSR placeholders.
+        const csrElements = getCsrElements(props, "ssr");
 
         return {
             DECORATOR_HEAD_ASSETS: csrElements.styles,

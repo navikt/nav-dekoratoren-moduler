@@ -1,4 +1,5 @@
 import { AnalyticsEvent, AnalyticsEvents } from "../events";
+import { createAnalyticsMetadata } from "../../common/decorator-moduler-metadata";
 
 export type AnalyticsParams = {
     origin: string;
@@ -43,7 +44,10 @@ export async function logAnalyticsEvent<TName extends AnalyticsEventName>(params
         return Promise.reject("Analytics instance not found, it may not have been initialized yet");
     }
 
-    return window.dekoratorenAnalytics(params);
+    return window.dekoratorenAnalytics({
+        ...params,
+        ...createAnalyticsMetadata("legacy"),
+    });
 }
 
 export function getAnalyticsInstance<
