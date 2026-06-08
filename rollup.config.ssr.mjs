@@ -2,6 +2,7 @@ import typescript from "@rollup/plugin-typescript";
 import { dts } from "rollup-plugin-dts";
 
 import pkg from "./package.json" with { type: "json" };
+import { packageVersionPlugin } from "./rollup.package-version-plugin.mjs";
 
 const deps = Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies });
 
@@ -16,6 +17,7 @@ export default [
             exports: "named",
         },
         plugins: [
+            packageVersionPlugin(),
             typescript({
                 compilerOptions: {
                     declaration: false,
