@@ -6,9 +6,19 @@ export type AnalyticsEntryPoint = "typed" | "custom" | "legacy";
 export type ParamsWithMetadata = DecoratorParams & {
     decoratorModulerVersion?: string;
     decoratorModulerEntryPoint?: EntryPoint;
+    naisAppName?: string;
+    naisNamespace?: string;
 };
 
 const version = "__NAV_DEKORATOREN_MODULER_VERSION__";
+
+const getNaisConsumerMetadata = () => {
+   if (typeof process === "undefined") return {};
+   return {
+        ...(process.env.NAIS_APP_NAME && { naisAppName: process.env.NAIS_APP_NAME }),
+        ...(process.env.NAIS_NAMESPACE && { naisNamespace: process.env.NAIS_NAMESPACE }),
+    };
+}
 
 export const createMetadata = (entryPoint: EntryPoint) => ({
     decoratorModulerVersion: version,
@@ -27,4 +37,5 @@ export const withMetadata = (
 ): ParamsWithMetadata => ({
     ...params,
     ...createMetadata(entryPoint),
+    ...getNaisConsumerMetadata(),
 });
