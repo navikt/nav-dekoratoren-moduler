@@ -40,6 +40,8 @@ class DecoratorElementsService {
             params: withMetadata(props.params, "ssr"),
         });
 
+        console.log("Fetching SSR decorator elements from ${url} with params.");
+
         if (props.noCache) {
             return fetchSsrElements(url).then((res) => {
                 return res?.elements || this.csrFallback(props);
