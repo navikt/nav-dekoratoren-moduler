@@ -41,6 +41,7 @@ class DecoratorElementsService {
         });
 
         console.log(`Fetching SSR decorator elements from ${url} with params.`);
+        console.log(url);
 
         if (props.noCache) {
             return fetchSsrElements(url).then((res) => {
