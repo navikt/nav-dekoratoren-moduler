@@ -20,9 +20,9 @@ const getNaisConsumerMetadata = (entryPoint: EntryPoint) => {
         hasWarnedMissingConsumerIdentity = true;
         if (entryPoint === "csr") {
             console.warn(
-                "[nav-dekoratoren-moduler] Dekoratøren kan ikke identifisere teamet ditt for CSR-forespørsler. " +
-                    'Legg til headeren "X-Teamname: <teamnavn>" i forespørslene til dekoratøren for å bli ' +
-                    "identifisert i logger og feilmeldinger.",
+                "[nav-dekoratoren-moduler] NAIS_APP_NAME ikke satt — dekoratøren vil bruke Origin-headeren " +
+                    "som fallback for å identifisere teamet ditt. Legg til headeren " +
+                    '"X-Teamname: <teamnavn>" i CSR-forespørslene for nøyaktig identifikasjon.',
             );
         } else if (entryPoint === "ssr") {
             console.warn(
