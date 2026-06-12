@@ -22,6 +22,7 @@ export type DecoratorEnvProps =
 export type DecoratorFetchProps = {
     params?: DecoratorParams;
     noCache?: boolean;
+    teamName?: string;
 } & DecoratorEnvProps;
 
 export type DecoratorUrlProps = { csr?: boolean } & DecoratorFetchProps;
