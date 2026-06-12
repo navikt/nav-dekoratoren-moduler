@@ -13,22 +13,13 @@ export type ParamsWithMetadata = DecoratorParams & {
 const version = "__NAV_DEKORATOREN_MODULER_VERSION__";
 
 let hasWarnedMissingConsumerIdentity = false;
-
 const getNaisConsumerMetadata = (entryPoint: EntryPoint) => {
     if (typeof process === "undefined") return {};
-    if (!process.env.NAIS_APP_NAME && !hasWarnedMissingConsumerIdentity) {
+    if (entryPoint === "ssr" && !process.env.NAIS_APP_NAME && !hasWarnedMissingConsumerIdentity) {
         hasWarnedMissingConsumerIdentity = true;
-        if (entryPoint === "csr") {
-            console.warn(
-                "[nav-dekoratoren-moduler] NAIS_APP_NAME ikke satt — dekoratøren vil bruke Origin-headeren " +
-                    "som fallback for å identifisere teamet ditt. Legg til headeren " +
-                    '"X-Teamname: <teamnavn>" i CSR-forespørslene for nøyaktig identifikasjon.',
-            );
-        } else if (entryPoint === "ssr") {
-            console.warn(
-                "[nav-dekoratoren-moduler] NAIS_APP_NAME ikke satt — SSR-forespørsler kan ikke knyttes til et team.",
-            );
-        }
+        console.warn(
+            "[nav-dekoratoren-moduler] NAIS_APP_NAME ikke satt — SSR-forespørsler kan ikke knyttes til et team.",
+        );
     }
     return {
         ...(process.env.NAIS_APP_NAME && { naisAppName: process.env.NAIS_APP_NAME }),
