@@ -98,7 +98,7 @@ importers:
         version: 8.59.3(eslint@9.39.4)(typescript@6.0.3)
       '@vitest/eslint-plugin':
         specifier: 1.6.17
-        version: 1.6.17(@typescript-eslint/eslint-plugin@8.59.3(@typescript-eslint/parser@8.59.3(eslint@9.39.4)(typescript@6.0.3))(eslint@9.39.4)(typescript@6.0.3))(eslint@9.39.4)(typescript@6.0.3)(vitest@4.1.6(@types/node@24.12.4)(jsdom@26.1.0)(vite@7.3.3(@types/node@24.12.4)))
+        version: 1.6.17(@typescript-eslint/eslint-plugin@8.59.3(@typescript-eslint/parser@8.59.3(eslint@9.39.4)(typescript@6.0.3))(eslint@9.39.4)(typescript@6.0.3))(eslint@9.39.4)(typescript@6.0.3)(vitest@4.1.6(@types/node@24.12.4)(jsdom@26.1.0)(vite@7.3.5(@types/node@24.12.4)))
       eslint:
         specifier: 'catalog:'
         version: 9.39.4
@@ -134,10 +134,10 @@ importers:
         version: 6.0.3
       vitest:
         specifier: 4.1.6
-        version: 4.1.6(@types/node@24.12.4)(jsdom@26.1.0)(vite@7.3.3(@types/node@24.12.4))
+        version: 4.1.6(@types/node@24.12.4)(jsdom@26.1.0)(vite@7.3.5(@types/node@24.12.4))
       vitest-fetch-mock:
         specifier: 0.4.5
-        version: 0.4.5(vitest@4.1.6(@types/node@24.12.4)(jsdom@26.1.0)(vite@7.3.3(@types/node@24.12.4)))
+        version: 0.4.5(vitest@4.1.6(@types/node@24.12.4)(jsdom@26.1.0)(vite@7.3.5(@types/node@24.12.4)))
 
   examples/csr:
     dependencies:
@@ -171,7 +171,7 @@ importers:
         version: 8.59.3(eslint@9.39.4)(typescript@6.0.3)
       '@vitejs/plugin-react':
         specifier: 5.2.0
-        version: 5.2.0(vite@7.3.3(@types/node@24.12.4))
+        version: 5.2.0(vite@7.3.5(@types/node@24.12.4))
       eslint:
         specifier: 'catalog:'
         version: 9.39.4
@@ -191,8 +191,8 @@ importers:
         specifier: 'catalog:'
         version: 6.0.3
       vite:
-        specifier: 7.3.3
-        version: 7.3.3(@types/node@24.12.4)
+        specifier: 7.3.5
+        version: 7.3.5(@types/node@24.12.4)
 
   examples/next-app-router:
     dependencies:
@@ -2833,8 +2833,8 @@ packages:
   uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
 
-  vite@7.3.3:
-    resolution: {integrity: sha512-/4XH147Ui7OGTjg3HbdWe5arnZQSbfuRzdr9Ec7TQi5I7R+ir0Rlc9GIvD4v0XZurELqA035KVXJXpR61xhiTA==}
+  vite@7.3.5:
+    resolution: {integrity: sha512-KuOaNhcnGFN2zIPGA7wRmzF+lJA1sea7rHq17aiJ++9lzY1WWG6Jpwqwe1KNbRVPIqHmr8GLYx7jbrQcN/7/ww==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -3967,7 +3967,7 @@ snapshots:
   '@unrs/resolver-binding-win32-x64-msvc@1.11.1':
     optional: true
 
-  '@vitejs/plugin-react@5.2.0(vite@7.3.3(@types/node@24.12.4))':
+  '@vitejs/plugin-react@5.2.0(vite@7.3.5(@types/node@24.12.4))':
     dependencies:
       '@babel/core': 7.29.0
       '@babel/plugin-transform-react-jsx-self': 7.27.1(@babel/core@7.29.0)
@@ -3975,11 +3975,11 @@ snapshots:
       '@rolldown/pluginutils': 1.0.0-rc.3
       '@types/babel__core': 7.20.5
       react-refresh: 0.18.0
-      vite: 7.3.3(@types/node@24.12.4)
+      vite: 7.3.5(@types/node@24.12.4)
     transitivePeerDependencies:
       - supports-color
 
-  '@vitest/eslint-plugin@1.6.17(@typescript-eslint/eslint-plugin@8.59.3(@typescript-eslint/parser@8.59.3(eslint@9.39.4)(typescript@6.0.3))(eslint@9.39.4)(typescript@6.0.3))(eslint@9.39.4)(typescript@6.0.3)(vitest@4.1.6(@types/node@24.12.4)(jsdom@26.1.0)(vite@7.3.3(@types/node@24.12.4)))':
+  '@vitest/eslint-plugin@1.6.17(@typescript-eslint/eslint-plugin@8.59.3(@typescript-eslint/parser@8.59.3(eslint@9.39.4)(typescript@6.0.3))(eslint@9.39.4)(typescript@6.0.3))(eslint@9.39.4)(typescript@6.0.3)(vitest@4.1.6(@types/node@24.12.4)(jsdom@26.1.0)(vite@7.3.5(@types/node@24.12.4)))':
     dependencies:
       '@typescript-eslint/scope-manager': 8.59.3
       '@typescript-eslint/utils': 8.59.3(eslint@9.39.4)(typescript@6.0.3)
@@ -3987,7 +3987,7 @@ snapshots:
     optionalDependencies:
       '@typescript-eslint/eslint-plugin': 8.59.3(@typescript-eslint/parser@8.59.3(eslint@9.39.4)(typescript@6.0.3))(eslint@9.39.4)(typescript@6.0.3)
       typescript: 6.0.3
-      vitest: 4.1.6(@types/node@24.12.4)(jsdom@26.1.0)(vite@7.3.3(@types/node@24.12.4))
+      vitest: 4.1.6(@types/node@24.12.4)(jsdom@26.1.0)(vite@7.3.5(@types/node@24.12.4))
     transitivePeerDependencies:
       - supports-color
 
@@ -4000,13 +4000,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.1.0
 
-  '@vitest/mocker@4.1.6(vite@7.3.3(@types/node@24.12.4))':
+  '@vitest/mocker@4.1.6(vite@7.3.5(@types/node@24.12.4))':
     dependencies:
       '@vitest/spy': 4.1.6
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 7.3.3(@types/node@24.12.4)
+      vite: 7.3.5(@types/node@24.12.4)
 
   '@vitest/pretty-format@4.1.6':
     dependencies:
@@ -5762,7 +5762,7 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  vite@7.3.3(@types/node@24.12.4):
+  vite@7.3.5(@types/node@24.12.4):
     dependencies:
       esbuild: 0.27.3
       fdir: 6.5.0(picomatch@4.0.4)
@@ -5774,14 +5774,14 @@ snapshots:
       '@types/node': 24.12.4
       fsevents: 2.3.3
 
-  vitest-fetch-mock@0.4.5(vitest@4.1.6(@types/node@24.12.4)(jsdom@26.1.0)(vite@7.3.3(@types/node@24.12.4))):
+  vitest-fetch-mock@0.4.5(vitest@4.1.6(@types/node@24.12.4)(jsdom@26.1.0)(vite@7.3.5(@types/node@24.12.4))):
     dependencies:
-      vitest: 4.1.6(@types/node@24.12.4)(jsdom@26.1.0)(vite@7.3.3(@types/node@24.12.4))
+      vitest: 4.1.6(@types/node@24.12.4)(jsdom@26.1.0)(vite@7.3.5(@types/node@24.12.4))
 
-  vitest@4.1.6(@types/node@24.12.4)(jsdom@26.1.0)(vite@7.3.3(@types/node@24.12.4)):
+  vitest@4.1.6(@types/node@24.12.4)(jsdom@26.1.0)(vite@7.3.5(@types/node@24.12.4)):
     dependencies:
       '@vitest/expect': 4.1.6
-      '@vitest/mocker': 4.1.6(vite@7.3.3(@types/node@24.12.4))
+      '@vitest/mocker': 4.1.6(vite@7.3.5(@types/node@24.12.4))
       '@vitest/pretty-format': 4.1.6
       '@vitest/runner': 4.1.6
       '@vitest/snapshot': 4.1.6
@@ -5798,7 +5798,7 @@ snapshots:
       tinyexec: 1.0.4
       tinyglobby: 0.2.15
       tinyrainbow: 3.1.0
-      vite: 7.3.3(@types/node@24.12.4)
+      vite: 7.3.5(@types/node@24.12.4)
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 24.12.4
