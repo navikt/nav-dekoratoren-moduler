@@ -8,6 +8,7 @@
   "repository": "navikt/nav-dekoratoren-moduler",
   "main": "csr/index.js",
   "module": "csr/index.js",
+  "types": "csr/index.d.ts",
   "source": "src/csr/index.tsx",
   "engines": {
     "node": "24.x"
