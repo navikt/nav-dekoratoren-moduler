@@ -46,6 +46,7 @@ export type DecoratorParams = Partial<{
     logoutUrl: string;
     logoutWarning: boolean;
     redirectOnUserChange: boolean;
+    origin: string;
     pageType: string;
     analyticsQueryParams: string[];
     analyticsRedactFilter: string[];
