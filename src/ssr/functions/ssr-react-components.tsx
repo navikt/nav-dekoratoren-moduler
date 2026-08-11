@@ -1,18 +1,16 @@
+/** @jsxRuntime classic */
+/** @jsx createElement */
+/** @jsxFrag Fragment */
 import { DecoratorFetchProps } from "../../common/common-types";
-import htmlReactParser, {
-    attributesToProps,
-    DOMNode,
-    domToReact,
-    Element,
-    HTMLReactParserOptions,
-} from "html-react-parser";
-import React, { FunctionComponent } from "react";
+import type htmlReactParser from "html-react-parser";
+import type { DOMNode, HTMLReactParserOptions } from "html-react-parser";
+import type { FunctionComponent } from "react";
 import { getDecoratorElements } from "./decorator-elements-service";
 
-// @ts-expect-error Property 'default' exists on type
-const parse = htmlReactParser.default as typeof htmlReactParser;
+type ReactModule = typeof import("react");
+type HtmlReactParserModule = typeof import("html-react-parser");
 
-type ScriptsProps = { loader?: React.FunctionComponent };
+type ScriptsProps = { loader?: FunctionComponent };
 
 export type DecoratorComponentsReact = {
     Scripts: FunctionComponent<ScriptsProps>;
@@ -21,8 +19,15 @@ export type DecoratorComponentsReact = {
     HeadAssets: FunctionComponent;
 };
 
-const scriptReplacer = (ScriptLoader: React.FunctionComponent): HTMLReactParserOptions["replace"] =>
-    function ScriptReplacer(domNode) {
+const scriptReplacer = (
+    ScriptLoader: FunctionComponent,
+    react: ReactModule,
+    parser: HtmlReactParserModule,
+): HTMLReactParserOptions["replace"] => {
+    const { createElement } = react;
+    const { attributesToProps, domToReact, Element } = parser;
+
+    return function ScriptReplacer(domNode) {
         if (domNode instanceof Element && domNode.name === "script") {
             return (
                 <ScriptLoader {...attributesToProps(domNode.attribs)}>
@@ -31,16 +36,26 @@ const scriptReplacer = (ScriptLoader: React.FunctionComponent): HTMLReactParserO
             );
         }
     };
+};
 
 export const fetchDecoratorReact = async (
     props: DecoratorFetchProps,
 ): Promise<DecoratorComponentsReact> => {
+    // react and html-react-parser are optional peer dependencies, used only by
+    // this function. Importing them lazily lets consumers of the string-based
+    // API skip installing them altogether.
+    const [react, parser] = await Promise.all([import("react"), import("html-react-parser")]);
+
+    const { createElement, Fragment } = react;
+    // The CommonJS build of html-react-parser exposes parse as the default export
+    const parse = (parser.default ?? parser) as typeof htmlReactParser;
+
     return getDecoratorElements(props).then((elements) => ({
         HeadAssets: () => <>{parse(elements.DECORATOR_HEAD_ASSETS)}</>,
         Scripts: ({ loader }: ScriptsProps) => (
             <>
                 {parse(elements.DECORATOR_SCRIPTS, {
-                    replace: loader ? scriptReplacer(loader) : undefined,
+                    replace: loader ? scriptReplacer(loader, react, parser) : undefined,
                 })}
             </>
         ),

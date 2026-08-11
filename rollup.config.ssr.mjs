@@ -30,7 +30,7 @@ export default [
                 exclude: ["**/*.test.ts"],
             }),
         ],
-        external: ["fs", "react/jsx-runtime", ...deps],
+        external: ["fs", ...deps],
     },
     {
         input: "src/ssr/index.tsx",
