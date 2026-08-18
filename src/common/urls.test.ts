@@ -25,4 +25,17 @@ describe("decorator URLs", () => {
             'https://www.nav.no/dekoratoren/ssr?breadcrumbs=%5B%7B%22title%22%3A%22Forside%22%2C%22url%22%3A%22%2F%22%7D%5D',
         );
     });
+
+    test("Should include analytics origin", () => {
+        const url = getDecoratorEndpointUrl({
+            env: "prod",
+            params: {
+                origin: "min-app",
+            },
+        });
+
+        expect(url).toBe(
+            "https://www.nav.no/dekoratoren/ssr?origin=min-app",
+        );
+    });
 });
