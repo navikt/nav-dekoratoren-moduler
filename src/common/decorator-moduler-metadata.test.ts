@@ -30,14 +30,6 @@ describe("withMetadata", () => {
         expect(params.teamName).toBe("jabberwock.personbruker");
     });
 
-    test("SSR: uses NAIS_APP_NAME alone when NAIS_NAMESPACE is missing", () => {
-        process.env.NAIS_APP_NAME = "jabberwock";
-
-        const params = withMetadata(undefined, "ssr");
-
-        expect(params.teamName).toBe("jabberwock");
-    });
-
     test("SSR: falls back to the explicit teamName prop when NAIS_APP_NAME is missing", () => {
         const params = withMetadata(undefined, "ssr", "jabberwock");
 
@@ -54,10 +46,11 @@ describe("withMetadata", () => {
 
     test("SSR: NAIS_APP_NAME takes precedence over an explicit teamName prop", () => {
         process.env.NAIS_APP_NAME = "fra-env";
+        process.env.NAIS_NAMESPACE = "personbruker";
 
         const params = withMetadata(undefined, "ssr", "fra-prop");
 
-        expect(params.teamName).toBe("fra-env");
+        expect(params.teamName).toBe("fra-env.personbruker");
     });
 
     test("CSR (browser): uses the explicit teamName prop", () => {

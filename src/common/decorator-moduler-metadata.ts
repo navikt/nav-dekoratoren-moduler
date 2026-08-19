@@ -29,7 +29,7 @@ const getNaisConsumerMetadata = (entryPoint: EntryPoint, teamName?: string) => {
 
     if (NAIS_APP_NAME) {
         return {
-            teamName: `${NAIS_APP_NAME}.${NAIS_NAMESPACE}`
+            teamName: `${NAIS_APP_NAME}.${NAIS_NAMESPACE}`,
         };
     }
 
