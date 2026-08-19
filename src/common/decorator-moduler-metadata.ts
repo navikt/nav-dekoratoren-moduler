@@ -10,6 +10,38 @@ export type ParamsWithMetadata = DecoratorParams & {
 
 const version = "__NAV_DEKORATOREN_MODULER_VERSION__";
 
+let hasWarnedMissingConsumerIdentity = false;
+
+const getNaisConsumerMetadata = (entryPoint: EntryPoint, teamName?: string) => {
+    if (typeof process === "undefined") {
+        if (!teamName && !hasWarnedMissingConsumerIdentity) {
+            hasWarnedMissingConsumerIdentity = true;
+            console.warn(
+                "[nav-dekoratoren-moduler] Dekoratøren kan ikke identifisere teamet ditt for CSR-forespørsler. " +
+                    'Legg til "teamName: <teamnavn>" i konfigurasjonen til injectDecoratorClientSide.',
+            );
+        }
+        return teamName ? { teamName } : {};
+    }
+
+    const { NAIS_APP_NAME, NAIS_NAMESPACE } = process.env;
+
+    if (NAIS_APP_NAME) {
+        return {
+            teamName: `${NAIS_APP_NAME}.${NAIS_NAMESPACE}`,
+        };
+    }
+
+    if (entryPoint === "ssr" && !hasWarnedMissingConsumerIdentity) {
+        hasWarnedMissingConsumerIdentity = true;
+        console.warn(
+            "[nav-dekoratoren-moduler] NAIS_APP_NAME ikke satt — SSR-forespørsler kan ikke knyttes til et team.",
+        );
+    }
+
+    return teamName ? { teamName } : {};
+};
+
 export const createMetadata = (entryPoint: EntryPoint) => ({
     decoratorModulerVersion: version,
     decoratorModulerEntryPoint: entryPoint,
@@ -27,4 +59,5 @@ export const withMetadata = (
 ): ParamsWithMetadata => ({
     ...params,
     ...createMetadata(entryPoint),
+    ...getNaisConsumerMetadata(entryPoint, params?.teamName),
 });

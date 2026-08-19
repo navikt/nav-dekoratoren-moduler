@@ -1,12 +1,6 @@
-import {
-    DecoratorFetchProps,
-    DecoratorUrlProps,
-} from "./common-types";
+import { DecoratorFetchProps, DecoratorUrlProps } from "./common-types";
 import { getDecoratorEndpointUrl } from "./urls";
-import {
-    type EntryPoint,
-    withMetadata,
-} from "./decorator-moduler-metadata";
+import { type EntryPoint, withMetadata } from "./decorator-moduler-metadata";
 
 export const getCsrElements = (
     csrProps: DecoratorFetchProps,
@@ -21,6 +15,7 @@ export const getCsrElements = (
         ...props,
         params: withMetadata(props.params, entryPoint),
     });
+
     const assetsUrl = getDecoratorEndpointUrl({ ...props, params: undefined });
     const scriptSrc = `${assetsUrl}/client.js`;
 
