@@ -37,7 +37,7 @@ class DecoratorElementsService {
     public async get(props: DecoratorFetchProps): Promise<DecoratorElements> {
         const url = getDecoratorEndpointUrl({
             ...props,
-            params: withMetadata(props.params, "ssr", props.teamName),
+            params: withMetadata(props.params, "ssr"),
         });
 
         console.log(`Fetching SSR decorator elements from ${url} with params.`);

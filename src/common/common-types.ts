@@ -22,17 +22,6 @@ export type DecoratorEnvProps =
 export type DecoratorFetchProps = {
     params?: DecoratorParams;
     noCache?: boolean;
-    /**
-     * Identifies the consuming team/app to dekoratoren.
-     *
-     * SSR: only needed as a fallback - the library derives this automatically
-     * from the NAIS_APP_NAME/NAIS_NAMESPACE environment variables when running
-     * on NAIS.
-     *
-     * CSR: required, since NAIS environment variables aren't available in the
-     * browser.
-     */
-    teamName?: string;
 } & DecoratorEnvProps;
 
 export type DecoratorUrlProps = { csr?: boolean } & DecoratorFetchProps;
@@ -61,6 +50,7 @@ export type DecoratorParams = Partial<{
     pageType: string;
     analyticsQueryParams: string[];
     analyticsRedactFilter: string[];
+    teamName: string;
 }>;
 
 export type DecoratorElements = {

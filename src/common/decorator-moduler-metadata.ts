@@ -6,7 +6,6 @@ export type AnalyticsEntryPoint = "typed" | "custom" | "legacy";
 export type ParamsWithMetadata = DecoratorParams & {
     decoratorModulerVersion?: string;
     decoratorModulerEntryPoint?: EntryPoint;
-    teamName?: string;
 };
 
 const version = "__NAV_DEKORATOREN_MODULER_VERSION__";
@@ -57,9 +56,8 @@ export const createAnalyticsMetadata = (
 export const withMetadata = (
     params: DecoratorParams | undefined,
     entryPoint: EntryPoint,
-    teamName?: string,
 ): ParamsWithMetadata => ({
     ...params,
     ...createMetadata(entryPoint),
-    ...getNaisConsumerMetadata(entryPoint, teamName),
+    ...getNaisConsumerMetadata(entryPoint, params?.teamName),
 });

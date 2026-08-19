@@ -31,7 +31,7 @@ describe("withMetadata", () => {
     });
 
     test("SSR: falls back to the explicit teamName prop when NAIS_APP_NAME is missing", () => {
-        const params = withMetadata(undefined, "ssr", "jabberwock");
+        const params = withMetadata({ teamName: "jabberwock" }, "ssr");
 
         expect(params.teamName).toBe("jabberwock");
         expect(console.warn).toHaveBeenCalled();
@@ -48,7 +48,7 @@ describe("withMetadata", () => {
         process.env.NAIS_APP_NAME = "fra-env";
         process.env.NAIS_NAMESPACE = "personbruker";
 
-        const params = withMetadata(undefined, "ssr", "fra-prop");
+        const params = withMetadata({ teamName: "fra-prop" }, "ssr");
 
         expect(params.teamName).toBe("fra-env.personbruker");
     });
@@ -56,7 +56,7 @@ describe("withMetadata", () => {
     test("CSR (browser): uses the explicit teamName prop", () => {
         vi.stubGlobal("process", undefined);
 
-        const params = withMetadata(undefined, "csr", "jabberwock");
+        const params = withMetadata({ teamName: "jabberwock" }, "csr");
 
         expect(params.teamName).toBe("jabberwock");
     });

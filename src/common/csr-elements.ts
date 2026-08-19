@@ -13,7 +13,7 @@ export const getCsrElements = (
 
     const envUrl = getDecoratorEndpointUrl({
         ...props,
-        params: withMetadata(props.params, entryPoint, csrProps.teamName),
+        params: withMetadata(props.params, entryPoint),
     });
 
     const assetsUrl = getDecoratorEndpointUrl({ ...props, params: undefined });
