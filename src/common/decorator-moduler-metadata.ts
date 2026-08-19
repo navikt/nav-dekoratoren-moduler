@@ -6,8 +6,7 @@ export type AnalyticsEntryPoint = "typed" | "custom" | "legacy";
 export type ParamsWithMetadata = DecoratorParams & {
     decoratorModulerVersion?: string;
     decoratorModulerEntryPoint?: EntryPoint;
-    naisAppName?: string;
-    naisNamespace?: string;
+    teamName?: string;
 };
 
 const version = "__NAV_DEKORATOREN_MODULER_VERSION__";
@@ -23,28 +22,25 @@ const getNaisConsumerMetadata = (entryPoint: EntryPoint, teamName?: string) => {
                     'Legg til "teamName: <teamnavn>" i konfigurasjonen til injectDecoratorClientSide.',
             );
         }
-        return teamName ? { naisAppName: teamName } : {};
+        return teamName ? { teamName } : {};
     }
-    if (
-        entryPoint === "ssr" &&
-        !process.env.NAIS_APP_NAME &&
-        !hasWarnedMissingConsumerIdentity
-    ) {
+
+    const { NAIS_APP_NAME, NAIS_NAMESPACE } = process.env;
+
+    if (NAIS_APP_NAME) {
+        return {
+            teamName: `${NAIS_APP_NAME}.${NAIS_NAMESPACE}`
+        };
+    }
+
+    if (entryPoint === "ssr" && !hasWarnedMissingConsumerIdentity) {
         hasWarnedMissingConsumerIdentity = true;
         console.warn(
             "[nav-dekoratoren-moduler] NAIS_APP_NAME ikke satt — SSR-forespørsler kan ikke knyttes til et team.",
         );
     }
-    return {
-        ...(process.env.NAIS_APP_NAME && {
-            naisAppName: process.env.NAIS_APP_NAME,
-        }),
-        ...(teamName &&
-            !process.env.NAIS_APP_NAME && { naisAppName: teamName }),
-        ...(process.env.NAIS_NAMESPACE && {
-            naisNamespace: process.env.NAIS_NAMESPACE,
-        }),
-    };
+
+    return teamName ? { teamName } : {};
 };
 
 export const createMetadata = (entryPoint: EntryPoint) => ({
