@@ -48,6 +48,9 @@ export default [
             "@typescript-eslint/ban-types": 0,
             "react/react-in-jsx-scope": 0,
             "react/prop-types": 0,
+            // Marks the JSX pragma/fragment factory as used, so files opting into
+            // the classic runtime don't trip no-unused-vars
+            "react/jsx-uses-react": "error",
         },
 
         settings: {
