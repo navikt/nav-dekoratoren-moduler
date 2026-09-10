@@ -12,6 +12,7 @@ const externalUrls: NaisUrls = {
     dev: "https://dekoratoren.ekstern.dev.nav.no",
     beta: "https://dekoratoren-beta.intern.dev.nav.no",
     betaTms: "https://dekoratoren-beta-tms.intern.dev.nav.no",
+    dev3: "https://dekoratoren-dev3.intern.dev.nav.no",
 } as const;
 
 const serviceUrls: NaisUrls = {
@@ -19,14 +20,13 @@ const serviceUrls: NaisUrls = {
     dev: "http://nav-dekoratoren.personbruker",
     beta: "http://nav-dekoratoren-beta.personbruker",
     betaTms: "http://nav-dekoratoren-beta-tms.personbruker",
+    dev3: "http://nav-dekoratoren-dev3.personbruker",
 } as const;
 
 const naisGcpClusters: ReadonlySet<string> = new Set(["dev-gcp", "prod-gcp"]);
 
 const encodeQueryParam = (value: QueryParamValue) =>
-    encodeURIComponent(
-        typeof value === "object" ? JSON.stringify(value) : String(value),
-    );
+    encodeURIComponent(typeof value === "object" ? JSON.stringify(value) : String(value));
 
 const objectToQueryString = (params?: Record<string, QueryParamValue | undefined>) => {
     const definedParams = Object.entries(params ?? {}).filter(
@@ -34,9 +34,7 @@ const objectToQueryString = (params?: Record<string, QueryParamValue | undefined
     );
 
     return definedParams.length > 0
-        ? `?${definedParams
-              .map(([key, value]) => `${key}=${encodeQueryParam(value)}`)
-              .join("&")}`
+        ? `?${definedParams.map(([key, value]) => `${key}=${encodeQueryParam(value)}`).join("&")}`
         : "";
 };
 
@@ -45,17 +43,10 @@ const isNaisApp = () =>
     process.env.NAIS_CLUSTER_NAME &&
     naisGcpClusters.has(process.env.NAIS_CLUSTER_NAME);
 
-const getNaisUrl = (
-    env: DecoratorNaisEnv,
-    csr = false,
-    serviceDiscovery = true,
-) => {
+const getNaisUrl = (env: DecoratorNaisEnv, csr = false, serviceDiscovery = true) => {
     const shouldUseServiceDiscovery = serviceDiscovery && !csr && isNaisApp();
 
-    return (
-        (shouldUseServiceDiscovery ? serviceUrls[env] : externalUrls[env]) ||
-        externalUrls.prod
-    );
+    return (shouldUseServiceDiscovery ? serviceUrls[env] : externalUrls[env]) || externalUrls.prod;
 };
 
 export const getDecoratorBaseUrl = (props: DecoratorUrlProps) => {

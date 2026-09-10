@@ -11,13 +11,12 @@ export type DecoratorBreadcrumb = {
     handleInApp?: boolean;
 };
 
-export type DecoratorNaisEnv = "prod" | "dev" | "beta" | "betaTms";
+export type DecoratorNaisEnv = "prod" | "dev" | "beta" | "betaTms" | "dev3";
 
 export type DecoratorEnv = DecoratorNaisEnv | "localhost";
 
 export type DecoratorEnvProps =
-    | { env: "localhost"; localUrl: string }
-    | { env: DecoratorNaisEnv; serviceDiscovery?: boolean };
+    { env: "localhost"; localUrl: string } | { env: DecoratorNaisEnv; serviceDiscovery?: boolean };
 
 export type DecoratorFetchProps = {
     params?: DecoratorParams;
