@@ -26,7 +26,7 @@ const getNaisConsumerMetadata = (entryPoint: EntryPoint, teamName?: string) => {
 
     const { NAIS_APP_NAME, NAIS_NAMESPACE } = process.env;
 
-    if (NAIS_APP_NAME) {
+    if (NAIS_APP_NAME && NAIS_NAMESPACE) {
         return {
             teamName: `${NAIS_APP_NAME}.${NAIS_NAMESPACE}`,
         };
@@ -35,7 +35,8 @@ const getNaisConsumerMetadata = (entryPoint: EntryPoint, teamName?: string) => {
     if (entryPoint === "ssr" && !hasWarnedMissingConsumerIdentity) {
         hasWarnedMissingConsumerIdentity = true;
         console.warn(
-            "[nav-dekoratoren-moduler] NAIS_APP_NAME ikke satt — SSR-forespørsler kan ikke knyttes til et team.",
+            "[nav-dekoratoren-moduler] NAIS_APP_NAME eller NAIS_NAMESPACE er ikke satt — SSR-forespørsler kan ikke" +
+                " knyttes til et team.",
         );
     }
 

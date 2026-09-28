@@ -53,6 +53,15 @@ describe("withMetadata", () => {
         expect(params.teamName).toBe("fra-env.personbruker");
     });
 
+    test("SSR: warns and falls back to the teamName prop when NAIS_NAMESPACE is missing", () => {
+        process.env.NAIS_APP_NAME = "nav-dekoratoren";
+
+        const params = withMetadata({ teamName: "fra-prop.navno" }, "ssr");
+
+        expect(params.teamName).toBe("fra-prop.navno");
+        expect(console.warn).toHaveBeenCalled();
+    });
+
     test("CSR (browser): uses the explicit teamName prop", () => {
         vi.stubGlobal("process", undefined);
 
