@@ -36,8 +36,8 @@ const getNaisConsumerMetadata = (entryPoint: EntryPoint, teamName?: string) => {
         } else if (!hasWarnedMissingConsumerIdentity) {
             hasWarnedMissingConsumerIdentity = true;
             console.warn(
-                "[nav-dekoratoren-moduler] NAIS_APP_NAME eller NAIS_NAMESPACE er ikke satt — SSR-forespørsler kan ikke" +
-                    " knyttes til et team.",
+                "[nav-dekoratoren-moduler] NAIS_APP_NAME eller NAIS_NAMESPACE er ikke satt — " +
+                    "bruker params.teamName som fallback dersom den er satt.",
             );
         }
     }
