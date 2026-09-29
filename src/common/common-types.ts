@@ -50,6 +50,7 @@ export type DecoratorParams = Partial<{
     pageType: string;
     analyticsQueryParams: string[];
     analyticsRedactFilter: string[];
+    teamName: string;
 }>;
 
 export type DecoratorElements = {
