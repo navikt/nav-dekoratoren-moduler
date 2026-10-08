@@ -9,6 +9,7 @@ describe("withMetadata", () => {
         process.env = { ...originalEnv };
         delete process.env.NAIS_APP_NAME;
         delete process.env.NAIS_NAMESPACE;
+        delete process.env.NEXT_PHASE;
 
         // Reset the module registry so the module-level "has warned already"
         // flag doesn't leak between tests.
@@ -146,5 +147,38 @@ describe("withMetadata", () => {
         expect(console.warn).toHaveBeenCalledWith(
             expect.stringContaining('params: { teamName: "<app>.<namespace>" }'),
         );
+    });
+
+    test("SSR during next build: flags the request and warns once about static generation", () => {
+        process.env.NEXT_PHASE = "phase-production-build";
+
+        const params = withMetadata({ teamName: "min-app.navno" }, "ssr");
+        withMetadata(undefined, "ssr");
+
+        expect(params.decoratorModulerBuildTime).toBe(true);
+        expect(params.teamName).toBe("min-app.navno");
+        expect(console.warn).toHaveBeenCalledTimes(1);
+        expect(console.warn).toHaveBeenCalledWith(
+            expect.stringContaining("Dekoratøren hentes under next build"),
+        );
+    });
+
+    test("SSR at runtime: does not flag the request", () => {
+        process.env.NEXT_PHASE = "phase-production-server";
+
+        const params = withMetadata(undefined, "ssr");
+
+        expect(params).not.toHaveProperty("decoratorModulerBuildTime");
+        expect(console.warn).not.toHaveBeenCalledWith(
+            expect.stringContaining("next build"),
+        );
+    });
+
+    test("CSR during next build: does not flag the request", () => {
+        process.env.NEXT_PHASE = "phase-production-build";
+
+        const params = withMetadata({ teamName: "min-app.navno" }, "csr");
+
+        expect(params).not.toHaveProperty("decoratorModulerBuildTime");
     });
 });
