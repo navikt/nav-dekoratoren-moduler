@@ -67,6 +67,7 @@
         "eslint": "catalog:",
         "eslint-plugin-react": "catalog:",
         "globals": "catalog:",
+        "html-react-parser": "catalog:",
         "husky": "9.1.7",
         "jsdom": "26.1.0",
         "mock-fs": "5.5.0",
