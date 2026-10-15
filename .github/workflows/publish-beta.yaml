@@ -31,6 +31,7 @@ jobs:
         with:
           publish_type: beta
           version_type: ${{ inputs.version_type }}
+          reader-token: ${{ secrets.READER_TOKEN }}
 
       - name: Publish beta package
         id: publish

@@ -35,6 +35,7 @@ jobs:
         with:
           publish_type: release
           version_type: ${{ inputs.releaseType }}
+          reader-token: ${{ secrets.READER_TOKEN }}
 
       - name: Publish package
         id: publish
