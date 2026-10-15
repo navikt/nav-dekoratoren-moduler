@@ -12,6 +12,13 @@
     "engines": {
         "node": "24.x"
     },
+    "devEngines": {
+        "runtime": {
+            "name": "node",
+            "version": "^24.19.0",
+            "onFail": "download"
+        }
+    },
     "scripts": {
         "start": "pnpm run --parallel --filter . \"/^start:.*/\"",
         "start:csr": "rollup -c rollup.config.csr.mjs -w",
@@ -19,6 +26,7 @@
         "build": "pnpm run --parallel --filter . \"/^build:.*/\"",
         "build:csr": "rollup -c rollup.config.csr.mjs",
         "build:ssr": "rollup -c rollup.config.ssr.mjs",
+        "prelint": "pnpm run build",
         "lint": "pnpm run lint:moduler && pnpm run lint:example-csr && pnpm run lint:example-next",
         "lint:moduler": "eslint src/ && tsc --noEmit",
         "lint:example-csr": "pnpm -C examples/csr run lint",

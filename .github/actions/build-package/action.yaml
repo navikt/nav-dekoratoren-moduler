@@ -8,6 +8,10 @@ inputs:
   version_type:
     required: true
     description: "Beta: prerelease, preminor, premajor. Release: patch, minor, major"
+  reader-token:
+    required: false
+    default: ""
+    description: "GitHub Packages token for installing private @navikt packages"
 
 outputs:
   version_tag:
@@ -24,15 +28,10 @@ runs:
         echo "Release can only be published from the main branch"
         exit 1
 
-    - name: Setup pnpm
-      uses: pnpm/action-setup@v5
-
-    - name: Setup node.js
-      uses: actions/setup-node@v6
+    - name: Setup node.js and pnpm
+      uses: navikt/navno-actions/setup-node-pnpm@v1
       with:
-        node-version: "24"
-        registry-url: "https://npm.pkg.github.com"
-        cache: "pnpm"
+        reader-token: ${{ inputs.reader-token }}
 
     - name: Configure git
       shell: bash
@@ -56,12 +55,6 @@ runs:
         fi
 
         echo "version_tag=$VERSION_TAG" >> "$GITHUB_OUTPUT"
-
-    - name: Install dependencies
-      shell: bash
-      run: pnpm install --frozen-lockfile --filter .
-      env:
-        NODE_AUTH_TOKEN: ${{ github.token }}
 
     - name: Lint all packages
       shell: bash
