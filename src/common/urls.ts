@@ -15,8 +15,8 @@ const externalUrls: NaisUrls = {
 } as const;
 
 const serviceUrls: NaisUrls = {
-    prod: "http://nav-dekoratoren.personbruker",
-    dev: "http://nav-dekoratoren.personbruker",
+    prod: "http://nav-dekoratoren-proxy.personbruker",
+    dev: "http://nav-dekoratoren-proxy.personbruker",
     beta: "http://nav-dekoratoren-beta.personbruker",
     betaTms: "http://nav-dekoratoren-beta-tms.personbruker",
 } as const;
