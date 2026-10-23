@@ -9,7 +9,7 @@ type QueryParamValue = string | number | boolean | object;
 
 const externalUrls: NaisUrls = {
     prod: "https://www.nav.no/dekoratoren",
-    dev: "https://dekoratoren.ekstern.dev.nav.no",
+    dev: "https://dekoratoren-proxy.ekstern.dev.nav.no",
     beta: "https://dekoratoren-beta.intern.dev.nav.no",
     betaTms: "https://dekoratoren-beta-tms.intern.dev.nav.no",
 } as const;
@@ -28,7 +28,9 @@ const encodeQueryParam = (value: QueryParamValue) =>
         typeof value === "object" ? JSON.stringify(value) : String(value),
     );
 
-const objectToQueryString = (params?: Record<string, QueryParamValue | undefined>) => {
+const objectToQueryString = (
+    params?: Record<string, QueryParamValue | undefined>,
+) => {
     const definedParams = Object.entries(params ?? {}).filter(
         (entry): entry is [string, QueryParamValue] => entry[1] !== undefined,
     );
