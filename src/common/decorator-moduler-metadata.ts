@@ -7,6 +7,7 @@ export type ParamsWithMetadata = DecoratorParams & {
     decoratorModulerVersion?: string;
     decoratorModulerEntryPoint?: EntryPoint;
     decoratorModulerBuildTime?: true;
+    decoratorModulerBuildApp?: string;
 };
 
 const version = "__NAV_DEKORATOREN_MODULER_VERSION__";
@@ -22,6 +23,16 @@ const isValidTeamName = (teamName: string) =>
 const isNextBuild = () =>
     typeof process !== "undefined" &&
     process.env?.NEXT_PHASE === "phase-production-build";
+
+// Identifies the app being built, since teamName is unavailable during next build
+const getBuildApp = () => {
+    const { GITHUB_REPOSITORY, npm_package_name } =
+        typeof process !== "undefined" ? process.env : {};
+    const candidate = GITHUB_REPOSITORY || npm_package_name;
+    return candidate && /^[@a-z0-9][a-z0-9._/-]{0,99}$/i.test(candidate)
+        ? { decoratorModulerBuildApp: candidate }
+        : {};
+};
 
 const warnBuildTimeOnce = () => {
     if (hasWarnedBuildTime) {
@@ -99,6 +110,8 @@ export const withMetadata = (
         ...otherParams,
         ...createMetadata(entryPoint),
         ...getNaisConsumerMetadata(entryPoint, teamName),
-        ...(isBuildTime ? { decoratorModulerBuildTime: true as const } : {}),
+        ...(isBuildTime
+            ? { decoratorModulerBuildTime: true as const, ...getBuildApp() }
+            : {}),
     };
 };

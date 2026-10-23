@@ -10,6 +10,8 @@ describe("withMetadata", () => {
         delete process.env.NAIS_APP_NAME;
         delete process.env.NAIS_NAMESPACE;
         delete process.env.NEXT_PHASE;
+        delete process.env.GITHUB_REPOSITORY;
+        delete process.env.npm_package_name;
 
         // Reset the module registry so the module-level "has warned already"
         // flag doesn't leak between tests.
@@ -163,12 +165,43 @@ describe("withMetadata", () => {
         );
     });
 
+    test("SSR during next build: identifies the app from GITHUB_REPOSITORY before the package name", () => {
+        process.env.NEXT_PHASE = "phase-production-build";
+        process.env.GITHUB_REPOSITORY = "navikt/min-app";
+        process.env.npm_package_name = "@navikt/min-app-frontend";
+
+        const params = withMetadata(undefined, "ssr");
+
+        expect(params.decoratorModulerBuildApp).toBe("navikt/min-app");
+    });
+
+    test("SSR during next build: falls back to the package name", () => {
+        process.env.NEXT_PHASE = "phase-production-build";
+        process.env.npm_package_name = "@navikt/min-app-frontend";
+
+        const params = withMetadata(undefined, "ssr");
+
+        expect(params.decoratorModulerBuildApp).toBe("@navikt/min-app-frontend");
+    });
+
+    test("SSR during next build: omits invalid app identifiers", () => {
+        process.env.NEXT_PHASE = "phase-production-build";
+        process.env.npm_package_name = "min app?";
+
+        const params = withMetadata(undefined, "ssr");
+
+        expect(params).not.toHaveProperty("decoratorModulerBuildApp");
+    });
+
     test("SSR at runtime: does not flag the request", () => {
         process.env.NEXT_PHASE = "phase-production-server";
+
+        process.env.GITHUB_REPOSITORY = "navikt/min-app";
 
         const params = withMetadata(undefined, "ssr");
 
         expect(params).not.toHaveProperty("decoratorModulerBuildTime");
+        expect(params).not.toHaveProperty("decoratorModulerBuildApp");
         expect(console.warn).not.toHaveBeenCalledWith(
             expect.stringContaining("next build"),
         );
