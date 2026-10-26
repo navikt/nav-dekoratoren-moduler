@@ -17,8 +17,8 @@ const externalUrls: NaisUrls = {
 const serviceUrls: NaisUrls = {
     prod: "http://nav-dekoratoren.personbruker",
     dev: "http://nav-dekoratoren.personbruker",
-    beta: "http://nav-dekoratoren-beta.personbruker",
-    betaTms: "http://nav-dekoratoren-beta-tms.personbruker",
+    beta: "http://nav-dekoratoren-beta.navno",
+    betaTms: "http://nav-dekoratoren-beta-tms.navno",
 } as const;
 
 const naisGcpClusters: ReadonlySet<string> = new Set(["dev-gcp", "prod-gcp"]);
