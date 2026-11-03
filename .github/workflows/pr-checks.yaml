@@ -1,25 +1,43 @@
 name: PR Checks
 permissions:
-  contents: read
+    contents: read
 on:
-  pull_request:
-    branches:
-      - main
+    pull_request:
+        branches:
+            - main
 
 jobs:
-  lint-and-test:
-    name: Lint and Test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-      - name: Setup node.js and pnpm
-        uses: navikt/navno-actions/setup-node-pnpm@v1
-        with:
-          reader-token: ${{ secrets.READER_TOKEN }}
-      - name: Lint
-        run: pnpm run lint:moduler
-      - name: Run tests
-        run: pnpm run test
-      - name: Build
-        run: pnpm run build
+    lint-and-test:
+        name: Lint and Test (Node ${{ matrix.node-version }})
+        runs-on: ubuntu-latest
+        env:
+            PNPM_SHIM_BYPASS: "1"
+        strategy:
+            matrix:
+                node-version:
+                    - "24"
+                    - "26"
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v7
+            - name: Setup node.js and pnpm
+              uses: navikt/navno-actions/setup-node-pnpm@v1
+              with:
+                  reader-token: ${{ secrets.READER_TOKEN }}
+                  install: "false"
+            - name: Setup matrix Node.js
+              uses: actions/setup-node@v7
+              with:
+                  node-version: ${{ matrix.node-version }}
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile --no-runtime
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+            - name: Verify test runtime
+              run: pnpm exec node -e "if (process.versions.node.split('.')[0] !== '${{ matrix.node-version }}') process.exit(1); console.log(process.version)"
+            - name: Build
+              run: pnpm run build:csr && pnpm run build
+            - name: Lint
+              run: pnpm run lint:moduler
+            - name: Run tests
+              run: pnpm run test
