@@ -76,7 +76,9 @@ class DecoratorElementsService {
     };
 
     private csrFallback(props: DecoratorFetchProps): DecoratorElements {
-        console.error("Failed to fetch SSR decorator elements - Falling back to CSR elements");
+        console.error(
+            "Failed to fetch SSR decorator elements - Falling back to CSR elements",
+        );
 
         // This is still an SSR integration even when rendering falls back to CSR placeholders.
         const csrElements = getCsrElements(props, "ssr");

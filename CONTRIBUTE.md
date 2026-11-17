@@ -23,15 +23,17 @@ Corepack leser `packageManager`-feltet i `package.json` og installerer riktig ve
 
 ## Publish
 
+Publish versions through GitHub Actions, not with local `npm publish` or `pnpm run publish:beta`. The workflows bump the version, run lint, tests and build, publish to GitHub Packages, and push the version commit and tag.
+
 ### Publish beta version
 
-- Make sure your branch is up to date with main and also run `git fetch` to get all remote tags.
-- `pnpm run publish:beta`
+1. Open [Publish beta](https://github.com/navikt/nav-dekoratoren-moduler/actions/workflows/publish-beta.yaml) and select **Run workflow**.
+2. Choose the branch to publish from and select `prerelease`, `preminor` or `premajor` as the version bump.
+3. Run the workflow. It publishes the package with the `beta` dist-tag.
 
 ### Publish new version
 
-- Make sure your branch is up to date with main and also run `git fetch` to get all remote tags.
-
-- `pnpm run build`
-- `npm version patch|minor|major`
-- `npm publish --access public`
+1. Merge the changes into `main`.
+2. Open [Publish release](https://github.com/navikt/nav-dekoratoren-moduler/actions/workflows/publish-release.yaml) and select **Run workflow** on `main`. Releases cannot be published from other branches.
+3. Select `patch`, `minor` or `major`, and enter the required release description.
+4. Run the workflow. It publishes the package and creates a GitHub release using the description.
