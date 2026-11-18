@@ -20,15 +20,19 @@ const serviceUrls: NaisUrls = {
     dev: "http://nav-dekoratoren.personbruker",
     beta: "http://nav-dekoratoren-beta.navno",
     betaTms: "http://nav-dekoratoren-beta-tms.navno",
-    dev3: "http://nav-dekoratoren-dev3.personbruker",
+    dev3: "http://nav-dekoratoren-dev3.navno",
 } as const;
 
 const naisGcpClusters: ReadonlySet<string> = new Set(["dev-gcp", "prod-gcp"]);
 
 const encodeQueryParam = (value: QueryParamValue) =>
-    encodeURIComponent(typeof value === "object" ? JSON.stringify(value) : String(value));
+    encodeURIComponent(
+        typeof value === "object" ? JSON.stringify(value) : String(value),
+    );
 
-const objectToQueryString = (params?: Record<string, QueryParamValue | undefined>) => {
+const objectToQueryString = (
+    params?: Record<string, QueryParamValue | undefined>,
+) => {
     const definedParams = Object.entries(params ?? {}).filter(
         (entry): entry is [string, QueryParamValue] => entry[1] !== undefined,
     );
@@ -43,10 +47,17 @@ const isNaisApp = () =>
     process.env.NAIS_CLUSTER_NAME &&
     naisGcpClusters.has(process.env.NAIS_CLUSTER_NAME);
 
-const getNaisUrl = (env: DecoratorNaisEnv, csr = false, serviceDiscovery = true) => {
+const getNaisUrl = (
+    env: DecoratorNaisEnv,
+    csr = false,
+    serviceDiscovery = true,
+) => {
     const shouldUseServiceDiscovery = serviceDiscovery && !csr && isNaisApp();
 
-    return (shouldUseServiceDiscovery ? serviceUrls[env] : externalUrls[env]) || externalUrls.prod;
+    return (
+        (shouldUseServiceDiscovery ? serviceUrls[env] : externalUrls[env]) ||
+        externalUrls.prod
+    );
 };
 
 export const getDecoratorBaseUrl = (props: DecoratorUrlProps) => {
