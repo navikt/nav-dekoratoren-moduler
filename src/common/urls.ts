@@ -12,6 +12,7 @@ const externalUrls: NaisUrls = {
     dev: "https://dekoratoren.ekstern.dev.nav.no",
     beta: "https://dekoratoren-beta.intern.dev.nav.no",
     betaTms: "https://dekoratoren-beta-tms.intern.dev.nav.no",
+    dev3: "https://dekoratoren-dev3.intern.dev.nav.no",
 } as const;
 
 const serviceUrls: NaisUrls = {
@@ -19,6 +20,7 @@ const serviceUrls: NaisUrls = {
     dev: "http://nav-dekoratoren.personbruker",
     beta: "http://nav-dekoratoren-beta.navno",
     betaTms: "http://nav-dekoratoren-beta-tms.navno",
+    dev3: "http://nav-dekoratoren-dev3.navno",
 } as const;
 
 const naisGcpClusters: ReadonlySet<string> = new Set(["dev-gcp", "prod-gcp"]);
@@ -28,15 +30,15 @@ const encodeQueryParam = (value: QueryParamValue) =>
         typeof value === "object" ? JSON.stringify(value) : String(value),
     );
 
-const objectToQueryString = (params?: Record<string, QueryParamValue | undefined>) => {
+const objectToQueryString = (
+    params?: Record<string, QueryParamValue | undefined>,
+) => {
     const definedParams = Object.entries(params ?? {}).filter(
         (entry): entry is [string, QueryParamValue] => entry[1] !== undefined,
     );
 
     return definedParams.length > 0
-        ? `?${definedParams
-              .map(([key, value]) => `${key}=${encodeQueryParam(value)}`)
-              .join("&")}`
+        ? `?${definedParams.map(([key, value]) => `${key}=${encodeQueryParam(value)}`).join("&")}`
         : "";
 };
 
